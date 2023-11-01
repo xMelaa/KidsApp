@@ -1,26 +1,24 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-//import { Animals, Vehicles } from "../data/data";
 
 
 type RootStackParamList = {
-    Home: undefined;
-    Second: undefined;
+   Second: undefined;
     choose: undefined;
   };
 
 type HomeScreenProps = {
-    navigation: NativeStackNavigationProp<RootStackParamList, "Home">; // Upewnij się, że to jest zgodne z Twoją konfiguracją nawigatora
+    navigation: NativeStackNavigationProp<RootStackParamList, "Second">; // Upewnij się, że to jest zgodne z Twoją konfiguracją nawigatora
   };
-  
-export default function HomeScreen({ navigation }: HomeScreenProps) {
+
+export default function gamesScreen({ navigation }: HomeScreenProps) {
     
   return (
     <View style={styles.container}>
-      <Button title="Second Screen"
-      onPress={()=> navigation.navigate("Second")}/>
-
+      
+      <h1>Gry i zabawy</h1>
       <StatusBar style="auto" />
     </View>
   );
@@ -31,6 +29,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center",
+    
   },
 });
