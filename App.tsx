@@ -7,34 +7,34 @@ import AnimalsScreen from "./Screens/words/animals";
 import VehiclesScreen from "./Screens/words/vehicles";
 import FruitsScreen from "./Screens/words/fruits";
 import LettersScreen from "./Screens/words/letters";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();
-
+const screens = [
+  { name: "Home", component: HomeScreen, title: "Welcome" },
+  { name: "Second", component: SecondScreen, title: "Welcome" },
+  { name: "choose", component: ChooseScreen },
+  { name: "words", component: newWordsScreen },
+  { name: "games", component: gamesScreen },
+  { name: "animals", component: AnimalsScreen },
+  { name: "letters", component: LettersScreen },
+  { name: "vehicles", component: VehiclesScreen },
+  { name: "fruits", component: FruitsScreen },
+];
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{ title: "Welcome" }}
-        />
-        <Stack.Screen
-          name="Second"
-          component={SecondScreen}
-          options={{ title: "Welcome" }}
-        />
-        <Stack.Screen name="choose" component={ChooseScreen} />
-        
-        <Stack.Screen name="words" component={newWordsScreen} />
-        <Stack.Screen name="games" component={gamesScreen} />
-
-        <Stack.Screen name="animals" component={AnimalsScreen} />
-        <Stack.Screen name="letters" component={LettersScreen} />
-        <Stack.Screen name="vehicles" component={VehiclesScreen} />
-        <Stack.Screen name="fruits" component={FruitsScreen} />
+      {screens.map((screen, index) => (
+          <Stack.Screen
+            key={index}
+            name={screen.name}
+            component={screen.component}
+            options={{ title: screen.title || undefined }}
+          />
+        ))}
       </Stack.Navigator>
     </NavigationContainer>
   );
