@@ -11,10 +11,8 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Animals } from "../../../data/data";
 import { VolumeUp } from "@mui/icons-material";
-//import Sound from "react-native-sound";
 import { Audio } from "expo-av";
 import { speak } from "expo-speech";
-import * as Speech from 'react-native-tts';
 
 // type RootStackParamList = {
 //    Second: undefined;
@@ -36,17 +34,8 @@ export default function DogScreen() {
     }
   };
 
-  // const speakAnimalName = () => {
-  //   Speech.speak(Animals.Dog.name, {
-  //     androidParams: {
-  //       KEY_PARAM_PAN: -1, // Opcjonalne ustawienia
-  //       KEY_PARAM_VOLUME: 1,
-  //       KEY_PARAM_STREAM: 'STREAM_MUSIC',
-  //     },
-  //   });
-  // };
   const speakAnimalName = () => {
-    speak(Animals.Dog.name, { language: 'pl', _voiceIndex: 1 }); // Speak the animal's name in Polish
+    speak(Animals.Dog.name, { language: "pl", _voiceIndex: 1 }); // Speak the animal's name in Polish
   };
 
   return (
