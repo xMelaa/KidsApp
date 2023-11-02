@@ -13,12 +13,12 @@ type HomeScreenProps = {
     navigation: NativeStackNavigationProp<RootStackParamList, "Second">; // Upewnij się, że to jest zgodne z Twoją konfiguracją nawigatora
   };
 
-export default function gamesScreen({ navigation }: HomeScreenProps) {
+export default function GamesScreen({ navigation }: HomeScreenProps) {
     
   return (
     <View style={styles.container}>
       
-      <h1>Gry i zabawy</h1>
+      <Text>Gry i zabawy</Text>
       <StatusBar style="auto" />
     </View>
   );

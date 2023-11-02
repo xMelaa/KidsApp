@@ -16,10 +16,10 @@ type HomeScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Second">; // Upewnij się, że to jest zgodne z Twoją konfiguracją nawigatora
 };
 
-export default function newWordsScreen({ navigation }: HomeScreenProps) {
+export default function NewWordsScreen({ navigation }: HomeScreenProps) {
   return (
     <View style={styles.container}>
-      <h1>Poznaj słówka</h1>
+      <Text>Poznaj słówka</Text>
       <View style={styles.types}>
         <Button title="Zwierzęta" onPress={() => navigation.push("animals")} />
         <Button title="Literki" onPress={() => navigation.push("letters")} />

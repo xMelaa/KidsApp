@@ -20,7 +20,7 @@ export default function LettersScreen({ navigation }: HomeScreenProps) {
     
   return (
     <View style={styles.container}>
-      <h1>Literki</h1>
+      <Text>Literki</Text>
       
       <StatusBar style="auto" />
     </View>

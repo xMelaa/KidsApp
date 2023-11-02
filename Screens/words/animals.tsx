@@ -10,6 +10,7 @@ type RootStackParamList = {
     choose: undefined;
     words: undefined;
     games: undefined;
+    dog: undefined;
   };
 
 type HomeScreenProps = {
@@ -20,8 +21,8 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
     
   return (
     <View style={styles.container}>
-      <h1>Zwierzęta</h1>
-      
+      <Text>Zwierzęta</Text>
+      <Button title="Pies" onPress={() => navigation.push("dog")} />
       <StatusBar style="auto" />
     </View>
   );

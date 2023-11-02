@@ -20,7 +20,7 @@ export default function VehiclesScreen({ navigation }: HomeScreenProps) {
     
   return (
     <View style={styles.container}>
-      <h1>Pojazdy</h1>
+      <Text>Pojazdy</Text>
       
       <StatusBar style="auto" />
     </View>

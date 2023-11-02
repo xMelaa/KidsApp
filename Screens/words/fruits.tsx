@@ -20,7 +20,7 @@ export default function FruitsScreen({ navigation }: HomeScreenProps) {
     
   return (
     <View style={styles.container}>
-      <h1>Owoce</h1>
+      <Text>Owoce</Text>
       
       <StatusBar style="auto" />
     </View>
