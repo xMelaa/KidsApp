@@ -13,6 +13,8 @@ import { Animals } from "../../../data/data";
 import { VolumeUp } from "@mui/icons-material";
 //import Sound from "react-native-sound";
 import { Audio } from "expo-av";
+import { speak } from "expo-speech";
+import * as Speech from 'react-native-tts';
 
 // type RootStackParamList = {
 //    Second: undefined;
@@ -33,6 +35,20 @@ export default function DogScreen() {
       console.error("Błąd odtwarzania dźwięku", error);
     }
   };
+
+  // const speakAnimalName = () => {
+  //   Speech.speak(Animals.Dog.name, {
+  //     androidParams: {
+  //       KEY_PARAM_PAN: -1, // Opcjonalne ustawienia
+  //       KEY_PARAM_VOLUME: 1,
+  //       KEY_PARAM_STREAM: 'STREAM_MUSIC',
+  //     },
+  //   });
+  // };
+  const speakAnimalName = () => {
+    speak(Animals.Dog.name, { language: 'pl', _voiceIndex: 1 }); // Speak the animal's name in Polish
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -42,7 +58,7 @@ export default function DogScreen() {
         </TouchableOpacity>
       </View>
       <View style={styles.infoContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={speakAnimalName}>
           <Text>{Animals.Dog.name}</Text>
           <VolumeUp />
         </TouchableOpacity>
