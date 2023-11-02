@@ -13,7 +13,7 @@ export let Animals = {
     Dog:{
         name: 'Pies',
         photo: require('../img/example.jpg'),
-        sound: 'hau hau.mp3',
+        sound: '../sounds/dog_barking.mp3',
         ciekawostki: [
             'pies ma 4 łapy',
             'mówi się, że pies to najlepszy przyjaciel człowieka',
