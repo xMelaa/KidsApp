@@ -1,8 +1,15 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Button, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // type RootStackParamList = {
 //    Second: undefined;
@@ -22,18 +29,24 @@ const cardImages = [
 ];
 
 interface Card {
-    symbol: string;
-    id: number;
-  }
+  symbol: string;
+  id: number;
+}
 
-function SingleCard({card}: { card: Card }) {
+function SingleCard({ card, handleChoice }: { card: Card, handleChoice: (card: Card) => void }) {
+const handleClick = () => {
+    handleChoice(card)
+}
+
   return (
-    <View style={styles.card} >
+    <View style={styles.card}>
       <View style={styles.front}>
         <Text style={styles.front}>{card.symbol}</Text>
       </View>
       <View style={styles.back}>
-        <Image style={styles.back} source={require("../../img/cover.png")} />
+        <TouchableOpacity onPress={handleClick} style={styles.back}>
+          <Image style={styles.back} source={require("../../img/cover.png")} />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -42,22 +55,50 @@ function SingleCard({card}: { card: Card }) {
 export default function MemoryGame() {
   const [cards, setCards] = useState<{ symbol: string; id: number }[]>([]);
   const [turns, setTurns] = useState(0);
+  const [choiceOne, setChoiceOne] = useState<Card | null>(null);
+  const [choiceTwo, setChoiceTwo] = useState<Card | null>(null);
+
   const shuffleCards = () => {
     const shuffleCards = [...cardImages, ...cardImages]
       .sort(() => Math.random() - 0.5) //losowosc
       .map((card) => ({ ...card, id: Math.random() }));
-
     setCards(shuffleCards);
     setTurns(0);
   };
 
-  console.log(cards, turns);
+  const handleChoice = (card: Card) => {
+    choiceOne ? setChoiceTwo(card) : setChoiceOne(card)
+  }
+
+  //porownanie dwohc kart
+  useEffect(() => {
+    if(choiceOne && choiceTwo){
+        if(choiceOne.symbol === choiceTwo.symbol){
+            console.log("match")
+            resetTurn()
+        } else{
+            console.log("don't match")
+            resetTurn()
+        }
+    }
+  }, [choiceOne, choiceTwo])
+
+  //reset choices
+  const resetTurn = () => {
+    setChoiceOne(null)
+    setChoiceTwo(null)
+    setTurns(prevTurns => prevTurns + 1)
+  }
 
   return (
     <View style={styles.container}>
       <Text>Memory</Text>
       <Button title="Start" onPress={shuffleCards}></Button>
-      <View style={styles.cardGrid}>{cards.map((card) => <SingleCard key={card.id} card={card}/>)}</View>
+      <View style={styles.cardGrid}>
+        {cards.map((card) => (
+          <SingleCard key={card.id} card={card} handleChoice={handleChoice}/>
+        ))}
+      </View>
       <StatusBar style="auto" />
     </View>
   );
@@ -69,32 +110,31 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-   width: "100%",
+    width: "100%",
     // height: "100%",
   },
   front: {
-    
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     fontSize: 30,
     // height: "100%",
-     width: "100%",
-     borderColor: "#fff",
-     borderRadius: 6,
-     borderWidth: 2,
-     borderStyle: "solid"
+    width: "100%",
+    borderColor: "#fff",
+    borderRadius: 6,
+    borderWidth: 2,
+    borderStyle: "solid",
   },
   back: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-   // height: "100%",
+    // height: "100%",
     width: "100%",
     borderColor: "#fff",
     borderRadius: 6,
     borderWidth: 2,
-    borderStyle: "solid"
+    borderStyle: "solid",
   },
   card: {
     position: "relative",
@@ -104,17 +144,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "black",
     backgroundColor: "white",
-   // marginHorizontal: 10,
+    // marginHorizontal: 10,
   },
   cardGrid: {
     marginTop: 40,
-    width:"75%",
+    width: "75%",
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-   
+
     //marginHorizontal: -10,
-    gap: 10
+    gap: 10,
   },
 });
