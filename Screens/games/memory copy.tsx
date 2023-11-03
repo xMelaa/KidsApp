@@ -136,6 +136,9 @@ export default function MemoryGame() {
     const shuffleCards = [...cardImages, ...cardImages]
       .sort(() => Math.random() - 0.5) //losowosc
       .map((card) => ({ ...card, id: Math.random() }));
+    
+    setChoiceOne(null)
+    setChoiceTwo(null)
     setCards(shuffleCards);
     setTurns(0);
   };
@@ -191,6 +194,7 @@ export default function MemoryGame() {
           />
         ))}
       </View>
+      <Text>Ruchy: {turns}</Text>
       <StatusBar style="auto" />
     </View>
   );
