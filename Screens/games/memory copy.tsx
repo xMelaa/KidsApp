@@ -46,7 +46,7 @@ function SingleCard({
   flipped: any;
 }) {
   const flipAnimation = useRef(new Animated.Value(0)).current;
-  const [cardStyle, setCardStyle] = useState({});
+  // const [cardStyle, setCardStyle] = useState({});
 
   let flipRotation = 0;
   flipAnimation.addListener(({ value }) => (flipRotation = value));
@@ -79,7 +79,7 @@ function SingleCard({
       },
     ],
   };
-  
+
   const flipToFront = () => {
     Animated.timing(flipAnimation, {
       toValue: 180,
@@ -103,17 +103,17 @@ function SingleCard({
           ? (flipToBack(), setTimeout(handleClick, 300))
           : flipToFront()
       }>
-      <Animated.View style={[
-      styles.cardContainer,
-      cardStyle, // Dodaj styl z animacją obrotu
-    ]}>
+      <Animated.View
+        style={[
+          styles.cardContainer,
+          flipped ? flipToFrontStyle : flipToBackStyle,
+        ]}>
         {flipped ? ( //jesli karta jest odkryta
           <TouchableOpacity onPress={handleClick} style={styles.front}>
             <Image style={styles.front} source={card.symbol} />
           </TouchableOpacity>
         ) : (
           //jesli jest zakryta
-
           <TouchableOpacity onPress={handleClick} style={styles.back}>
             <Image
               style={styles.back}
@@ -203,20 +203,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    // height: "100%",
   },
   front: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    //fontSize: 30,
     height: "100%",
     width: "100%",
-    borderColor: "#fff",
     borderRadius: 6,
-    borderWidth: 2,
-    borderStyle: "solid",
-    // position: "absolute",
   },
   back: {
     flex: 1,
@@ -234,13 +228,8 @@ const styles = StyleSheet.create({
   },
   card: {
     position: "relative",
-
     width: "20%",
-    //height: "100%",
     aspectRatio: 1,
-    borderWidth: 1,
-    borderColor: "black",
-    //backgroundColor: "lightblue",
   },
   cardGrid: {
     marginTop: 40,
@@ -251,11 +240,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     gap: 10,
   },
-  cardImage: {
-    flex: 1,
-    height: "100%",
-    width: "100%",
-  },
+
   cardContainer: {
     flex: 1,
     alignItems: "center",
