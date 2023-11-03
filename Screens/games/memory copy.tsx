@@ -8,10 +8,11 @@ import {
   TouchableOpacity,
   Animated,
   TouchableWithoutFeedback,
+  Pressable,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 // type RootStackParamList = {
 //    Second: undefined;
@@ -24,104 +25,124 @@ import React, { useEffect, useState } from "react";
 //   };
 
 const cardImages = [
-  { symbol: "X", matched: false },
-  { symbol: "?", matched: false },
-  { symbol: "O", matched: false },
-  { symbol: "#", matched: false },
+  { symbol: require("../../img/apple.jpg"), matched: false },
+  { symbol: require("../../img/blueberry.jpg"), matched: false },
+  { symbol: require("../../img/pear.jpg"), matched: false },
+  { symbol: require("../../img/pomegranade.jpg"), matched: false },
 ];
 
 interface Card {
-  symbol: string;
+  symbol: any;
   id: number;
+  matched: boolean;
 }
 
 function SingleCard({
   card,
   handleChoice,
   flipped,
-  rotation
 }: {
   card: Card;
   handleChoice: (card: Card) => void;
   flipped: any;
-  rotation: Animated.Value;
 }) {
-  
+  const flipAnimation = useRef(new Animated.Value(0)).current;
 
-  const flipCard = () => {
-    Animated.timing(rotation, {
-      toValue: 1,
-      duration: 500, // Czas trwania animacji w milisekundach
-      useNativeDriver: false, // Wymagane, jeśli używasz Animated.View
+  let flipRotation = 0;
+  flipAnimation.addListener(({ value }) => (flipRotation = value));
+
+  const handleClick = () => {
+    if (flipped) {
+      flipToFront(); // Obróć na stronę tylną tylko jeśli karta nie jest odwrócona
+    } else {
+      handleChoice(card); // W przeciwnym razie obsłuż kliknięcie
+    }
+  };
+
+  const flipToFrontStyle = {
+    transform: [
+      {
+        rotateY: flipAnimation.interpolate({
+          inputRange: [0, 180],
+          outputRange: ["0deg", "180deg"],
+        }),
+      },
+    ],
+  };
+  const flipToBackStyle = {
+    transform: [
+      {
+        rotateY: flipAnimation.interpolate({
+          inputRange: [0, 180],
+          outputRange: ["180deg", "0deg"],
+        }),
+      },
+    ],
+  };
+
+  const flipToFront = () => {
+    Animated.timing(flipAnimation, {
+      toValue: 180,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+  };
+  const flipToBack = () => {
+    Animated.timing(flipAnimation, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: false,
     }).start();
   };
 
-  const handleClick = () => {
-    handleChoice(card);
-    flipCard();
-  };
-
-  const frontStyle = [
-    styles.front,
-    {
-      transform: [
-        {
-          rotateY: rotation.interpolate({
-            inputRange: [0, 1],
-            outputRange: ["90deg", "180deg"],
-          }),
-        },
-      ],
-    },
-  ];
-
-  const backStyle = [
-    styles.back,
-    {
-      transform: [
-        {
-          rotateY: rotation.interpolate({
-            inputRange: [0, 1],
-            outputRange: ["180deg", "90deg"],
-          }),
-        },
-      ],
-    },
-  ];
+  // return (
+  //   <Pressable
+  //     style={styles.card}
+  //     onPress={() =>
+  //       flipRotation
+  //         ? (flipToBack(), setTimeout(handleClick, 300))
+  //         : flipToFront()
+  //     }>
+  //     <Animated.View style={[styles.front, flipToBackStyle ]}>
+  //       <Image
+  //         style={styles.front}
+  //         source={card.symbol}
+  //       />
+  //     </Animated.View>
+  //     <Animated.View style={[styles.back,flipToFrontStyle]  }>
+  //       <Image
+  //         style = {styles.back}
+  //         source={require("../../img/cover.png")}
+  //       />
+  //     </Animated.View>
+  //   </Pressable>
+  // );
   return (
     <View style={styles.card}>
-       {flipped ? (
-        <TouchableWithoutFeedback onPress={handleClick}>
-          <Animated.View style={[frontStyle]}>
-            <Text style={styles.front}>{card.symbol}</Text>
-          </Animated.View>
-        </TouchableWithoutFeedback>
-      ) : (
-        <TouchableWithoutFeedback onPress={handleClick}>
-          <Animated.View style={[backStyle]}>
+      {flipped ? ( //jesli karta jest odkryta
+        <View style={styles.front}>
+          <Image style={styles.front} source={card.symbol}/>
+        </View>
+      ) : ( //jesli jest zakryta
+        <View style={styles.back}>
+          <TouchableOpacity onPress={handleClick} style={styles.back}>
             <Image
               style={styles.back}
               source={require("../../img/cover.png")}
             />
-          </Animated.View>
-        </TouchableWithoutFeedback>
+          </TouchableOpacity>
+        </View>
       )}
     </View>
   );
 }
 
+
 export default function MemoryGame() {
-  const [cards, setCards] = useState<
-    {
-      matched: boolean;
-      symbol: string;
-      id: number;
-    }[]
-  >([]);
+  const [cards, setCards] = useState<Card[]>([]);
   const [turns, setTurns] = useState(0);
   const [choiceOne, setChoiceOne] = useState<Card | null>(null);
   const [choiceTwo, setChoiceTwo] = useState<Card | null>(null);
-  const [rotation] = useState(new Animated.Value(0));
 
   const shuffleCards = () => {
     const shuffleCards = [...cardImages, ...cardImages]
@@ -159,13 +180,19 @@ export default function MemoryGame() {
   const resetTurn = () => {
     setChoiceOne(null);
     setChoiceTwo(null);
-    setTurns((prevTurns) => prevTurns + 1);
+    setTurns((prevTurns) => prevTurns + 1); // turns+1
   };
+
+  // useEffect(() => {
+  //   if (turns === 0) {
+  //     shuffleCards();
+  //   }
+  // }, [turns]);
 
   return (
     <View style={styles.container}>
       <Text>Memory</Text>
-      <Button title="Start" onPress={shuffleCards}></Button>
+      <Button title="Start" onPress={shuffleCards}/>
       <View style={styles.cardGrid}>
         {cards.map((card) => (
           <SingleCard
@@ -173,7 +200,6 @@ export default function MemoryGame() {
             card={card}
             handleChoice={handleChoice}
             flipped={card === choiceOne || card === choiceTwo || card.matched}
-            rotation={rotation}
           />
         ))}
       </View>
@@ -195,14 +221,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    fontSize: 30,
+    //fontSize: 30,
     height: "100%",
     width: "100%",
     borderColor: "#fff",
     borderRadius: 6,
     borderWidth: 2,
     borderStyle: "solid",
-
+   // position: "absolute",
   },
   back: {
     flex: 1,
@@ -214,16 +240,19 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 2,
     borderStyle: "solid",
-  
+    //position: "absolute"
+
+    //backfaceVisibility: "hidden",
   },
   card: {
     position: "relative",
+
     width: "20%",
     //height: "100%",
     aspectRatio: 1,
     borderWidth: 1,
     borderColor: "black",
-    backgroundColor: "white",
+    backgroundColor: "lightblue",
   },
   cardGrid: {
     marginTop: 40,
@@ -233,5 +262,10 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "space-between",
     gap: 10,
+  },
+  cardImage: {
+    flex: 1,
+    height: "100%",
+    width: "100%",
   },
 });
