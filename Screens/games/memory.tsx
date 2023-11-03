@@ -22,10 +22,10 @@ import React, { useEffect, useState } from "react";
 //   };
 
 const cardImages = [
-  { symbol: "X" },
-  { symbol: "?" },
-  { symbol: "O" },
-  { symbol: "#" },
+  { symbol: "X", matched: false },
+  { symbol: "?", matched: false },
+  { symbol: "O", matched: false },
+  { symbol: "#", matched: false },
 ];
 
 interface Card {
@@ -33,10 +33,16 @@ interface Card {
   id: number;
 }
 
-function SingleCard({ card, handleChoice }: { card: Card, handleChoice: (card: Card) => void }) {
-const handleClick = () => {
-    handleChoice(card)
-}
+function SingleCard({
+  card,
+  handleChoice,
+}: {
+  card: Card;
+  handleChoice: (card: Card) => void;
+}) {
+  const handleClick = () => {
+    handleChoice(card);
+  };
 
   return (
     <View style={styles.card}>
@@ -67,28 +73,35 @@ export default function MemoryGame() {
   };
 
   const handleChoice = (card: Card) => {
-    choiceOne ? setChoiceTwo(card) : setChoiceOne(card)
-  }
+    choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
+  };
 
   //porownanie dwohc kart
   useEffect(() => {
-    if(choiceOne && choiceTwo){
-        if(choiceOne.symbol === choiceTwo.symbol){
-            console.log("match")
-            resetTurn()
-        } else{
-            console.log("don't match")
-            resetTurn()
-        }
+    if (choiceOne && choiceTwo) {
+      if (choiceOne.symbol === choiceTwo.symbol) {
+        setCards((prevCards) => {
+          return prevCards.map((card) => {
+            if (card.symbol === choiceOne.symbol) {
+              return { ...card, matched: true };
+            } else {
+              return card;
+            }
+          });
+        });
+        resetTurn();
+      } else {
+        resetTurn();
+      }
     }
-  }, [choiceOne, choiceTwo])
-
+  }, [choiceOne, choiceTwo]);
+  console.log(cards);
   //reset choices
   const resetTurn = () => {
-    setChoiceOne(null)
-    setChoiceTwo(null)
-    setTurns(prevTurns => prevTurns + 1)
-  }
+    setChoiceOne(null);
+    setChoiceTwo(null);
+    setTurns((prevTurns) => prevTurns + 1);
+  };
 
   return (
     <View style={styles.container}>
@@ -96,7 +109,7 @@ export default function MemoryGame() {
       <Button title="Start" onPress={shuffleCards}></Button>
       <View style={styles.cardGrid}>
         {cards.map((card) => (
-          <SingleCard key={card.id} card={card} handleChoice={handleChoice}/>
+          <SingleCard key={card.id} card={card} handleChoice={handleChoice} />
         ))}
       </View>
       <StatusBar style="auto" />
