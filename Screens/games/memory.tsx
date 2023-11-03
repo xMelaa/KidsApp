@@ -36,9 +36,11 @@ interface Card {
 function SingleCard({
   card,
   handleChoice,
+  flipped,
 }: {
   card: Card;
   handleChoice: (card: Card) => void;
+  flipped: any;
 }) {
   const handleClick = () => {
     handleChoice(card);
@@ -46,20 +48,32 @@ function SingleCard({
 
   return (
     <View style={styles.card}>
-      <View style={styles.front}>
-        <Text style={styles.front}>{card.symbol}</Text>
-      </View>
-      <View style={styles.back}>
-        <TouchableOpacity onPress={handleClick} style={styles.back}>
-          <Image style={styles.back} source={require("../../img/cover.png")} />
-        </TouchableOpacity>
-      </View>
+      {flipped ? ( //jesli karta jest odkryta
+        <View style={styles.front}>
+          <Text style={styles.front}>{card.symbol}</Text>
+        </View>
+      ) : ( //jesli jest zakryta
+        <View style={styles.back}>
+          <TouchableOpacity onPress={handleClick} style={styles.back}>
+            <Image
+              style={styles.back}
+              source={require("../../img/cover.png")}
+            />
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 }
 
 export default function MemoryGame() {
-  const [cards, setCards] = useState<{ symbol: string; id: number }[]>([]);
+  const [cards, setCards] = useState<
+    {
+      matched: boolean;
+      symbol: string;
+      id: number;
+    }[]
+  >([]);
   const [turns, setTurns] = useState(0);
   const [choiceOne, setChoiceOne] = useState<Card | null>(null);
   const [choiceTwo, setChoiceTwo] = useState<Card | null>(null);
@@ -109,7 +123,12 @@ export default function MemoryGame() {
       <Button title="Start" onPress={shuffleCards}></Button>
       <View style={styles.cardGrid}>
         {cards.map((card) => (
-          <SingleCard key={card.id} card={card} handleChoice={handleChoice} />
+          <SingleCard
+            key={card.id}
+            card={card}
+            handleChoice={handleChoice}
+            flipped={card === choiceOne || card === choiceTwo || card.matched}
+          />
         ))}
       </View>
       <StatusBar style="auto" />
@@ -131,7 +150,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     fontSize: 30,
-    // height: "100%",
+    height: "100%",
     width: "100%",
     borderColor: "#fff",
     borderRadius: 6,
@@ -142,7 +161,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    // height: "100%",
+    height: "100%",
     width: "100%",
     borderColor: "#fff",
     borderRadius: 6,
@@ -157,7 +176,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "black",
     backgroundColor: "white",
-    // marginHorizontal: 10,
   },
   cardGrid: {
     marginTop: 40,
@@ -166,8 +184,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-
-    //marginHorizontal: -10,
     gap: 10,
   },
+//   flippedCard: {
+//     transform: [{ rotateY: "0deg" }],
+//     // height: "100%",
+//     // width: "100%",
+//   },
+//   unflippedCard: {
+//     transform: [{ rotateY: "90deg" }],
+//     position: "absolute",
+//     // height: "100%",
+//     // width: "100%",
+//   },
 });
