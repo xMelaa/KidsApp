@@ -7,7 +7,6 @@ import {
   Image,
   TouchableOpacity,
   Animated,
-  TouchableWithoutFeedback,
   Pressable,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -47,13 +46,14 @@ function SingleCard({
   flipped: any;
 }) {
   const flipAnimation = useRef(new Animated.Value(0)).current;
+  const [cardStyle, setCardStyle] = useState({});
 
   let flipRotation = 0;
   flipAnimation.addListener(({ value }) => (flipRotation = value));
 
   const handleClick = () => {
     if (flipped) {
-      flipToFront(); // Obróć na stronę tylną tylko jeśli karta nie jest odwrócona
+      flipToBack(); // Obróć na stronę tylną tylko jeśli karta nie jest odwrócona
     } else {
       handleChoice(card); // W przeciwnym razie obsłuż kliknięcie
     }
@@ -79,64 +79,52 @@ function SingleCard({
       },
     ],
   };
-
+  
   const flipToFront = () => {
     Animated.timing(flipAnimation, {
       toValue: 180,
-      duration: 300,
+      duration: 800,
       useNativeDriver: false,
     }).start();
   };
   const flipToBack = () => {
     Animated.timing(flipAnimation, {
       toValue: 0,
-      duration: 300,
+      duration: 800,
       useNativeDriver: false,
     }).start();
   };
 
-  // return (
-  //   <Pressable
-  //     style={styles.card}
-  //     onPress={() =>
-  //       flipRotation
-  //         ? (flipToBack(), setTimeout(handleClick, 300))
-  //         : flipToFront()
-  //     }>
-  //     <Animated.View style={[styles.front, flipToBackStyle ]}>
-  //       <Image
-  //         style={styles.front}
-  //         source={card.symbol}
-  //       />
-  //     </Animated.View>
-  //     <Animated.View style={[styles.back,flipToFrontStyle]  }>
-  //       <Image
-  //         style = {styles.back}
-  //         source={require("../../img/cover.png")}
-  //       />
-  //     </Animated.View>
-  //   </Pressable>
-  // );
   return (
-    <View style={styles.card}>
-      {flipped ? ( //jesli karta jest odkryta
-        <View style={styles.front}>
-          <Image style={styles.front} source={card.symbol}/>
-        </View>
-      ) : ( //jesli jest zakryta
-        <View style={styles.back}>
+    <Pressable
+      style={styles.card}
+      onPress={() =>
+        flipRotation
+          ? (flipToBack(), setTimeout(handleClick, 300))
+          : flipToFront()
+      }>
+      <Animated.View style={[
+      styles.cardContainer,
+      cardStyle, // Dodaj styl z animacją obrotu
+    ]}>
+        {flipped ? ( //jesli karta jest odkryta
+          <TouchableOpacity onPress={handleClick} style={styles.front}>
+            <Image style={styles.front} source={card.symbol} />
+          </TouchableOpacity>
+        ) : (
+          //jesli jest zakryta
+
           <TouchableOpacity onPress={handleClick} style={styles.back}>
             <Image
               style={styles.back}
               source={require("../../img/cover.png")}
             />
           </TouchableOpacity>
-        </View>
-      )}
-    </View>
+        )}
+      </Animated.View>
+    </Pressable>
   );
 }
-
 
 export default function MemoryGame() {
   const [cards, setCards] = useState<Card[]>([]);
@@ -192,7 +180,7 @@ export default function MemoryGame() {
   return (
     <View style={styles.container}>
       <Text>Memory</Text>
-      <Button title="Start" onPress={shuffleCards}/>
+      <Button title="Start" onPress={shuffleCards} />
       <View style={styles.cardGrid}>
         {cards.map((card) => (
           <SingleCard
@@ -228,7 +216,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 2,
     borderStyle: "solid",
-   // position: "absolute",
+    // position: "absolute",
   },
   back: {
     flex: 1,
@@ -252,7 +240,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     borderWidth: 1,
     borderColor: "black",
-    backgroundColor: "lightblue",
+    //backgroundColor: "lightblue",
   },
   cardGrid: {
     marginTop: 40,
@@ -267,5 +255,17 @@ const styles = StyleSheet.create({
     flex: 1,
     height: "100%",
     width: "100%",
+  },
+  cardContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+    width: "100%",
+    borderColor: "#fff",
+    borderRadius: 6,
+    borderWidth: 2,
+    borderStyle: "solid",
+    transformStyle: "preserve-3d", //perspektywa??
   },
 });
