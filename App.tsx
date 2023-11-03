@@ -8,7 +8,7 @@ import VehiclesScreen from "./Screens/words/vehicles";
 import FruitsScreen from "./Screens/words/fruits";
 import LettersScreen from "./Screens/words/letters";
 import DogScreen from "./Screens/words/animals/dog";
-import MemoryGame from "./Screens/games/memory copy";
+import MemoryGame from "./Screens/games/memory";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
