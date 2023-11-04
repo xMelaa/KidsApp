@@ -10,12 +10,13 @@ import LettersScreen from "./Screens/words/letters";
 import DogScreen from "./Screens/words/animals/dog";
 import MemoryGame from "./Screens/games/memory";
 import QuizGame from "./Screens/games/quiz";
+import QuizResult from "./Screens/games/result";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();
-const screens = [
+const screens = [{ name: "quiz", component: QuizGame },
   { name: "Home", component: HomeScreen, title: "Welcome" },
   { name: "Second", component: SecondScreen, title: "Welcome" },
   { name: "choose", component: ChooseScreen },
@@ -27,7 +28,8 @@ const screens = [
   { name: "fruits", component: FruitsScreen },
   { name: "dog", component: DogScreen },
   { name: "memory", component: MemoryGame },
-  { name: "quiz", component: QuizGame },
+  { name: "quizresult", component: QuizResult },
+  
 ];
 export default function App() {
   return (
