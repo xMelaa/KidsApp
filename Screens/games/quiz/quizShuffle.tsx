@@ -14,7 +14,17 @@ type HomeScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "games">;
 };
 
-export default function QuizGame({ navigation }: HomeScreenProps) {
+//random answers
+function shuffleArray(array: any) {
+  const shuffledArray = [...array]; 
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+  }
+  return shuffledArray;
+}
+
+export default function QuizShuffleGame({ navigation }: HomeScreenProps) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
@@ -22,6 +32,8 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
     useState(false);
   const [incorrectAnswerOverlayVisible, setIncorrectAnswerOverlayVisible] =
     useState(false);
+    
+  const shuffledAnswers = shuffleArray(quizData[currentQuestion]?.options);
 
   const handleNextQuestion = () => {
     setCorrectAnswerOverlayVisible(false);
@@ -59,7 +71,7 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
             <Text>{quizData[currentQuestion]?.question}</Text>
           </View>
           <View style={styles.answers}>
-            {quizData[currentQuestion]?.options.map((item) => (
+            {shuffledAnswers.map((item) => (
               <TouchableOpacity
                 onPress={() => handleAnswer(item)}
                 style={styles.answer}>
