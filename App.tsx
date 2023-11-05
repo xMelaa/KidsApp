@@ -16,7 +16,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();
-const screens = [ { name: "shufflequiz", component: QuizShuffleGame },{ name: "quiz", component: QuizGame },  
+const screens = [
   { name: "Home", component: HomeScreen, title: "Welcome" },
   { name: "Second", component: SecondScreen, title: "Welcome" },
   { name: "choose", component: ChooseScreen },
@@ -27,14 +27,15 @@ const screens = [ { name: "shufflequiz", component: QuizShuffleGame },{ name: "q
   { name: "vehicles", component: VehiclesScreen },
   { name: "fruits", component: FruitsScreen },
   { name: "dog", component: DogScreen },
-  { name: "memory", component: MemoryGame },  
- 
+  { name: "memory", component: MemoryGame },
+  { name: "quiz", component: QuizGame },
+  { name: "shufflequiz", component: QuizShuffleGame },
 ];
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      {screens.map((screen, index) => (
+        {screens.map((screen, index) => (
           <Stack.Screen
             key={index}
             name={screen.name}

@@ -107,9 +107,6 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
       </Overlay>
 
       <View style={styles.buttons}>
-        <TouchableOpacity>
-          <Text>WRÓĆ</Text>
-        </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.push("quizresult")}>
           <Text>END</Text>
         </TouchableOpacity>
