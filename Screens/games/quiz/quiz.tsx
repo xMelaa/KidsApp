@@ -24,19 +24,20 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
   const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
   // const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [visible, setVisible] = useState(false);
+  const [correctAnswerOverlayVisible, setCorrectAnswerOverlayVisible] = useState(false);
+  const [incorrectAnswerOverlayVisible, setIncorrectAnswerOverlayVisible] = useState(false);
 
-  const toggleOverlay = () => {
-    setVisible(!visible);
-  }
+  // const toggleOverlay = () => {
+  //   setVisible(!visible);
+  // }
   const handleAnswer = (selectedAnswerOption: any) => {
     const answer = quizData[currentQuestion]?.answer;
     if (answer === selectedAnswerOption.name) {
       setScore((prevScore) => prevScore + 1);
-      //setSelectedAnswer(selectedAnswerOption);
-      toggleOverlay()
+      setCorrectAnswerOverlayVisible(true);
     } else {
-      alert("Zła odpowiedź. Spróbuj ponownie.");
+      setIncorrectAnswerOverlayVisible(true);
+      setTimeout(() => setIncorrectAnswerOverlayVisible(false), 2000); 
     }
 
     const nextQ = currentQuestion + 1;
@@ -78,19 +79,27 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
                     <Text>{item.name}</Text>
                     <Image style={styles.answerImage} source={item.src} />
                   </TouchableOpacity>
-                  <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-                    <Text>Prawidłowa odpowiedź!</Text>
-                    <TouchableOpacity>
-                      <Text>Dalej</Text>
-                    </TouchableOpacity>
-                  </Overlay>
                 </>
               );
             })}
           </View>
         </>
       )}
+       <Overlay isVisible={correctAnswerOverlayVisible} onBackdropPress={() => setCorrectAnswerOverlayVisible(false)}>
+        <Text>Prawidłowa odpowiedź!</Text>
+        <TouchableOpacity onPress={() => setCorrectAnswerOverlayVisible(false)}>
+          <Text>Dalej</Text>
+        </TouchableOpacity>
+      </Overlay>
 
+      <Overlay isVisible={incorrectAnswerOverlayVisible} onBackdropPress={() => setIncorrectAnswerOverlayVisible(false)}>
+        <Text>Zła odpowiedź. Spróbuj ponownie.</Text>
+        <TouchableOpacity onPress={() => setIncorrectAnswerOverlayVisible(false)}>
+          <Text>Zamknij</Text>
+        </TouchableOpacity>
+      </Overlay>
+
+      
       <View style={styles.buttons}>
         <TouchableOpacity>
           <Text>WRÓĆ</Text>
