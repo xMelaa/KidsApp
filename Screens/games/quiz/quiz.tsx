@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button, Image } from "react-native";
 import { Overlay } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
@@ -8,28 +7,31 @@ import React, { useEffect, useState } from "react";
 import quizData from "./quizData";
 
 type RootStackParamList = {
-  Second: undefined;
-  choose: undefined;
-  memory: undefined;
   quizresult: undefined;
   games: undefined;
 };
 
 type HomeScreenProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, "Second">;
+  navigation: NativeStackNavigationProp<RootStackParamList, "games">;
 };
 
 export default function QuizGame({ navigation }: HomeScreenProps) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
-  // const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [correctAnswerOverlayVisible, setCorrectAnswerOverlayVisible] = useState(false);
-  const [incorrectAnswerOverlayVisible, setIncorrectAnswerOverlayVisible] = useState(false);
+  const [correctAnswerOverlayVisible, setCorrectAnswerOverlayVisible] =
+    useState(false);
+  const [incorrectAnswerOverlayVisible, setIncorrectAnswerOverlayVisible] =
+    useState(false);
 
-  // const toggleOverlay = () => {
-  //   setVisible(!visible);
-  // }
+  const handleNextQuestion = () => {
+    setCorrectAnswerOverlayVisible(false);
+    setCurrentQuestion(currentQuestion + 1);
+    if (currentQuestion + 1 >= quizData.length) {
+      setShowScore(true);
+    }
+  };
+
   const handleAnswer = (selectedAnswerOption: any) => {
     const answer = quizData[currentQuestion]?.answer;
     if (answer === selectedAnswerOption.name) {
@@ -37,15 +39,7 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
       setCorrectAnswerOverlayVisible(true);
     } else {
       setIncorrectAnswerOverlayVisible(true);
-      setTimeout(() => setIncorrectAnswerOverlayVisible(false), 2000); 
-    }
-
-    const nextQ = currentQuestion + 1;
-    if (nextQ < quizData.length) {
-      //setCurrentQuestion(nextQ);
-      //setSelectedAnswer(null);
-    } else {
-      setShowScore(true);
+      setTimeout(() => setIncorrectAnswerOverlayVisible(false), 3000);
     }
   };
 
@@ -66,46 +60,41 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
             <Text>{quizData[currentQuestion]?.question}</Text>
           </View>
           <View style={styles.answers}>
-            {quizData[currentQuestion]?.options.map((item) => {
-              return (
-                <>
-                  {" "}
-                  <TouchableOpacity
-                    onPress={() => handleAnswer(item)}
-                    style={[
-                      styles.answer,
-                      // selectedAnswer === item ? styles.selectedAnswer : null,
-                    ]}>
-                    <Text>{item.name}</Text>
-                    <Image style={styles.answerImage} source={item.src} />
-                  </TouchableOpacity>
-                </>
-              );
-            })}
+            {quizData[currentQuestion]?.options.map((item) => (
+              <TouchableOpacity
+                onPress={() => handleAnswer(item)}
+                style={styles.answer}>
+                <Text>{item.name}</Text>
+                <Image style={styles.answerImage} source={item.src} />
+              </TouchableOpacity>
+            ))}
           </View>
         </>
       )}
-       <Overlay isVisible={correctAnswerOverlayVisible} onBackdropPress={() => setCorrectAnswerOverlayVisible(false)}>
+      <Overlay
+        isVisible={correctAnswerOverlayVisible}
+        onBackdropPress={() => setCorrectAnswerOverlayVisible(false)}
+        overlayStyle={styles.overlay}>
         <Text>Prawidłowa odpowiedź!</Text>
-        <TouchableOpacity onPress={() => setCorrectAnswerOverlayVisible(false)}>
+        <TouchableOpacity onPress={handleNextQuestion}>
           <Text>Dalej</Text>
         </TouchableOpacity>
       </Overlay>
 
-      <Overlay isVisible={incorrectAnswerOverlayVisible} onBackdropPress={() => setIncorrectAnswerOverlayVisible(false)}>
+      <Overlay
+        isVisible={incorrectAnswerOverlayVisible}
+        onBackdropPress={() => setIncorrectAnswerOverlayVisible(false)}
+        overlayStyle={styles.overlay}>
         <Text>Zła odpowiedź. Spróbuj ponownie.</Text>
-        <TouchableOpacity onPress={() => setIncorrectAnswerOverlayVisible(false)}>
+        <TouchableOpacity
+          onPress={() => setIncorrectAnswerOverlayVisible(false)}>
           <Text>Zamknij</Text>
         </TouchableOpacity>
       </Overlay>
 
-      
       <View style={styles.buttons}>
         <TouchableOpacity>
           <Text>WRÓĆ</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text>DALEJ</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.push("quizresult")}>
           <Text>END</Text>
@@ -117,7 +106,6 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
 
 const styles = StyleSheet.create({
   container: {
-    //flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     padding: 12,
@@ -128,7 +116,6 @@ const styles = StyleSheet.create({
   },
   answers: {
     marginVertical: 20,
-    //height: "100%",
     width: "75%",
     gap: 30,
     display: "flex",
@@ -151,20 +138,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 20,
   },
-  selectedAnswer: {
-    borderWidth: 2,
-    borderColor: "green", // You can choose a different color
-  },
   overlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
-    height: "100%",
-    width: "100%",
+    height: "70%",
+    width: "70%",
   },
 });
