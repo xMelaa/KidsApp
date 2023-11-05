@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, Button, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { TouchableOpacity } from "react-native";
+import { useEffect, useState } from "react";
+import quizData from "./quizData";
 
 type RootStackParamList = {
   Second: undefined;
@@ -16,7 +18,15 @@ type HomeScreenProps = {
 };
 
 export default function QuizGame({ navigation }: HomeScreenProps) {
-  return (
+    const [questions, setQuestions] = useState();
+   // const getQuiz = async () => {};
+    useEffect(() => {
+        //getQuiz();
+       // console.log(quizData[0].options[2].src) //test quizdata
+    }, [])
+    
+  
+    return (
     <View style={styles.container}>
       <Text>Quiz</Text>
       <View style={styles.question}>
@@ -25,19 +35,19 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
       <View style={styles.answers}>
         <TouchableOpacity style={styles.answer}>
           <Text>Option 1</Text>
-          <Image style={styles.answerImage} source={require("../../img/apple.jpg")} />
+          <Image style={styles.answerImage} source={require("../../../img/apple.jpg")} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.answer}>
           <Text>Option 2</Text>
-          <Image style={styles.answerImage} source={require("../../img/blueberry.jpg")} />
+          <Image style={styles.answerImage} source={require("../../../img/blueberry.jpg")} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.answer}>
           <Text>Option 3</Text>
-          <Image style={styles.answerImage} source={require("../../img/pear.jpg")} />
+          <Image style={styles.answerImage} source={require("../../../img/pear.jpg")} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.answer}>
           <Text>Option 4</Text>
-          <Image style={styles.answerImage} source={require("../../img/pomegranade.jpg")} />
+          <Image style={styles.answerImage} source={require("../../../img/pomegranade.jpg")} />
         </TouchableOpacity>
       </View>
       <View style={styles.buttons}>

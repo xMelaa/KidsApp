@@ -9,8 +9,8 @@ import FruitsScreen from "./Screens/words/fruits";
 import LettersScreen from "./Screens/words/letters";
 import DogScreen from "./Screens/words/animals/dog";
 import MemoryGame from "./Screens/games/memory";
-import QuizGame from "./Screens/games/quiz";
-import QuizResult from "./Screens/games/result";
+import QuizGame from "./Screens/games/quiz/quiz";
+import QuizResult from "./Screens/games/quiz/result";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
