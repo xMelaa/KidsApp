@@ -1,9 +1,10 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button, Image } from "react-native";
+import { Overlay } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { TouchableOpacity } from "react-native";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import quizData from "./quizData";
 
 type RootStackParamList = {
@@ -22,24 +23,26 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
-  // // const getQuiz = async () => {};
-  // useEffect(() => {
-  //   //getQuiz();
-  //   // console.log(quizData[0].options[2].src) //test quizdata
-  // }, []);
+  // const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [visible, setVisible] = useState(false);
 
-  const handleAnswer = (selectedAnswer: any) => {
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  }
+  const handleAnswer = (selectedAnswerOption: any) => {
     const answer = quizData[currentQuestion]?.answer;
-    if (answer === selectedAnswer.name) {
+    if (answer === selectedAnswerOption.name) {
       setScore((prevScore) => prevScore + 1);
-      alert("Prawidłowa odpowiedź!");
+      //setSelectedAnswer(selectedAnswerOption);
+      toggleOverlay()
     } else {
       alert("Zła odpowiedź. Spróbuj ponownie.");
     }
 
     const nextQ = currentQuestion + 1;
     if (nextQ < quizData.length) {
-      setCurrentQuestion(nextQ);
+      //setCurrentQuestion(nextQ);
+      //setSelectedAnswer(null);
     } else {
       setShowScore(true);
     }
@@ -50,9 +53,10 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
       <Text>Quiz</Text>
       {showScore ? (
         <View>
+          <Text>Quiz Result</Text>
           <Text>{score}</Text>
           <TouchableOpacity>
-          <Button title="Powrót" onPress={() => navigation.push("games")} />
+            <Button title="Powrót" onPress={() => navigation.push("games")} />
           </TouchableOpacity>
         </View>
       ) : (
@@ -63,17 +67,30 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
           <View style={styles.answers}>
             {quizData[currentQuestion]?.options.map((item) => {
               return (
-                <TouchableOpacity
-                  onPress={() => handleAnswer(item)}
-                  style={styles.answer}>
-                  <Text>{item.name}</Text>
-                  <Image style={styles.answerImage} source={item.src} />
-                </TouchableOpacity>
+                <>
+                  {" "}
+                  <TouchableOpacity
+                    onPress={() => handleAnswer(item)}
+                    style={[
+                      styles.answer,
+                      // selectedAnswer === item ? styles.selectedAnswer : null,
+                    ]}>
+                    <Text>{item.name}</Text>
+                    <Image style={styles.answerImage} source={item.src} />
+                  </TouchableOpacity>
+                  <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+                    <Text>Prawidłowa odpowiedź!</Text>
+                    <TouchableOpacity>
+                      <Text>Dalej</Text>
+                    </TouchableOpacity>
+                  </Overlay>
+                </>
               );
             })}
           </View>
         </>
       )}
+
       <View style={styles.buttons}>
         <TouchableOpacity>
           <Text>WRÓĆ</Text>
@@ -124,5 +141,21 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     gap: 20,
+  },
+  selectedAnswer: {
+    borderWidth: 2,
+    borderColor: "green", // You can choose a different color
+  },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+    width: "100%",
   },
 });

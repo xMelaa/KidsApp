@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { TouchableOpacity } from "react-native";
+import QuizGame from "./quiz";
 
 type RootStackParamList = {
    Second: undefined;
@@ -19,7 +20,12 @@ export default function QuizResult({ navigation }: HomeScreenProps) {
   return (
     <View style={styles.container}>
       <Text>Quiz Result</Text>
-
+      
+          {/* <Text>{score}</Text> */}
+          <TouchableOpacity>
+          <Button title="Powrót" onPress={() => navigation.push("games")} />
+          </TouchableOpacity>
+        
       <View style={styles.buttons}>
         <TouchableOpacity onPress={() => navigation.push("games")}>
           <Text>STRONA GŁÓWNA</Text>
