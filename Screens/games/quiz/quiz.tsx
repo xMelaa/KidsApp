@@ -18,37 +18,36 @@ type HomeScreenProps = {
 };
 
 export default function QuizGame({ navigation }: HomeScreenProps) {
-    const [questions, setQuestions] = useState();
+    const [currentQuestion, setCurrentQuestion] = useState(0);
    // const getQuiz = async () => {};
     useEffect(() => {
         //getQuiz();
        // console.log(quizData[0].options[2].src) //test quizdata
     }, [])
     
+    const handleAnswer = (selectedAnswer: any) => {
+      const answer = quizData[currentQuestion]?.answer
+      if(answer === selectedAnswer.name){
+        alert("Prawidłowa odpowiedź!")
+      }else{
+        alert("Zła odpowiedź. Spróbuj ponownie.")
+      }
+    }
   
     return (
     <View style={styles.container}>
       <Text>Quiz</Text>
       <View style={styles.question}>
-        <Text>Pytanie</Text>
+        <Text>{quizData[currentQuestion]?.question}</Text>
       </View>
       <View style={styles.answers}>
-        <TouchableOpacity style={styles.answer}>
-          <Text>Option 1</Text>
-          <Image style={styles.answerImage} source={require("../../../img/apple.jpg")} />
+        {quizData[currentQuestion]?.options.map((item) => {
+          return <TouchableOpacity onPress={()=>handleAnswer(item)} style={styles.answer}>
+          <Text>{item.name}</Text>
+          <Image style={styles.answerImage} source={item.src} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.answer}>
-          <Text>Option 2</Text>
-          <Image style={styles.answerImage} source={require("../../../img/blueberry.jpg")} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.answer}>
-          <Text>Option 3</Text>
-          <Image style={styles.answerImage} source={require("../../../img/pear.jpg")} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.answer}>
-          <Text>Option 4</Text>
-          <Image style={styles.answerImage} source={require("../../../img/pomegranade.jpg")} />
-        </TouchableOpacity>
+        })}
+       
       </View>
       <View style={styles.buttons}>
         <TouchableOpacity>
