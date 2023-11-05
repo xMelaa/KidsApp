@@ -1,8 +1,7 @@
 import { StyleSheet, Text, View, Button, Image, TouchableOpacity } from "react-native";
 import { Overlay } from "react-native-elements";
-import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import quizData from "./quizData";
 
 type RootStackParamList = {
@@ -14,7 +13,7 @@ type HomeScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "games">;
 };
 
-//random answers
+//randomize
 function shuffleArray(array: any) {
   const shuffledArray = [...array]; 
   for (let i = shuffledArray.length - 1; i > 0; i--) {
@@ -25,6 +24,7 @@ function shuffleArray(array: any) {
 }
 
 export default function QuizShuffleGame({ navigation }: HomeScreenProps) {
+  const [questions, setQuestions] = useState(shuffleArray(quizData))
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
@@ -37,14 +37,15 @@ export default function QuizShuffleGame({ navigation }: HomeScreenProps) {
 
   const handleNextQuestion = () => {
     setCorrectAnswerOverlayVisible(false);
-    setCurrentQuestion(currentQuestion + 1);
-    if (currentQuestion + 1 >= quizData.length) {
+    if (currentQuestion + 1 < questions.length) {
+      setCurrentQuestion(currentQuestion + 1);
+    } else {
       setShowScore(true);
     }
   };
 
   const handleAnswer = (selectedAnswerOption: any) => {
-    const answer = quizData[currentQuestion]?.answer;
+    const answer = questions[currentQuestion]?.answer;
     if (answer === selectedAnswerOption.name) {
       setScore((prevScore) => prevScore + 1);
       setCorrectAnswerOverlayVisible(true);
@@ -53,6 +54,11 @@ export default function QuizShuffleGame({ navigation }: HomeScreenProps) {
       setTimeout(() => setIncorrectAnswerOverlayVisible(false), 3000);
     }
   };
+
+  useEffect(() => {
+    setQuestions(shuffleArray(quizData));
+    //setCurrentQuestion(0);
+  }, [quizData]);
 
   return (
     <View style={styles.container}>
@@ -68,7 +74,7 @@ export default function QuizShuffleGame({ navigation }: HomeScreenProps) {
       ) : (
         <>
           <View style={styles.question}>
-            <Text>{quizData[currentQuestion]?.question}</Text>
+            <Text>{questions[currentQuestion]?.question}</Text>
           </View>
           <View style={styles.answers}>
             {shuffledAnswers.map((item) => (

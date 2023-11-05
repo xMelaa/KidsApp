@@ -16,7 +16,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();
-const screens = [{ name: "quiz", component: QuizGame }, { name: "shufflequiz", component: QuizShuffleGame },  
+const screens = [ { name: "shufflequiz", component: QuizShuffleGame },{ name: "quiz", component: QuizGame },  
   { name: "Home", component: HomeScreen, title: "Welcome" },
   { name: "Second", component: SecondScreen, title: "Welcome" },
   { name: "choose", component: ChooseScreen },
