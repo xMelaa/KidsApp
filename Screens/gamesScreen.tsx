@@ -14,7 +14,7 @@ type RootStackParamList = {
   };
 
 type HomeScreenProps = {
-    navigation: NativeStackNavigationProp<RootStackParamList, "Second">; // Upewnij się, że to jest zgodne z Twoją konfiguracją nawigatora
+    navigation: NativeStackNavigationProp<RootStackParamList, "Second">;
   };
 
 export default function GamesScreen({ navigation }: HomeScreenProps) {
