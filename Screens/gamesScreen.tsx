@@ -10,6 +10,7 @@ type RootStackParamList = {
     memory: undefined;
     quiz: undefined;
     shufflequiz: undefined;
+    sorting: undefined;
   };
 
 type HomeScreenProps = {
@@ -25,6 +26,7 @@ export default function GamesScreen({ navigation }: HomeScreenProps) {
       <Button title="Memory" onPress={() => navigation.push("memory")} />
       <Button title="Quiz" onPress={() => navigation.push("quiz")} />
       <Button title="Quiz (Trudny)" onPress={() => navigation.push("shufflequiz")} />
+      <Button title="Sortowanie" onPress={() => navigation.push("sorting")} />
       <StatusBar style="auto" />
     </View>
   );
