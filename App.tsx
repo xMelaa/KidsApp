@@ -11,13 +11,15 @@ import DogScreen from "./Screens/words/animals/dog";
 import MemoryGame from "./Screens/games/memory";
 import QuizGame from "./Screens/games/quiz/quiz";
 import QuizShuffleGame from "./Screens/games/quiz/quizShuffle";
+import Drag from "./Screens/games/dragging";
 import SortingGame from "./Screens/games/sorting";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();
-const screens = [ { name: "sorting", component: SortingGame},
+const screens = [{ name: "sorting", component: SortingGame},
+   { name: "dragging", component: Drag},
   { name: "Home", component: HomeScreen, title: "Welcome" },
   { name: "Second", component: SecondScreen, title: "Welcome" },
   { name: "choose", component: ChooseScreen },
