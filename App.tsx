@@ -18,7 +18,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();
-const screens = [ { name: "memory", component: MemoryGame },
+const screens = [ 
   { name: "dog", component: DogScreen },
   { name: "Home", component: HomeScreen, title: "Welcome" },
   { name: "Second", component: SecondScreen, title: "Welcome" },
@@ -29,8 +29,7 @@ const screens = [ { name: "memory", component: MemoryGame },
   { name: "letters", component: LettersScreen },
   { name: "vehicles", component: VehiclesScreen },
   { name: "fruits", component: FruitsScreen },
-  
- 
+  { name: "memory", component: MemoryGame }, 
   { name: "quiz", component: QuizGame },
   { name: "shufflequiz", component: QuizShuffleGame },
   { name: "sorting", component: SortingGame },

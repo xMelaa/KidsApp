@@ -11,11 +11,17 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Animals } from "../../../data/data";
-import { VolumeUp } from "@mui/icons-material";
+import { Rotate90DegreesCcw, VolumeUp } from "@mui/icons-material";
 import { Audio } from "expo-av";
 import { speak } from "expo-speech";
 import React, { useEffect, useRef, useState } from "react";
 import { TextComponent } from "react-native";
+import {
+  useSharedValue,
+  useAnimatedStyle,
+  interpolate,
+  withTiming,
+} from "react-native-reanimated";
 
 // type RootStackParamList = {
 //    Second: undefined;
@@ -34,62 +40,47 @@ function SingleCard() {
   flipAnimation.addListener(({ value }) => (flipRotation = value));
 
   const handleClick = () => {
-    
     setFlipped(!flipped);
+    rotate.value = 1;
   };
-
-  // const flipToFrontStyle = {
-  //   transform: [
-  //     {
-  //       rotateY: flipAnimation.interpolate({
-  //         inputRange: [0, 180],
-  //         outputRange: ["0deg", "180deg"],
-  //       }),
-  //     },
-  //   ],
-  // };
-  // const flipToBackStyle = {
-  //   transform: [
-  //     {
-  //       rotateY: flipAnimation.interpolate({
-  //         inputRange: [0, 180],
-  //         outputRange: ["0deg", "180deg"],
-  //       }),
-  //     },
-  //   ],
-  // };
-
-  // const flipToFront = () => {
-  //   Animated.timing(flipAnimation, {
-  //     toValue: 180,
-  //     duration: 800,
-  //     useNativeDriver: true,
-  //   }).start();
-  // };
-  // const flipToBack = () => {
-  //   Animated.timing(flipAnimation, {
-  //     toValue: 0,
-  //     duration: 800,
-  //     useNativeDriver: true,
-  //   }).start();
-  // };
+  const rotate = useSharedValue(0);
+  const frontAnimatedStyles = useAnimatedStyle(() => {
+    const rotateValue = interpolate(rotate.value, [0, 1], [0, 180]);
+    return {
+      transform: [
+        {
+          rotateY: withTiming(`${rotateValue}deg`, { duration: 600 }),
+        },
+      ],
+    };
+  });
+  const backAnimatedStyles = useAnimatedStyle(() => {
+    const rotateValue = interpolate(rotate.value, [0, 1], [180, 360]);
+    return {
+      transform: [
+        {
+          rotateY: withTiming(`${rotateValue}deg`, { duration: 600 }),
+        },
+      ],
+    };
+  });
 
   return (
-    <Pressable onPress={handleClick}>
-      <Animated.View >
+    <Pressable
+      onPress={() => (flipRotation ? backAnimatedStyles : frontAnimatedStyles)}>
+      <Animated.View
+        style={[flipped ? frontAnimatedStyles : backAnimatedStyles]}>
         {!flipped ? ( //jesli karta jest odkryta
           <TouchableOpacity onPress={handleClick} style={styles.funfact}>
             <Text>Ciekawostka</Text>
-          
-          
-      
           </TouchableOpacity>
         ) : (
           //jesli jest zakryta
           <TouchableOpacity onPress={handleClick} style={styles.funfact}>
-            <Text>Czy wiesz że...</Text>{Animals.Dog.ciekawostki.map((fact, index) => (
-            <View key={index}>{fact} </View>
-          ))}
+            <Text>Czy wiesz że...</Text>
+            {Animals.Dog.ciekawostki.map((fact, index) => (
+              <View key={index}>{fact} </View>
+            ))}
           </TouchableOpacity>
         )}
       </Animated.View>
