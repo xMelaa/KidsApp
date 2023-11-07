@@ -12,6 +12,12 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useEffect, useRef, useState } from "react";
+import {
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 
 // type RootStackParamList = {
 //    Second: undefined;
@@ -46,67 +52,45 @@ function SingleCard({
   flipped: any;
 }) {
   const flipAnimation = useRef(new Animated.Value(0)).current;
-  // const [cardStyle, setCardStyle] = useState({});
 
   let flipRotation = 0;
   flipAnimation.addListener(({ value }) => (flipRotation = value));
 
   const handleClick = () => {
-    if (flipped) {
-      flipToBack(); // Obróć na stronę tylną tylko jeśli karta nie jest odwrócona
-    } else {
-      handleChoice(card); // W przeciwnym razie obsłuż kliknięcie
-    }
+    handleChoice(card);
+    rotate.value = 1;
   };
 
-  const flipToFrontStyle = {
-    transform: [
-      {
-        rotateY: flipAnimation.interpolate({
-          inputRange: [0, 180],
-          outputRange: ["0deg", "180deg"],
-        }),
-      },
-    ],
-  };
-  const flipToBackStyle = {
-    transform: [
-      {
-        rotateY: flipAnimation.interpolate({
-          inputRange: [0, 180],
-          outputRange: ["180deg", "0deg"],
-        }),
-      },
-    ],
-  };
-
-  const flipToFront = () => {
-    Animated.timing(flipAnimation, {
-      toValue: 180,
-      duration: 800,
-      useNativeDriver: false,
-    }).start();
-  };
-  const flipToBack = () => {
-    Animated.timing(flipAnimation, {
-      toValue: 0,
-      duration: 800,
-      useNativeDriver: false,
-    }).start();
-  };
+  const rotate = useSharedValue(0);
+  const frontAnimatedStyles = useAnimatedStyle(() => {
+    const rotateValue = interpolate(rotate.value, [0, 1], [0, 180]);
+    return {
+      transform: [
+        {
+          rotateY: withTiming(`${rotateValue}deg`, { duration: 600 }),
+        },
+      ],
+    };
+  });
+  const backAnimatedStyles = useAnimatedStyle(() => {
+    const rotateValue = interpolate(rotate.value, [0, 1], [180, 360]);
+    return {
+      transform: [
+        {
+          rotateY: withTiming(`${rotateValue}deg`, { duration: 600 }),
+        },
+      ],
+    };
+  });
 
   return (
     <Pressable
       style={styles.card}
-      onPress={() =>
-        flipRotation
-          ? (flipToBack(), setTimeout(handleClick, 300))
-          : flipToFront()
-      }>
+      onPress={() => (flipRotation ? backAnimatedStyles : frontAnimatedStyles)}>
       <Animated.View
         style={[
           styles.cardContainer,
-          flipped ? flipToFrontStyle : flipToBackStyle,
+          flipped ? frontAnimatedStyles : backAnimatedStyles,
         ]}>
         {flipped ? ( //jesli karta jest odkryta
           <TouchableOpacity onPress={handleClick} style={styles.front}>
@@ -136,9 +120,9 @@ export default function MemoryGame() {
     const shuffleCards = [...cardImages, ...cardImages]
       .sort(() => Math.random() - 0.5) //losowosc
       .map((card) => ({ ...card, id: Math.random() }));
-    
-    setChoiceOne(null)
-    setChoiceTwo(null)
+
+    setChoiceOne(null);
+    setChoiceTwo(null);
     setCards(shuffleCards);
     setTurns(0);
   };
@@ -173,12 +157,6 @@ export default function MemoryGame() {
     setChoiceTwo(null);
     setTurns((prevTurns) => prevTurns + 1); // turns+1
   };
-
-  // useEffect(() => {
-  //   if (turns === 0) {
-  //     shuffleCards();
-  //   }
-  // }, [turns]);
 
   return (
     <View style={styles.container}>
@@ -215,6 +193,7 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     borderRadius: 6,
+    backfaceVisibility: "hidden",
   },
   back: {
     flex: 1,
@@ -226,9 +205,8 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 2,
     borderStyle: "solid",
-    //position: "absolute"
-
-    //backfaceVisibility: "hidden",
+    //position: "absolute",
+    backfaceVisibility: "hidden",
   },
   card: {
     position: "relative",
@@ -255,6 +233,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 2,
     borderStyle: "solid",
-    transformStyle: "preserve-3d", //perspektywa??
+   // transformStyle: "preserve-3d", //perspektywa??
   },
 });
