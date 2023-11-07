@@ -1,15 +1,15 @@
-// type AnimalType = {
-//     name: string;
-//     photo: any;
-//     sound: string;
-//     ciekawostki: string[];
-//   };
+type AnimalType = {
+    name: string;
+    photo: any;
+    sound: string;
+    ciekawostki: string[];
+  };
   
-//   type AnimalsType = {
-//     [key: string]: AnimalType;
-//   };
+  type AnimalsType = {
+    [key: string]: AnimalType;
+  };
 
-export let Animals = {
+export let Animals: AnimalsType = {
     Dog:{
         name: 'Pies',
         photo: require('../img/example.jpg'),
@@ -19,6 +19,12 @@ export let Animals = {
             'mówi się, że pies to najlepszy przyjaciel człowieka',
             'istnieje wiele ras psów'
         ]
+    },
+    Car: {
+        name: 'Samochód',
+        photo: require('../img/example.jpg'),
+        sound: 'brum brum',
+        ciekawostki: []
     }
 }
 

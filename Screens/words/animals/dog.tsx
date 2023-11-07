@@ -22,81 +22,77 @@ import {
   withTiming,
 } from "react-native-reanimated";
 
-// type RootStackParamList = {
-//    Second: undefined;
-//    Animals: undefined;
-//     choose: undefined;
-//     words: undefined;
-//     games: undefined;
-//     dog: undefined;
-//   };
+export default function AnimalScreen() {
+  function SingleCard() {
+    const flipAnimation = useRef(new Animated.Value(0)).current;
+    const [flipped, setFlipped] = useState(false);
+    const [randomFactIndex, setRandomFactIndex] = useState<number | null>(null); //do losowej ciekwostki
 
-function SingleCard() {
-  const flipAnimation = useRef(new Animated.Value(0)).current;
-  const [flipped, setFlipped] = useState(false);
-  const [randomFactIndex, setRandomFactIndex] = useState<number | null>(null); //do losowej ciekwostki
+    let flipRotation = 0;
+    flipAnimation.addListener(({ value }) => (flipRotation = value));
 
-  let flipRotation = 0;
-  flipAnimation.addListener(({ value }) => (flipRotation = value));
+    const handleClick = () => {
+      setFlipped(!flipped);
+      rotate.value = 1;
 
-  const handleClick = () => {
-    setFlipped(!flipped);
-    rotate.value = 1;
-
-    if (!flipped) {
-      const randomIndex = Math.floor(Math.random() * Animals.Dog.ciekawostki.length);
-      setRandomFactIndex(randomIndex);
-    } else {
-      setRandomFactIndex(null);
-    }
-  };
-  const rotate = useSharedValue(0);
-  const frontAnimatedStyles = useAnimatedStyle(() => {
-    const rotateValue = interpolate(rotate.value, [0, 1], [0, 180]);
-    return {
-      transform: [
-        {
-          rotateY: withTiming(`${rotateValue}deg`, { duration: 600 }),
-        },
-      ],
+      if (!flipped) {
+        const randomIndex = Math.floor(
+          Math.random() * Animals.Dog.ciekawostki.length
+        );
+        setRandomFactIndex(randomIndex);
+      } else {
+        setRandomFactIndex(null);
+      }
     };
-  });
-  const backAnimatedStyles = useAnimatedStyle(() => {
-    const rotateValue = interpolate(rotate.value, [0, 1], [180, 360]);
-    return {
-      transform: [
-        {
-          rotateY: withTiming(`${rotateValue}deg`, { duration: 600 }),
-        },
-      ],
-    };
-  });
+    const rotate = useSharedValue(0);
+    const frontAnimatedStyles = useAnimatedStyle(() => {
+      const rotateValue = interpolate(rotate.value, [0, 1], [0, 180]);
+      return {
+        transform: [
+          {
+            rotateY: withTiming(`${rotateValue}deg`, { duration: 600 }),
+          },
+        ],
+      };
+    });
+    const backAnimatedStyles = useAnimatedStyle(() => {
+      const rotateValue = interpolate(rotate.value, [0, 1], [180, 360]);
+      return {
+        transform: [
+          {
+            rotateY: withTiming(`${rotateValue}deg`, { duration: 600 }),
+          },
+        ],
+      };
+    });
 
-  return (
-    <Pressable
-      onPress={() => (flipRotation ? backAnimatedStyles : frontAnimatedStyles)}>
-      <Animated.View
-        style={[flipped ? frontAnimatedStyles : backAnimatedStyles]}>
-        {!flipped ? ( //jesli karta jest odkryta
-          <TouchableOpacity onPress={handleClick} style={styles.funfact}>
-            <Text>Ciekawostka</Text>
-          </TouchableOpacity>
-        ) : (
-          //jesli jest zakryta
-          <TouchableOpacity onPress={handleClick} style={styles.funfact}>
-            <Text>Czy wiesz że...</Text>
-            {randomFactIndex !== null ? (
-              <View>{Animals.Dog.ciekawostki[randomFactIndex]}</View>
-            ) : (
-              <Text>Kliknij, aby poznać ciekawostkę</Text>
-            )}
-          </TouchableOpacity>
-        )}
-      </Animated.View>
-    </Pressable>
-  );
-}
-export default function DogScreen() {
+    return (
+      <Pressable
+        onPress={() =>
+          flipRotation ? backAnimatedStyles : frontAnimatedStyles
+        }>
+        <Animated.View
+          style={[flipped ? frontAnimatedStyles : backAnimatedStyles]}>
+          {!flipped ? ( //jesli karta jest odkryta
+            <TouchableOpacity onPress={handleClick} style={styles.funfact}>
+              <Text>Ciekawostka</Text>
+            </TouchableOpacity>
+          ) : (
+            //jesli jest zakryta
+            <TouchableOpacity onPress={handleClick} style={styles.funfact}>
+              <Text>Czy wiesz że...</Text>
+              {randomFactIndex !== null ? (
+                <View>{Animals.Dog.ciekawostki[randomFactIndex]}</View>
+              ) : (
+                <Text>Kliknij, aby poznać ciekawostkę</Text>
+              )}
+            </TouchableOpacity>
+          )}
+        </Animated.View>
+      </Pressable>
+    );
+  }
+
   const playSound = async () => {
     const soundObject = new Audio.Sound();
     try {
@@ -111,6 +107,44 @@ export default function DogScreen() {
     speak(Animals.Dog.name, { language: "pl", _voiceIndex: 1 }); // Speak the animal's name in Polish
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: "#fff",
+      alignItems: "center",
+      justifyContent: "center",
+      flexDirection: "row",
+      width: "100%",
+      height: "100%",
+    },
+    buttonsContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 50,
+    },
+    image: {
+      height: "100%",
+      width: "100%",
+    },
+    imageContainer: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      height: "100%",
+      width: "50%",
+    },
+    infoContainer: {
+      flex: 1,
+      alignItems: "center",
+      height: "100%",
+      width: "50%",
+    },
+    funfact: {
+      backgroundColor: "lightgreen",
+      padding: 10,
+    },
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -121,7 +155,6 @@ export default function DogScreen() {
       <View style={styles.infoContainer}>
         <TouchableOpacity onPress={speakAnimalName}>
           <Text>{Animals.Dog.name}</Text>
-
           <VolumeUp />
         </TouchableOpacity>
         <SingleCard />
@@ -129,41 +162,3 @@ export default function DogScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    width: "100%",
-    height: "100%",
-  },
-  buttonsContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 50,
-  },
-  image: {
-    height: "100%",
-    width: "100%",
-  },
-  imageContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100%",
-    width: "50%",
-  },
-  infoContainer: {
-    flex: 1,
-    alignItems: "center",
-    height: "100%",
-    width: "50%",
-  },
-  funfact: {
-    backgroundColor: "lightgreen",
-    padding: 10,
-  },
-});

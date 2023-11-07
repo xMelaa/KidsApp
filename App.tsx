@@ -7,7 +7,7 @@ import AnimalsScreen from "./Screens/words/animals";
 import VehiclesScreen from "./Screens/words/vehicles";
 import FruitsScreen from "./Screens/words/fruits";
 import LettersScreen from "./Screens/words/letters";
-import DogScreen from "./Screens/words/animals/dog";
+import AnimalScreen from "./Screens/words/animals/dog";
 import MemoryGame from "./Screens/games/memory";
 import QuizGame from "./Screens/games/quiz/quiz";
 import QuizShuffleGame from "./Screens/games/quiz/quizShuffle";
@@ -18,14 +18,14 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();
-const screens = [ 
-  { name: "dog", component: DogScreen },
+const screens = [ { name: "animals", component: AnimalsScreen },
+  { name: "animal", component: AnimalScreen },
   { name: "Home", component: HomeScreen, title: "Welcome" },
   { name: "Second", component: SecondScreen, title: "Welcome" },
   { name: "choose", component: ChooseScreen },
   { name: "words", component: NewWordsScreen },
   { name: "games", component: GamesScreen },
-  { name: "animals", component: AnimalsScreen },
+  
   { name: "letters", component: LettersScreen },
   { name: "vehicles", component: VehiclesScreen },
   { name: "fruits", component: FruitsScreen },

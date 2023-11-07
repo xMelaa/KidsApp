@@ -1,16 +1,14 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-
-
+import { Animals} from "../../data/data";
 
 type RootStackParamList = {
    Second: undefined;
     choose: undefined;
     words: undefined;
     games: undefined;
-    dog: undefined;
+    animal: {animal: any};
   };
 
 type HomeScreenProps = {
@@ -18,12 +16,17 @@ type HomeScreenProps = {
   };
 
 export default function AnimalsScreen({ navigation }: HomeScreenProps) {
-    
+  const animalNames = Object.keys(Animals);
   return (
     <View style={styles.container}>
       <Text>Zwierzęta</Text>
-      <Button title="Pies" onPress={() => navigation.push("dog")} />
-      <StatusBar style="auto" />
+      {animalNames.map((animalName) => (
+        <Button
+          key={animalName}
+          title={animalName}
+          onPress={() => navigation.push("animal", { animal: Animals[animalName] })}
+        />
+      ))}
     </View>
   );
 }
