@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   Text,
@@ -6,6 +5,8 @@ import {
   Button,
   Image,
   TouchableOpacity,
+  Animated,
+  Pressable,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -13,7 +14,8 @@ import { Animals } from "../../../data/data";
 import { VolumeUp } from "@mui/icons-material";
 import { Audio } from "expo-av";
 import { speak } from "expo-speech";
-import { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { TextComponent } from "react-native";
 
 // type RootStackParamList = {
 //    Second: undefined;
@@ -24,6 +26,76 @@ import { useState } from "react";
 //     dog: undefined;
 //   };
 
+function SingleCard() {
+  const flipAnimation = useRef(new Animated.Value(0)).current;
+  const [flipped, setFlipped] = useState(false);
+
+  let flipRotation = 0;
+  flipAnimation.addListener(({ value }) => (flipRotation = value));
+
+  const handleClick = () => {
+    
+    setFlipped(!flipped);
+  };
+
+  // const flipToFrontStyle = {
+  //   transform: [
+  //     {
+  //       rotateY: flipAnimation.interpolate({
+  //         inputRange: [0, 180],
+  //         outputRange: ["0deg", "180deg"],
+  //       }),
+  //     },
+  //   ],
+  // };
+  // const flipToBackStyle = {
+  //   transform: [
+  //     {
+  //       rotateY: flipAnimation.interpolate({
+  //         inputRange: [0, 180],
+  //         outputRange: ["0deg", "180deg"],
+  //       }),
+  //     },
+  //   ],
+  // };
+
+  // const flipToFront = () => {
+  //   Animated.timing(flipAnimation, {
+  //     toValue: 180,
+  //     duration: 800,
+  //     useNativeDriver: true,
+  //   }).start();
+  // };
+  // const flipToBack = () => {
+  //   Animated.timing(flipAnimation, {
+  //     toValue: 0,
+  //     duration: 800,
+  //     useNativeDriver: true,
+  //   }).start();
+  // };
+
+  return (
+    <Pressable onPress={handleClick}>
+      <Animated.View >
+        {!flipped ? ( //jesli karta jest odkryta
+          <TouchableOpacity onPress={handleClick} style={styles.funfact}>
+            <Text>Ciekawostka</Text>
+          
+          
+      
+          </TouchableOpacity>
+        ) : (
+          //jesli jest zakryta
+          <TouchableOpacity onPress={handleClick} style={styles.funfact}>
+            <Text>Czy wiesz że...</Text>{Animals.Dog.ciekawostki.map((fact, index) => (
+            <View key={index}>{fact} </View>
+          ))}
+          </TouchableOpacity>
+        )}
+      </Animated.View>
+    </Pressable>
+  );
+}
 export default function DogScreen() {
   const playSound = async () => {
     const soundObject = new Audio.Sound();
@@ -48,10 +120,11 @@ export default function DogScreen() {
       </View>
       <View style={styles.infoContainer}>
         <TouchableOpacity onPress={speakAnimalName}>
-         <Text>{Animals.Dog.name}</Text> 
+          <Text>{Animals.Dog.name}</Text>
+
           <VolumeUp />
         </TouchableOpacity>
-
+        <SingleCard />
         <View style={styles.funfact}>
           Ciekawostki:
           {Animals.Dog.ciekawostki.map((fact, index) => (
