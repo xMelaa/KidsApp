@@ -38,7 +38,7 @@ class Draggable extends Component<{}, DraggableState> {
   _val = { x: 0, y: 0 };
   
   panResponder: PanResponderInstance | null = null;
-  //drop area, dropzone powyzej y=200 (y: 0 -)
+  //drop area, dropzone powyzej y=200 (y: 0 - 200)
   isDropArea(gesture: { moveY: number }) {
     return gesture.moveY < 200; 
   }

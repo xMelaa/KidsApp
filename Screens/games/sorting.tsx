@@ -9,7 +9,6 @@ import {
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { Component } from "react";
 import { PanResponderInstance } from "react-native";
-import { lightBlue } from "@mui/material/colors";
 
 type RootStackParamList = {
   Second: undefined;
@@ -21,7 +20,7 @@ type HomeScreenProps = {
 };
 interface DraggableState {
   showDraggable: boolean;
-  //dropAreaValues: any;
+  dropAreaValues: any;
   pan: Animated.ValueXY;
   opacity: Animated.Value;
 }
@@ -31,7 +30,7 @@ class Draggable extends Component<{}, DraggableState> {
 
     this.state = {
       showDraggable: true,
-      //dropAreaValues: null,
+      dropAreaValues: null,
       pan: new Animated.ValueXY(),
       opacity: new Animated.Value(1),
     };

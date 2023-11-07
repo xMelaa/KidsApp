@@ -13,9 +13,7 @@ import { Animals } from "../../../data/data";
 import { VolumeUp } from "@mui/icons-material";
 import { Audio } from "expo-av";
 import { speak } from "expo-speech";
-// import FlipCard, { RotateAxis } from "react-native-flip"
 import { useState } from "react";
-
 
 // type RootStackParamList = {
 //    Second: undefined;
@@ -40,96 +38,27 @@ export default function DogScreen() {
   const speakAnimalName = () => {
     speak(Animals.Dog.name, { language: "pl", _voiceIndex: 1 }); // Speak the animal's name in Polish
   };
-  // const [side, setSide] = useState(1);
-  // const [rotate, setRotate] = useState<RotateAxis>(RotateAxis.X);
-  // const changeSide = () => {
-  //   setSide((prevSide) => (prevSide === 1 ? -1 : 1));
-  // };
-
-  // const Front = (
-  //   <View
-  //     style={{
-  //       backgroundColor: "#ed8936",
-  //       alignItems: "center",
-  //       padding: 100,
-  //       borderRadius: 12,
-  //     }}
-  //   >
-  //     <Text style={{ fontSize: 18, color: "black" }}>Front</Text>
-  //     <TouchableOpacity
-  //       onPress={changeSide}
-  //       style={{
-  //         padding: 10,
-  //         marginTop: 20,
-  //         backgroundColor: "white",
-  //         borderRadius: 12,
-  //       }}
-  //     >
-  //       <Text>Click here to Flip</Text>
-  //     </TouchableOpacity>
-  //   </View>
-  // )
-  // const Back = (
-  //   <View
-  //     style={{
-  //       backgroundColor: "#007AFF",
-  //       alignItems: "center",
-  //       padding: 100,
-  //       borderRadius: 12,
-  //     }}
-  //   >
-  //     <Text style={{ fontSize: 18, color: "white" }}>Back</Text>
-  //     <TouchableOpacity
-  //       onPress={changeSide}
-  //       style={{
-  //         padding: 10,
-  //         marginTop: 20,
-  //         backgroundColor: "white",
-  //         borderRadius: 12,
-  //       }}
-  //     >
-  //       <Text>Click here to Flip</Text>
-  //     </TouchableOpacity>
-  //   </View>
-  // )
 
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <TouchableOpacity onPress={playSound} style={styles.image}>
-          {" "}
           <Image source={Animals.Dog.photo} style={styles.image} />
         </TouchableOpacity>
       </View>
       <View style={styles.infoContainer}>
         <TouchableOpacity onPress={speakAnimalName}>
-          {Animals.Dog.name}
+         <Text>{Animals.Dog.name}</Text> 
           <VolumeUp />
         </TouchableOpacity>
 
         <View style={styles.funfact}>
           Ciekawostki:
           {Animals.Dog.ciekawostki.map((fact, index) => (
-           <View key={index}>{fact} </View>
+            <View key={index}>{fact} </View>
           ))}
         </View>
-        {/* <Button
-        title={`Change rotation. The card rotation is: ${rotate}`}
-        onPress={() => {
-          setRotate((rotation) => (rotation === RotateAxis.X ? RotateAxis.Y : RotateAxis.X))
-        }}
-      />
-      <Button title={`Flip: ${side}`} onPress={changeSide} />
-      <FlipCard
-        side={side}
-        rotate={rotate}
-        style={styles.container}
-        front={Front}
-        back={Back}
-      /> */}
       </View>
-
-      <StatusBar style="auto" />
     </View>
   );
 }
