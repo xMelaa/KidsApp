@@ -8,7 +8,7 @@ type RootStackParamList = {
     choose: undefined;
     words: undefined;
     games: undefined;
-    animal: {animal: any};
+    animal: {animalName: string};
   };
 
 type HomeScreenProps = {
@@ -24,7 +24,7 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
         <Button
           key={animalName}
           title={animalName}
-          onPress={() => navigation.push("animal", { animal: Animals[animalName] })}
+          onPress={() => navigation.push("animal", { animalName: animalName })}
         />
       ))}
     </View>

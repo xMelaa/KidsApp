@@ -1,7 +1,7 @@
 type AnimalType = {
     name: string;
     photo: any;
-    sound: string;
+    sound: any;
     ciekawostki: string[];
   };
   
@@ -22,8 +22,14 @@ export let Animals: AnimalsType = {
     },
     Car: {
         name: 'Samochód',
-        photo: require('../img/example.jpg'),
-        sound: 'brum brum',
+        photo: require('../img/apple.jpg'),
+        sound: require('../sounds/dog_barking.mp3'),
+        ciekawostki: []
+    },
+    Gruszka: {
+        name: 'Gruszka',
+        photo: require('../img/pear.jpg'),
+        sound: require('../sounds/dog_barking.mp3'),
         ciekawostki: []
     }
 }

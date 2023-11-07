@@ -8,7 +8,7 @@ import {
   Animated,
   Pressable,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, RouteProp, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Animals } from "../../../data/data";
 import { VolumeUp } from "@mui/icons-material";
@@ -22,7 +22,35 @@ import {
   withTiming,
 } from "react-native-reanimated";
 
+type RootStackParamList = {
+  animal: {animalName: string}
+};
+
+type AnimalScreenRouteProp = RouteProp<RootStackParamList, "animal">;
+
+type AnimalScreenProps = {
+  navigation: NativeStackNavigationProp<RootStackParamList, "animal">;
+  //route: AnimalScreenRouteProp  & { params: RouteParams };
+};
+interface RouteParams {
+  animalName: string;
+}
+
 export default function AnimalScreen() {
+  const route = useRoute();
+  const { animalName } = route.params as RouteParams;
+  const animalData = Animals[animalName];
+ 
+  console.log("Received animalName:", animalData);
+  if (!animalData) {
+    // Handle the case when the animal data is not found
+    return (
+      <View>
+        <Text>Animal data not found for {animalName}</Text>
+      </View>
+    );
+  }
+
   function SingleCard() {
     const flipAnimation = useRef(new Animated.Value(0)).current;
     const [flipped, setFlipped] = useState(false);
@@ -37,7 +65,7 @@ export default function AnimalScreen() {
 
       if (!flipped) {
         const randomIndex = Math.floor(
-          Math.random() * Animals.Dog.ciekawostki.length
+          Math.random() * animalData.ciekawostki.length
         );
         setRandomFactIndex(randomIndex);
       } else {
@@ -82,7 +110,7 @@ export default function AnimalScreen() {
             <TouchableOpacity onPress={handleClick} style={styles.funfact}>
               <Text>Czy wiesz że...</Text>
               {randomFactIndex !== null ? (
-                <View>{Animals.Dog.ciekawostki[randomFactIndex]}</View>
+                <View>{animalData.ciekawostki[randomFactIndex]}</View>
               ) : (
                 <Text>Kliknij, aby poznać ciekawostkę</Text>
               )}
@@ -96,15 +124,19 @@ export default function AnimalScreen() {
   const playSound = async () => {
     const soundObject = new Audio.Sound();
     try {
-      await soundObject.loadAsync(Animals.Dog.sound);
-      await soundObject.playAsync();
+      if (animalData.sound) {
+        await soundObject.loadAsync(animalData.sound);
+        await soundObject.playAsync();
+      } else {
+        console.error("No sound data available for this animal.");
+      }
     } catch (error) {
       console.error("Błąd odtwarzania dźwięku", error);
     }
   };
 
   const speakAnimalName = () => {
-    speak(Animals.Dog.name, { language: "pl", _voiceIndex: 1 }); // Speak the animal's name in Polish
+    speak(animalData.name, { language: "pl", _voiceIndex: 1 }); // Speak the animal's name in Polish
   };
 
   const styles = StyleSheet.create({
@@ -149,12 +181,12 @@ export default function AnimalScreen() {
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <TouchableOpacity onPress={playSound} style={styles.image}>
-          <Image source={Animals.Dog.photo} style={styles.image} />
+          <Image source={animalData.photo} style={styles.image} />
         </TouchableOpacity>
       </View>
       <View style={styles.infoContainer}>
         <TouchableOpacity onPress={speakAnimalName}>
-          <Text>{Animals.Dog.name}</Text>
+          <Text>{animalData.name}</Text>
           <VolumeUp />
         </TouchableOpacity>
         <SingleCard />

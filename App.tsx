@@ -7,7 +7,7 @@ import AnimalsScreen from "./Screens/words/animals";
 import VehiclesScreen from "./Screens/words/vehicles";
 import FruitsScreen from "./Screens/words/fruits";
 import LettersScreen from "./Screens/words/letters";
-import AnimalScreen from "./Screens/words/animals/dog";
+import AnimalScreen from "./Screens/words/animals/animal";
 import MemoryGame from "./Screens/games/memory";
 import QuizGame from "./Screens/games/quiz/quiz";
 import QuizShuffleGame from "./Screens/games/quiz/quizShuffle";
@@ -18,14 +18,24 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();
-const screens = [ { name: "animals", component: AnimalsScreen },
-  { name: "animal", component: AnimalScreen },
-  { name: "Home", component: HomeScreen, title: "Welcome" },
-  { name: "Second", component: SecondScreen, title: "Welcome" },
+type RootStackParamList = {
+  Second: undefined;
+  choose: undefined;
+  words: undefined;
+  games: undefined;
+  animal: { animalName: string }; // Dodaj odpowiedni typ dla parametru 'animal'
+};
+const screens: {
+  name: string;
+  component: any
+ 
+}[] = [ { name: "animals", component: (props: any) => <AnimalsScreen {...props} />},
+{ name: "animal", component: (props: any) => <AnimalScreen {...props} /> },
+  { name: "Home", component: HomeScreen },
+  { name: "Second", component: SecondScreen },
   { name: "choose", component: ChooseScreen },
   { name: "words", component: NewWordsScreen },
-  { name: "games", component: GamesScreen },
-  
+  { name: "games", component: GamesScreen },  
   { name: "letters", component: LettersScreen },
   { name: "vehicles", component: VehiclesScreen },
   { name: "fruits", component: FruitsScreen },
@@ -34,6 +44,7 @@ const screens = [ { name: "animals", component: AnimalsScreen },
   { name: "shufflequiz", component: QuizShuffleGame },
   { name: "sorting", component: SortingGame },
   { name: "dragging", component: Drag },
+  { name: "animalsData", component: Drag },
 ];
 export default function App() {
   return (
@@ -44,7 +55,7 @@ export default function App() {
             key={index}
             name={screen.name}
             component={screen.component}
-            options={{ title: screen.title || undefined }}
+           // options={{ title: screen.title || undefined }}
           />
         ))}
       </Stack.Navigator>
