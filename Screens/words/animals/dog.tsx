@@ -11,11 +11,10 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Animals } from "../../../data/data";
-import { Rotate90DegreesCcw, VolumeUp } from "@mui/icons-material";
+import { VolumeUp } from "@mui/icons-material";
 import { Audio } from "expo-av";
 import { speak } from "expo-speech";
 import React, { useEffect, useRef, useState } from "react";
-import { TextComponent } from "react-native";
 import {
   useSharedValue,
   useAnimatedStyle,
@@ -35,6 +34,7 @@ import {
 function SingleCard() {
   const flipAnimation = useRef(new Animated.Value(0)).current;
   const [flipped, setFlipped] = useState(false);
+  const [randomFactIndex, setRandomFactIndex] = useState<number | null>(null); //do losowej ciekwostki
 
   let flipRotation = 0;
   flipAnimation.addListener(({ value }) => (flipRotation = value));
@@ -42,6 +42,13 @@ function SingleCard() {
   const handleClick = () => {
     setFlipped(!flipped);
     rotate.value = 1;
+
+    if (!flipped) {
+      const randomIndex = Math.floor(Math.random() * Animals.Dog.ciekawostki.length);
+      setRandomFactIndex(randomIndex);
+    } else {
+      setRandomFactIndex(null);
+    }
   };
   const rotate = useSharedValue(0);
   const frontAnimatedStyles = useAnimatedStyle(() => {
@@ -78,9 +85,11 @@ function SingleCard() {
           //jesli jest zakryta
           <TouchableOpacity onPress={handleClick} style={styles.funfact}>
             <Text>Czy wiesz że...</Text>
-            {Animals.Dog.ciekawostki.map((fact, index) => (
-              <View key={index}>{fact} </View>
-            ))}
+            {randomFactIndex !== null ? (
+              <View>{Animals.Dog.ciekawostki[randomFactIndex]}</View>
+            ) : (
+              <Text>Kliknij, aby poznać ciekawostkę</Text>
+            )}
           </TouchableOpacity>
         )}
       </Animated.View>
@@ -116,12 +125,6 @@ export default function DogScreen() {
           <VolumeUp />
         </TouchableOpacity>
         <SingleCard />
-        <View style={styles.funfact}>
-          Ciekawostki:
-          {Animals.Dog.ciekawostki.map((fact, index) => (
-            <View key={index}>{fact} </View>
-          ))}
-        </View>
       </View>
     </View>
   );
@@ -160,6 +163,7 @@ const styles = StyleSheet.create({
     width: "50%",
   },
   funfact: {
-    backgroundColor: "purple",
+    backgroundColor: "lightgreen",
+    padding: 10,
   },
 });
