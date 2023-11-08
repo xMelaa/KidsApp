@@ -12,6 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Animals } from "../../data/data";
 import { useRef, useState } from "react";
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 
 type RootStackParamList = {
   Second: undefined;
@@ -46,53 +47,60 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
 
   const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
   return (
-    <View style={styles.container}>
+    <>
       <Text>Zwierzęta</Text>
-      <FlatList
-        data={renderPage(currentPage)}
-        keyExtractor={(animalName) => animalName}
-        numColumns={itemsPerRow}
-        renderItem={({ item: animalName }) => (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.push("animal", { animalName: animalName })
+      <View style={styles.container}>
+        <View style={styles.iconButton}>
+          {currentPage > 1 && (
+            <TouchableOpacity              
+              onPress={() => setCurrentPage(currentPage - 1)}>
+              <ChevronLeft style={styles.icon} />
+            </TouchableOpacity>
+          )}
+        </View>
+        <FlatList
+          data={renderPage(currentPage)}
+          keyExtractor={(animalName) => animalName}
+          numColumns={itemsPerRow}
+            
+          renderItem={({ item: animalName }) => (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.push("animal", { animalName: animalName })
+              }
+              style={styles.itemContainer}>
+              <Image
+                source={Animals[animalName].photo}
+                style={{ width: 200, height: 200 }}
+              />
+            </TouchableOpacity>
+          )}
+          showsHorizontalScrollIndicator
+          pagingEnabled
+          bounces={false}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+            {
+              useNativeDriver: false,
             }
-            style={styles.itemContainer}>
-            <Image
-              source={Animals[animalName].photo}
-              style={{ width: 200, height: 200 }}
-            />
+          )}
+          // onViewableItemsChanged={viewableItemsChanged}
+          viewabilityConfig={viewConfig}
+          scrollEventThrottle={32}
+        />
+        <View style={styles.iconButton}>
+          {currentPage <
+          Math.ceil(animalNames.length / (itemsPerRow * rowsPerPage)) && (
+          <TouchableOpacity
+            
+            onPress={() => setCurrentPage(currentPage + 1)}>
+            <ChevronRight style={styles.icon} />
           </TouchableOpacity>
         )}
-        showsHorizontalScrollIndicator
-        pagingEnabled
-        bounces={false}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-          {
-            useNativeDriver: false,
-          }
-        )}
-        // onViewableItemsChanged={viewableItemsChanged}
-        viewabilityConfig={viewConfig}
-        scrollEventThrottle={32}
-      />
-      <View style={styles.pageButtonsContainer}>
-        {currentPage > 1 && (
-          <Button
-            title="Poprzednia strona"
-            onPress={() => setCurrentPage(currentPage - 1)}
-          />
-        )}
-        {currentPage <
-          Math.ceil(animalNames.length / (itemsPerRow * rowsPerPage)) && (
-          <Button
-            title="Następna strona"
-            onPress={() => setCurrentPage(currentPage + 1)}
-          />
-        )}
+        </View>
+        
       </View>
-    </View>
+    </>
   );
 }
 
@@ -100,18 +108,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
+    //alignItems: "center",
     justifyContent: "center",
     width: "100%",
     height: "100%",
+    flexDirection: "row",
   },
-  pageButtonsContainer: {},
   buttonsContainer: {
     width: "85%",
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
     alignItems: "center",
+    justifyContent: "center",
     gap: 50,
     height: "100%",
     marginVertical: 20,
@@ -119,5 +128,17 @@ const styles = StyleSheet.create({
   itemContainer: {
     margin: 20,
     marginHorizontal: 50,
+  },
+ 
+  iconButton: {
+    backgroundColor: "transparent",
+    padding: 10,
+    width: 100,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  icon: {
+    fontSize: 52,
+    color: "gray"
   },
 });
