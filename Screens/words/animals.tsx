@@ -47,9 +47,9 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
 
   const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
   return (
-    <>
+    <View style={styles.container}>
       <Text>Zwierzęta</Text>
-      <View style={styles.container}>
+      <View style={styles.contentContainer}>
         <View style={styles.iconButton}>
           {currentPage > 1 && (
             <TouchableOpacity              
@@ -100,7 +100,7 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
         </View>
         
       </View>
-    </>
+    </View>
   );
 }
 
@@ -108,11 +108,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    //alignItems: "center",
+    alignItems: "center",
     justifyContent: "center",
-    width: "100%",
-    height: "100%",
+  },
+  contentContainer: {
     flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   buttonsContainer: {
     width: "85%",

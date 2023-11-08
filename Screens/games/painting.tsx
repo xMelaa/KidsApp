@@ -1,7 +1,7 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useRef, useState } from "react";
+import React from "react";
 
 type RootStackParamList = {
   Second: undefined;
@@ -15,36 +15,36 @@ type HomeScreenProps = {
 };
 
 export default function PaintingScreen() {
-    const canvasRef = useRef(null)
-    const contextRef = useRef(null)
+    const canvasRef = useRef<HTMLCanvasElement | null>(null)
+    const contextRef = useRef<CanvasRenderingContext2D | null>(null)
     const [isDrawing, setIsDrawing] = useState(false)
 
     useEffect(() =>{
-        const canvas = canvasRef.current
+        const canvas = canvasRef.current!
         canvas.width = window.innerWidth *2
         canvas.height = window.innerHeight *2
         canvas.style.width = `${window.innerWidth}px`
         canvas.style.height = `${window.innerHeight}px`
 
-        const context = canvas.getContext("2d")
+        const context = canvas.getContext("2d")!
         context.scale(2,2)
         context.lineCap = "round"
         context.strokeStyle = "black"
         context.lineWidth = 5
         contextRef.current = context;
     }, [])
-    const startDrawing = ({nativeEvent}) => {
+    const startDrawing = ({nativeEvent}: React.MouseEvent<HTMLCanvasElement>) => {
         const {offsetX, offsetY} = nativeEvent
-        contextRef.current.beginPath()
-        contextRef.current.moveTo(offsetX, offsetY)
+        contextRef.current?.beginPath()
+        contextRef.current?.moveTo(offsetX, offsetY)
         setIsDrawing(true)
     }
     const finishDrawing = () => {
-        contextRef.current.closePath()
+        contextRef.current?.closePath()
         setIsDrawing(false)
     }
-    const draw = ({nativeEvent}) => {
-        if(!isDrawing){
+    const draw = ({nativeEvent}: React.MouseEvent<HTMLCanvasElement>) => {
+        if(!isDrawing || contextRef.current === null){
             return
         }
         const {offsetX, offsetY} = nativeEvent
@@ -62,6 +62,7 @@ export default function PaintingScreen() {
       onMouseMove={draw}
       ref={canvasRef}
       />
+      <Button title="Wyczyść"/>
     </>
   );
 }
