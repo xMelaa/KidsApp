@@ -5,12 +5,13 @@ import {
   Button,
   TouchableOpacity,
   Image,
-  FlatList
+  FlatList,
+  Animated
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Animals } from "../../data/data";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 type RootStackParamList = {
   Second: undefined;
@@ -31,14 +32,19 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
   const initialPage = 1;
 
   const [currentPage, setCurrentPage] = useState(initialPage);
-  
+  const scrollX = useRef(new Animated.Value(0)).current
   // Funkcja do renderowania elementów na danej stronie
   const renderPage = (page: number) => {
     const startIndex = (page - 1) * rowsPerPage * itemsPerRow;
     const endIndex = startIndex + rowsPerPage * itemsPerRow;
     return animalNames.slice(startIndex, endIndex);
   };
+
+  const viewableItemsChanged = useRef(({viewableItems}) => {
+    setCurrentPage(viewableItems[0].index)
+  }).current
   
+  const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50}).current
   return (
     <View style={styles.container}>
       <Text>Zwierzęta</Text>
@@ -59,6 +65,17 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
             />
           </TouchableOpacity>
         )}
+
+        showsHorizontalScrollIndicator
+        pagingEnabled
+        bounces={false}
+        onScroll={Animated.event([{nativeEvent: {contentOffset: { x: scrollX}}}],  {
+          useNativeDriver: false,
+        })}
+        // onViewableItemsChanged={viewableItemsChanged}
+         viewabilityConfig={viewConfig}
+        scrollEventThrottle={32}
+        
       />
       <Button
         title="Następna strona"
@@ -88,7 +105,7 @@ const styles = StyleSheet.create({
     marginVertical: 20
   },
   itemContainer:{
-    margin: 30,
+    margin: 20,
     marginHorizontal: 50
   }
 });
