@@ -51,6 +51,12 @@ export default function PaintingScreen() {
         contextRef.current.lineTo(offsetX, offsetY)
         contextRef.current.stroke()
     }
+    const clearCanvas = () => {
+        const canvas = canvasRef.current!;
+        const context = canvas.getContext("2d")!;
+        context.clearRect(0, 0, canvas.width, canvas.height);
+      };
+
   return (
     <>
       <View style={styles.container}>
@@ -62,7 +68,7 @@ export default function PaintingScreen() {
       onMouseMove={draw}
       ref={canvasRef}
       />
-      <Button title="Wyczyść"/>
+      <Button title="Wyczyść" onPress={clearCanvas}/>
     </>
   );
 }
