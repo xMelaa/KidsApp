@@ -12,6 +12,7 @@ type RootStackParamList = {
     shufflequiz: undefined;
     sorting: undefined;
     dragging: undefined;
+    painting: undefined
   };
 
 type HomeScreenProps = {
@@ -29,6 +30,7 @@ export default function GamesScreen({ navigation }: HomeScreenProps) {
       <Button title="Quiz (Trudny)" onPress={() => navigation.push("shufflequiz")} />
       <Button title="Sortowanie" onPress={() => navigation.push("sorting")} />
       <Button title="Przeciąganie" onPress={() => navigation.push("dragging")} />
+      <Button title="Kolorowanki" onPress={() => navigation.push("painting")} />
       <StatusBar style="auto" />
     </View>
   );

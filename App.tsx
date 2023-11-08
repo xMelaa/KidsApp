@@ -13,6 +13,7 @@ import QuizGame from "./Screens/games/quiz/quiz";
 import QuizShuffleGame from "./Screens/games/quiz/quizShuffle";
 import Drag from "./Screens/games/dragging";
 import SortingGame from "./Screens/games/sorting";
+import PaintingScreen from "./Screens/games/painting";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -27,24 +28,24 @@ type RootStackParamList = {
 };
 const screens: {
   name: string;
-  component: any
- 
-}[] = [ { name: "animals", component: (props: any) => <AnimalsScreen {...props} />},
-{ name: "animal", component: (props: any) => <AnimalScreen {...props} /> },
+  component: any;
+}[] = [
+  { name: "painting", component: PaintingScreen },
+  { name: "animals", component: (props: any) => <AnimalsScreen {...props} /> },
+  { name: "animal", component: (props: any) => <AnimalScreen {...props} /> },
   { name: "Home", component: HomeScreen },
   { name: "Second", component: SecondScreen },
   { name: "choose", component: ChooseScreen },
   { name: "words", component: NewWordsScreen },
-  { name: "games", component: GamesScreen },  
+  { name: "games", component: GamesScreen },
   { name: "letters", component: LettersScreen },
   { name: "vehicles", component: VehiclesScreen },
   { name: "fruits", component: FruitsScreen },
-  { name: "memory", component: MemoryGame }, 
+  { name: "memory", component: MemoryGame },
   { name: "quiz", component: QuizGame },
   { name: "shufflequiz", component: QuizShuffleGame },
   { name: "sorting", component: SortingGame },
   { name: "dragging", component: Drag },
-  { name: "animalsData", component: Drag },
 ];
 export default function App() {
   return (
@@ -55,7 +56,7 @@ export default function App() {
             key={index}
             name={screen.name}
             component={screen.component}
-           // options={{ title: screen.title || undefined }}
+            // options={{ title: screen.title || undefined }}
           />
         ))}
       </Stack.Navigator>
