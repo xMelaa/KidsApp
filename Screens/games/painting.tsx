@@ -1,8 +1,10 @@
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, Dimensions } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
 
+const brushColors = ["black", "white", "red", "green", "yellow", "blue", "pink", "purple"]
+const brushSizes = [0.5, 1, 2, 4, 5, 6, 8, 10]
 type RootStackParamList = {
   Second: undefined;
   choose: undefined;
@@ -30,10 +32,13 @@ export default function PaintingScreen() {
 
   useEffect(() => {
     const canvas = canvasRef.current!;
-    canvas.width = window.innerWidth * 2;
-    canvas.height = window.innerHeight * 2;
-    canvas.style.width = `${window.innerWidth}px`;
-    canvas.style.height = `${window.innerHeight}px`;
+    const windowWidth = Dimensions.get("window").width;
+    const windowHeight = Dimensions.get("window").height;
+    canvas.width = windowWidth * 2;
+    canvas.height = windowHeight * 2;
+    canvas.style.width = `${windowWidth}px `;
+    canvas.style.height = `${windowHeight}px`;
+   
 
     const context = canvas.getContext("2d")!;
     context.scale(2, 2);
@@ -75,24 +80,16 @@ export default function PaintingScreen() {
       <View style={styles.container}>
         <Text>Painting</Text>
       </View>
-      <View>
+      <View style={styles.canvasContainer}>
         <View style={styles.colorPicker}>
-          <Button
-            title="Black"
-            onPress={() => changeBrushColor("black")}
-            color="black"
-          />
-          <Button
-            title="Red"
-            onPress={() => changeBrushColor("red")}
-            color="red"
-          />
-          <Button
-            title="Blue"
-            onPress={() => changeBrushColor("blue")}
-            color="blue"
-          />
-          {/* Dodaj inne kolory według potrzeb */}
+        {brushColors.map((color) => (
+            <Button
+              key={color}
+              title={color}
+              onPress={() => changeBrushColor(color)}
+              color={color}
+            />
+          ))}          
         </View>
         <canvas
           onMouseDown={startDrawing}
@@ -101,13 +98,16 @@ export default function PaintingScreen() {
           ref={canvasRef}
         />
         <View style={styles.brushSizePicker}>
-          <Button title="Small" onPress={() => changeBrushSize(2)} />
-          <Button title="Medium" onPress={() => changeBrushSize(5)} />
-          <Button title="Large" onPress={() => changeBrushSize(10)} />
-          {/* Dodaj inne rozmiary według potrzeb */}
+        {brushSizes.map((size) => (
+            <Button
+              key={size}
+              title={size.toString()}
+              onPress={() => changeBrushSize(size)}
+            />
+          ))}
         </View>
-        <Button title="Wyczyść" onPress={clearCanvas} />
-      </View>
+        
+      </View><Button title="Wyczyść" onPress={clearCanvas} />
     </>
   );
 }
@@ -119,10 +119,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+ 
+  canvasContainer:{
+    flexDirection: "row",
+    justifyContent: "space-between",
+   
+  },
+  toolContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   colorPicker: {
-    width: 50,
+    width: 50
   },
   brushSizePicker: {
-    width: 50,
+    width: 50
   },
 });
