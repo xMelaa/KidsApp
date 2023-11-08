@@ -10,6 +10,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Animals } from "../../data/data";
+import { useState } from "react";
 
 type RootStackParamList = {
   Second: undefined;
@@ -25,24 +26,44 @@ type HomeScreenProps = {
 
 export default function AnimalsScreen({ navigation }: HomeScreenProps) {
   const animalNames = Object.keys(Animals);
+  const itemsPerRow = 5;
+  const rowsPerPage = 3;
+  const initialPage = 1;
+
+  const [currentPage, setCurrentPage] = useState(initialPage);
+  
+  // Funkcja do renderowania elementów na danej stronie
+  const renderPage = (page: number) => {
+    const startIndex = (page - 1) * rowsPerPage * itemsPerRow;
+    const endIndex = startIndex + rowsPerPage * itemsPerRow;
+    return animalNames.slice(startIndex, endIndex);
+  };
+  
   return (
     <View style={styles.container}>
       <Text>Zwierzęta</Text>
-      <View style={styles.buttonsContainer}>
-        {animalNames.map((animalName) => (
-          <>
-            <TouchableOpacity
-              key={animalName}
-              onPress={() =>
-                navigation.push("animal", { animalName: animalName })
-              }>
-              <Image
-                source={Animals[animalName].photo}
-                style={{ width: 200, height: 200 }}></Image>
-            </TouchableOpacity>
-          </>
-        ))}
-      </View>
+      <FlatList
+        data={renderPage(currentPage)}
+        keyExtractor={(animalName) => animalName}
+        numColumns={itemsPerRow}
+        renderItem={({ item: animalName }) => (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.push("animal", { animalName: animalName })
+            }
+            style={styles.itemContainer}
+          >
+            <Image
+              source={Animals[animalName].photo}
+              style={{ width: 200, height: 200 }}
+            />
+          </TouchableOpacity>
+        )}
+      />
+      <Button
+        title="Następna strona"
+        onPress={() => setCurrentPage(currentPage + 1)}
+      />
     </View>
   );
 }
@@ -66,4 +87,8 @@ const styles = StyleSheet.create({
     height: "100%",
     marginVertical: 20
   },
+  itemContainer:{
+    margin: 30,
+    marginHorizontal: 50
+  }
 });
