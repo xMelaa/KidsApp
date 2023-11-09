@@ -86,12 +86,19 @@ export default function PaintingScreen() {
 
     const randomIndex = Math.floor(Math.random() * coloringPages.length);
     const randomImage = coloringPages[randomIndex];
+
     const bgImg = new Image();
     bgImg.src = randomImage;
     bgImg.onload = function () {
-      context.drawImage(bgImg, 0, 0, canWidth, canHeight);
+      const imgAspectRatio = bgImg.width / bgImg.height;
+      const bgHeight = canHeight;
+      const bgWidth = bgHeight * imgAspectRatio;
+      const xOffset = (canWidth - bgWidth) / 2;
+      console.log(bgImg.width);
+      context.drawImage(bgImg, xOffset, 0, bgWidth, bgHeight);
     };
   }, [windowDimensions]);
+
   const startDrawing = ({
     nativeEvent,
   }: React.MouseEvent<HTMLCanvasElement>) => {
@@ -100,10 +107,12 @@ export default function PaintingScreen() {
     contextRef.current?.moveTo(offsetX, offsetY);
     setIsDrawing(true);
   };
+
   const finishDrawing = () => {
     contextRef.current?.closePath();
     setIsDrawing(false);
   };
+
   const draw = ({ nativeEvent }: React.MouseEvent<HTMLCanvasElement>) => {
     if (!isDrawing || contextRef.current === null) {
       return;
@@ -114,6 +123,7 @@ export default function PaintingScreen() {
     contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
   };
+
   const clearCanvas = () => {
     const canvas = canvasRef.current!;
     const context = canvas.getContext("2d")!;
@@ -125,14 +135,12 @@ export default function PaintingScreen() {
     const bgImg = new Image();
     bgImg.src = randomImage;
     bgImg.onload = function () {
-      context.drawImage(
-        bgImg,
-        0,
-        0,
-        (windowWidth * (windowHeight - 65 - 35 - styles.container.height)) /
-          window.innerHeight,
-        windowHeight - 65 - 35 - styles.container.height
-      );
+      const imgAspectRatio = bgImg.width / bgImg.height;
+      const bgHeight = windowHeight - 65 - 35 - styles.container.height;
+      const bgWidth = bgHeight * imgAspectRatio;
+      const xOffset =
+        ((windowWidth * bgHeight) / window.innerHeight - bgWidth) / 2;
+      context.drawImage(bgImg, xOffset, 0, bgWidth, bgHeight);
     };
   };
 
