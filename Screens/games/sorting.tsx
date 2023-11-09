@@ -174,7 +174,7 @@ let CIRCLE_RADIUS = 30;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ddd",
+    //backgroundColor: "#ddd",
     alignItems: "center",
   },
   circle: {

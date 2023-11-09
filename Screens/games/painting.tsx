@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, Dimensions } from "react-native";
+import { StyleSheet, Text, View, Button, Dimensions, useWindowDimensions } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
@@ -29,24 +29,26 @@ export default function PaintingScreen() {
   const changeBrushSize = (size: React.SetStateAction<number>) => {
     setBrushSize(size);
   };
-
+  const windowDimensions = useWindowDimensions();
   useEffect(() => {
+    const windowWidth = Dimensions.get("window").width 
+    const canHeight = Dimensions.get("window").height - 65 - 35 - styles.container.height //zrobic dynamiczne //65 - wysokosc headera, 35 wysokos buttona do czyszcenia canvas - do zmiany na
+    const canWidth = (windowWidth * canHeight) / window.innerHeight
     const canvas = canvasRef.current!;
-    const windowWidth = Dimensions.get("window").width;
-    const windowHeight = Dimensions.get("window").height;
-    canvas.width = windowWidth * 2;
-    canvas.height = windowHeight * 2;
-    canvas.style.width = `${windowWidth}px `;
-    canvas.style.height = `${windowHeight}px`;
-   
+    canvas.width = canWidth * 2 - (styles.brushSizePicker.width + styles.colorPicker.width) *2 ;
+    canvas.height = canHeight * 2 
+    canvas.style.width = `${canWidth - (styles.brushSizePicker.width + styles.colorPicker.width)}px`;
+    canvas.style.height = `${canHeight}px`;  
+    canvas.style.backgroundColor = "white"
 
     const context = canvas.getContext("2d")!;
     context.scale(2, 2);
     context.lineCap = "round";
     context.strokeStyle = "black";
+    
     context.lineWidth = 5;
     contextRef.current = context;
-  }, []);
+  }, [windowDimensions]);
   const startDrawing = ({
     nativeEvent,
   }: React.MouseEvent<HTMLCanvasElement>) => {
@@ -96,6 +98,7 @@ export default function PaintingScreen() {
           onMouseUp={finishDrawing}
           onMouseMove={draw}
           ref={canvasRef}
+          
         />
         <View style={styles.brushSizePicker}>
         {brushSizes.map((size) => (
@@ -107,17 +110,18 @@ export default function PaintingScreen() {
           ))}
         </View>
         
-      </View><Button title="Wyczyść" onPress={clearCanvas} />
+      </View><Button title="Wyczyść" onPress={clearCanvas}  />
     </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+   
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    height: 30
   },
  
   canvasContainer:{
