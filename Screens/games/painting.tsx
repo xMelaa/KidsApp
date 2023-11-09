@@ -1,10 +1,40 @@
-import { StyleSheet, Text, View, Button, Dimensions, useWindowDimensions } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  Dimensions,
+  useWindowDimensions,
+} from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
 
-const brushColors = ["black", "white", "red", "green", "yellow", "blue", "pink", "purple"]
-const brushSizes = [0.5, 1, 2, 4, 5, 6, 8, 10]
+const brushColors = [
+  "black",
+  "white",
+  "red",
+  "green",
+  "yellow",
+  "blue",
+  "pink",
+  "purple",
+];
+const brushSizes = [0.5, 1, 2, 4, 5, 6, 8, 10];
+const coloringPages = [
+  require("../../img/ColoringPages/a.png"),
+  require("../../img/ColoringPages/b.png"),
+  require("../../img/ColoringPages/bus.png"),
+  require("../../img/ColoringPages/cat.png"),
+  require("../../img/ColoringPages/forest.png"),
+  require("../../img/ColoringPages/frog.png"),
+  require("../../img/ColoringPages/fruits.png"),
+  require("../../img/ColoringPages/giraffe.png"),
+  require("../../img/ColoringPages/husky.png"),
+  require("../../img/ColoringPages/police.png"),
+  require("../../img/ColoringPages/puppy.png"),
+  require("../../img/ColoringPages/vegetables.png"),
+];
 type RootStackParamList = {
   Second: undefined;
   choose: undefined;
@@ -31,23 +61,36 @@ export default function PaintingScreen() {
   };
   const windowDimensions = useWindowDimensions();
   useEffect(() => {
-    const windowWidth = Dimensions.get("window").width 
-    const canHeight = Dimensions.get("window").height - 65 - 35 - styles.container.height //zrobic dynamiczne //65 - wysokosc headera, 35 wysokos buttona do czyszcenia canvas - do zmiany na
-    const canWidth = (windowWidth * canHeight) / window.innerHeight
+    const windowWidth = Dimensions.get("window").width;
+    const canHeight =
+      Dimensions.get("window").height - 65 - 35 - styles.container.height; //65 - wysokosc headera, 35 wysokos buttona do czyszcenia canvas - do zmiany na
+    const canWidth = (windowWidth * canHeight) / window.innerHeight;
     const canvas = canvasRef.current!;
-    canvas.width = canWidth * 2 - (styles.brushSizePicker.width + styles.colorPicker.width) *2 ;
-    canvas.height = canHeight * 2 
-    canvas.style.width = `${canWidth - (styles.brushSizePicker.width + styles.colorPicker.width)}px`;
-    canvas.style.height = `${canHeight}px`;  
-    canvas.style.backgroundColor = "white"
+    canvas.width =
+      canWidth * 2 -
+      (styles.brushSizePicker.width + styles.colorPicker.width) * 2;
+    canvas.height = canHeight * 2;
+    canvas.style.width = `${
+      canWidth - (styles.brushSizePicker.width + styles.colorPicker.width)
+    }px`;
+    canvas.style.height = `${canHeight}px`;
+    canvas.style.backgroundColor = "rgba(255,255,255,0.7)";
 
     const context = canvas.getContext("2d")!;
     context.scale(2, 2);
     context.lineCap = "round";
     context.strokeStyle = "black";
-    
+
     context.lineWidth = 5;
     contextRef.current = context;
+
+    const randomIndex = Math.floor(Math.random() * coloringPages.length);
+    const randomImage = coloringPages[randomIndex];
+    const bgImg = new Image();
+    bgImg.src = randomImage;
+    bgImg.onload = function () {
+      context.drawImage(bgImg, 0, 0, canWidth, canHeight);
+    };
   }, [windowDimensions]);
   const startDrawing = ({
     nativeEvent,
@@ -74,7 +117,23 @@ export default function PaintingScreen() {
   const clearCanvas = () => {
     const canvas = canvasRef.current!;
     const context = canvas.getContext("2d")!;
+    const windowWidth = Dimensions.get("window").width;
+    const windowHeight = Dimensions.get("window").height;
     context.clearRect(0, 0, canvas.width, canvas.height);
+    const randomIndex = Math.floor(Math.random() * coloringPages.length);
+    const randomImage = coloringPages[randomIndex];
+    const bgImg = new Image();
+    bgImg.src = randomImage;
+    bgImg.onload = function () {
+      context.drawImage(
+        bgImg,
+        0,
+        0,
+        (windowWidth * (windowHeight - 65 - 35 - styles.container.height)) /
+          window.innerHeight,
+        windowHeight - 65 - 35 - styles.container.height
+      );
+    };
   };
 
   return (
@@ -84,24 +143,23 @@ export default function PaintingScreen() {
       </View>
       <View style={styles.canvasContainer}>
         <View style={styles.colorPicker}>
-        {brushColors.map((color) => (
+          {brushColors.map((color) => (
             <Button
               key={color}
               title={color}
               onPress={() => changeBrushColor(color)}
               color={color}
             />
-          ))}          
+          ))}
         </View>
         <canvas
           onMouseDown={startDrawing}
           onMouseUp={finishDrawing}
           onMouseMove={draw}
           ref={canvasRef}
-          
         />
         <View style={styles.brushSizePicker}>
-        {brushSizes.map((size) => (
+          {brushSizes.map((size) => (
             <Button
               key={size}
               title={size.toString()}
@@ -109,34 +167,32 @@ export default function PaintingScreen() {
             />
           ))}
         </View>
-        
-      </View><Button title="Wyczyść" onPress={clearCanvas}  />
+      </View>
+      <Button title="Wyczyść" onPress={clearCanvas} />
     </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-   
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    height: 30
+    height: 30,
   },
- 
-  canvasContainer:{
+
+  canvasContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-   
   },
   toolContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
   },
   colorPicker: {
-    width: 50
+    width: 50,
   },
   brushSizePicker: {
-    width: 50
+    width: 50,
   },
 });
