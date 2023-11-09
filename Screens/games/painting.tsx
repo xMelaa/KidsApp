@@ -5,6 +5,7 @@ import {
   Button,
   Dimensions,
   useWindowDimensions,
+  TouchableOpacity,
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useRef, useState } from "react";
@@ -63,7 +64,7 @@ export default function PaintingScreen() {
   useEffect(() => {
     const windowWidth = Dimensions.get("window").width;
     const canHeight =
-      Dimensions.get("window").height - 65 - 35 - styles.container.height; //65 - wysokosc headera, 35 wysokos buttona do czyszcenia canvas - do zmiany na
+      Dimensions.get("window").height - 65 - 65 - styles.container.height; //65 - wysokosc headera, 35 + 20 wysokos buttona do czyszcenia canvas - do zmiany na
     const canWidth = (windowWidth * canHeight) / window.innerHeight;
     const canvas = canvasRef.current!;
     canvas.width =
@@ -147,17 +148,18 @@ export default function PaintingScreen() {
   return (
     <>
       <View style={styles.container}>
-        <Text>Painting</Text>
+        <Text style={styles.titleText}>Pokoloruj obrazek</Text>
       </View>
       <View style={styles.canvasContainer}>
         <View style={styles.colorPicker}>
           {brushColors.map((color) => (
-            <Button
+            <TouchableOpacity
               key={color}
-              title={color}
               onPress={() => changeBrushColor(color)}
-              color={color}
-            />
+              style={[
+                styles.color,
+                { backgroundColor: color },
+              ]}></TouchableOpacity>
           ))}
         </View>
         <canvas
@@ -168,15 +170,17 @@ export default function PaintingScreen() {
         />
         <View style={styles.brushSizePicker}>
           {brushSizes.map((size) => (
-            <Button
+            <TouchableOpacity
               key={size}
-              title={size.toString()}
               onPress={() => changeBrushSize(size)}
-            />
+              style={styles.sizes}>
+              <Text style={styles.sizeText}>{size.toString()}</Text>
+            </TouchableOpacity>
           ))}
         </View>
       </View>
-      <Button title="Wyczyść" onPress={clearCanvas} />
+     
+      <TouchableOpacity onPress={clearCanvas} style={styles.buttonClear}><Text style={styles.buttonClearText}>Wyczyść</Text></TouchableOpacity>
     </>
   );
 }
@@ -186,9 +190,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    height: 30,
+    height: 50,
   },
-
+  titleText:{
+    fontSize: 22,
+    fontWeight: "600"
+  },
   canvasContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -199,8 +206,45 @@ const styles = StyleSheet.create({
   },
   colorPicker: {
     width: 50,
+    marginLeft: 10,
+  },
+  color: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    marginVertical: 2
+  },
+  sizes: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    backgroundColor: "gray",
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical:2
+  },
+  sizeText: {
+    fontSize: 16,
+    color: "white",
   },
   brushSizePicker: {
     width: 50,
+   
+    marginRight: 10
   },
+  buttonClear:{
+    width: "30%",
+    height: 35,
+    backgroundColor: "lightblue",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 30,
+    marginHorizontal: "auto",
+    marginVertical: "auto"
+  },
+  buttonClearText:{
+    fontSize: 16,
+    color: "white",
+    fontWeight: "600"
+  }
 });
