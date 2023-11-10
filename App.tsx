@@ -1,5 +1,4 @@
 import HomeScreen from "./Screens/HomeScreen";
-import SecondScreen from "./Screens/SecondScreen";
 import ChooseScreen from "./Screens/chooseScreen";
 import NewWordsScreen from "./Screens/newWordScreen";
 import GamesScreen from "./Screens/gamesScreen";
@@ -19,22 +18,15 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();
-type RootStackParamList = {
-  Second: undefined;
-  choose: undefined;
-  words: undefined;
-  games: undefined;
-  animal: { animalName: string }; // Dodaj odpowiedni typ dla parametru 'animal'
-};
 const screens: {
   name: string;
   component: any;
-}[] = [{ name: "Home", component: HomeScreen },
+  options?: object;
+}[] = [
+  { name: "Home", component: HomeScreen, options: { headerShown: false } },
   { name: "painting", component: PaintingScreen },
   { name: "animals", component: (props: any) => <AnimalsScreen {...props} /> },
   { name: "animal", component: (props: any) => <AnimalScreen {...props} /> },
-  
-  { name: "Second", component: SecondScreen },
   { name: "choose", component: ChooseScreen },
   { name: "words", component: NewWordsScreen },
   { name: "games", component: GamesScreen },
@@ -57,6 +49,7 @@ export default function App() {
             name={screen.name}
             component={screen.component}
             // options={{ title: screen.title || undefined }}
+            options={screen.options} 
           />
         ))}
       </Stack.Navigator>

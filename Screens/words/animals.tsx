@@ -7,7 +7,6 @@ import {
   FlatList,
   Animated,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Animals } from "../../data/data";
 import { useRef, useState } from "react";
@@ -84,7 +83,7 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
           // onViewableItemsChanged={viewableItemsChanged}
           viewabilityConfig={viewConfig}
           scrollEventThrottle={16}
-          
+
         />
         <View style={styles.iconButton}>
           {currentPage <

@@ -7,7 +7,7 @@ import {
   Pressable,
  // Animated
 } from "react-native";
-import { useNavigation, RouteProp, useRoute } from "@react-navigation/native";
+import { RouteProp, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Animals } from "../../../data/data";
 import Icon from "react-native-vector-icons/MaterialIcons";
