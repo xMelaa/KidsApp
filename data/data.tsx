@@ -472,7 +472,7 @@ export let Animals: AnimalsType = {
   },
   Żaba: {
     name: "Żaba",
-    photo: require("../img/Zwierzęta/Żaba.jpg"),
+    photo: require("../img/Zwierzęta/żaba.jpg"),
     sound: require("../sounds/dog_barking.mp3"),
     ciekawostki: [
       "pies ma 4 łapy",
@@ -691,7 +691,7 @@ export let Vehicles: VehiclesType = {
   },
   Straż: {
     name: "Straż",
-    photo: require("../img/Pojazdy/Straż.png"),
+    photo: require("../img/Pojazdy/Straż.jpg"),
     sound: "brum brum",
     ciekawostki: [
       "ciekawostka 1",
@@ -702,7 +702,7 @@ export let Vehicles: VehiclesType = {
   },
   Traktor: {
     name: "Traktor",
-    photo: require("../img/Pojazdy/Traktor.png"),
+    photo: require("../img/Pojazdy/Traktor.jpg"),
     sound: "brum brum",
     ciekawostki: [
       "ciekawostka 1",
@@ -713,7 +713,7 @@ export let Vehicles: VehiclesType = {
   },
   Tramwaj: {
     name: "Tramwaj",
-    photo: require("../img/Pojazdy/Tramwaj.png"),
+    photo: require("../img/Pojazdy/Tramwaj.jpg"),
     sound: "brum brum",
     ciekawostki: [
       "ciekawostka 1",
@@ -867,7 +867,7 @@ export let Fruits: FruitsType = {
   },
   Jeżyna: {
     name: "Jeżyna",
-    photo: require("../img/Owoce/Jeżyna.jpg"),
+    photo: require("../img/Owoce/Jezyna.jpg"),
     ciekawostki: [
       "ciekawostka 1",
       "ciekawostka 2",
@@ -1270,7 +1270,7 @@ export let Vegetables: VegetablesType = {
   },
   Ogórek: {
     name: "Ogórek",
-    photo: require("../img/Warzywa/Ogórkek.jpg"),
+    photo: require("../img/Warzywa/Ogórek.jpg"),
     ciekawostki: [
       "ciekawostka 1",
       "ciekawostka 2",

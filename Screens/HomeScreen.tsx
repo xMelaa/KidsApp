@@ -1,8 +1,5 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-//import { Animals, Vehicles } from "../data/data";
-
 
 type RootStackParamList = {
     Home: undefined;
@@ -11,7 +8,7 @@ type RootStackParamList = {
   };
 
 type HomeScreenProps = {
-    navigation: NativeStackNavigationProp<RootStackParamList, "Home">; // Upewnij się, że to jest zgodne z Twoją konfiguracją nawigatora
+    navigation: NativeStackNavigationProp<RootStackParamList, "Home">;
   };
   
 export default function HomeScreen({ navigation }: HomeScreenProps) {
@@ -20,8 +17,6 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     <View style={styles.container}>
       <Button title="Second Screen"
       onPress={()=> navigation.navigate("Second")}/>
-
-      <StatusBar style="auto" />
     </View>
   );
 }

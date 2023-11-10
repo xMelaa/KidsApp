@@ -29,11 +29,11 @@ type RootStackParamList = {
 const screens: {
   name: string;
   component: any;
-}[] = [
+}[] = [{ name: "Home", component: HomeScreen },
   { name: "painting", component: PaintingScreen },
   { name: "animals", component: (props: any) => <AnimalsScreen {...props} /> },
   { name: "animal", component: (props: any) => <AnimalScreen {...props} /> },
-  { name: "Home", component: HomeScreen },
+  
   { name: "Second", component: SecondScreen },
   { name: "choose", component: ChooseScreen },
   { name: "words", component: NewWordsScreen },
