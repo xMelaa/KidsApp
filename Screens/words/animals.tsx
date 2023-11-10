@@ -2,7 +2,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   TouchableOpacity,
   Image,
   FlatList,
@@ -12,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Animals } from "../../data/data";
 import { useRef, useState } from "react";
-import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 type RootStackParamList = {
   Second: undefined;
@@ -52,9 +51,8 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
       <View style={styles.contentContainer}>
         <View style={styles.iconButton}>
           {currentPage > 1 && (
-            <TouchableOpacity              
-              onPress={() => setCurrentPage(currentPage - 1)}>
-              <ChevronLeft style={styles.icon} />
+            <TouchableOpacity onPress={() => setCurrentPage(currentPage - 1)}>
+              <Icon name="chevron-left" size={48} color="gray" />
             </TouchableOpacity>
           )}
         </View>
@@ -62,7 +60,6 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
           data={renderPage(currentPage)}
           keyExtractor={(animalName) => animalName}
           numColumns={itemsPerRow}
-            
           renderItem={({ item: animalName }) => (
             <TouchableOpacity
               onPress={() =>
@@ -71,7 +68,7 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
               style={styles.itemContainer}>
               <Image
                 source={Animals[animalName].photo}
-                style={{ width: 200, height: 200 }}
+                style={{ width: "100%", aspectRatio: 1 }}
               />
             </TouchableOpacity>
           )}
@@ -86,19 +83,17 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
           )}
           // onViewableItemsChanged={viewableItemsChanged}
           viewabilityConfig={viewConfig}
-          scrollEventThrottle={32}
+          scrollEventThrottle={16}
+          
         />
         <View style={styles.iconButton}>
           {currentPage <
-          Math.ceil(animalNames.length / (itemsPerRow * rowsPerPage)) && (
-          <TouchableOpacity
-            
-            onPress={() => setCurrentPage(currentPage + 1)}>
-            <ChevronRight style={styles.icon} />
-          </TouchableOpacity>
-        )}
+            Math.ceil(animalNames.length / (itemsPerRow * rowsPerPage)) && (
+            <TouchableOpacity onPress={() => setCurrentPage(currentPage + 1)}>
+              <Icon name="chevron-right" size={48} color="gray" />
+            </TouchableOpacity>
+          )}
         </View>
-        
       </View>
     </View>
   );
@@ -115,6 +110,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    width: "100%",
   },
   buttonsContainer: {
     width: "85%",
@@ -128,19 +124,16 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   itemContainer: {
-    margin: 20,
-    marginHorizontal: 50,
+    margin: "2%",
+    marginHorizontal: "4%",
+    width: "12%",
   },
- 
+
   iconButton: {
     backgroundColor: "transparent",
     padding: 10,
     width: 100,
     alignItems: "center",
-    justifyContent: "center"
-  },
-  icon: {
-    fontSize: 52,
-    color: "gray"
+    justifyContent: "center",
   },
 });

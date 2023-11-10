@@ -2,7 +2,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   Image,
   TouchableOpacity,
   Animated,
@@ -11,7 +10,7 @@ import {
 import { useNavigation, RouteProp, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Animals } from "../../../data/data";
-import { VolumeUp } from "@mui/icons-material";
+import Icon from "react-native-vector-icons/MaterialIcons";
 import { Audio } from "expo-av";
 import { speak } from "expo-speech";
 import React, { useEffect, useRef, useState } from "react";
@@ -20,10 +19,11 @@ import {
   useAnimatedStyle,
   interpolate,
   withTiming,
+  withSpring,
 } from "react-native-reanimated";
 
 type RootStackParamList = {
-  animal: {animalName: string}
+  animal: { animalName: string };
 };
 
 type AnimalScreenRouteProp = RouteProp<RootStackParamList, "animal">;
@@ -40,7 +40,7 @@ export default function AnimalScreen() {
   const route = useRoute();
   const { animalName } = route.params as RouteParams;
   const animalData = Animals[animalName];
- 
+
   console.log("Received animalName:", animalData);
   if (!animalData) {
     // Handle the case when the animal data is not found
@@ -52,17 +52,16 @@ export default function AnimalScreen() {
   }
 
   function SingleCard() {
-    const flipAnimation = useRef(new Animated.Value(0)).current;
+    //const flipAnimation = useRef(new Animated.Value(0)).current;
+    const flipAnimation = useSharedValue(0);
     const [flipped, setFlipped] = useState(false);
     const [randomFactIndex, setRandomFactIndex] = useState<number | null>(null); //do losowej ciekwostki
 
     let flipRotation = 0;
-    flipAnimation.addListener(({ value }) => (flipRotation = value));
 
     const handleClick = () => {
       setFlipped(!flipped);
-      rotate.value = 1;
-
+      //rotate.value = 1;
       if (!flipped) {
         const randomIndex = Math.floor(
           Math.random() * animalData.ciekawostki.length
@@ -71,10 +70,16 @@ export default function AnimalScreen() {
       } else {
         setRandomFactIndex(null);
       }
+
+      flipAnimation.value = flipAnimation.value === 0 ? 1 : 0;
     };
-    const rotate = useSharedValue(0);
+
     const frontAnimatedStyles = useAnimatedStyle(() => {
-      const rotateValue = interpolate(rotate.value, [0, 1], [0, 180]);
+      const rotateValue = interpolate(
+        withSpring(flipAnimation.value),
+        [0, 1],
+        [0, 180]
+      );
       return {
         transform: [
           {
@@ -84,7 +89,11 @@ export default function AnimalScreen() {
       };
     });
     const backAnimatedStyles = useAnimatedStyle(() => {
-      const rotateValue = interpolate(rotate.value, [0, 1], [180, 360]);
+      const rotateValue = interpolate(
+        withSpring(flipAnimation.value),
+        [0, 1],
+        [180, 360]
+      );
       return {
         transform: [
           {
@@ -93,12 +102,14 @@ export default function AnimalScreen() {
         ],
       };
     });
+    useEffect(() => {
+      return () => {
+        flipAnimation.value = 0;
+      };
+    }, []);
 
     return (
-      <Pressable
-        onPress={() =>
-          flipRotation ? backAnimatedStyles : frontAnimatedStyles
-        }>
+      <Pressable onPress={handleClick}>
         <Animated.View
           style={[flipped ? frontAnimatedStyles : backAnimatedStyles]}>
           {!flipped ? ( //jesli karta jest odkryta
@@ -187,7 +198,7 @@ export default function AnimalScreen() {
       <View style={styles.infoContainer}>
         <TouchableOpacity onPress={speakAnimalName}>
           <Text>{animalData.name}</Text>
-          <VolumeUp />
+          <Icon name="mdiVolumeHigh" size={30} color="black" />
         </TouchableOpacity>
         <SingleCard />
       </View>
