@@ -4,8 +4,8 @@ import {
   View,
   Image,
   TouchableOpacity,
-  Animated,
   Pressable,
+ // Animated
 } from "react-native";
 import { useNavigation, RouteProp, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -19,8 +19,8 @@ import {
   useAnimatedStyle,
   interpolate,
   withTiming,
-  withSpring,
 } from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 
 type RootStackParamList = {
   animal: { animalName: string };
@@ -61,7 +61,7 @@ export default function AnimalScreen() {
 
     const handleClick = () => {
       setFlipped(!flipped);
-      //rotate.value = 1;
+      rotate.value = 1;
       if (!flipped) {
         const randomIndex = Math.floor(
           Math.random() * animalData.ciekawostki.length
@@ -70,16 +70,11 @@ export default function AnimalScreen() {
       } else {
         setRandomFactIndex(null);
       }
-
-      flipAnimation.value = flipAnimation.value === 0 ? 1 : 0;
     };
-
+    const rotate = useSharedValue(1);
     const frontAnimatedStyles = useAnimatedStyle(() => {
-      const rotateValue = interpolate(
-        withSpring(flipAnimation.value),
-        [0, 1],
-        [0, 180]
-      );
+     
+      const rotateValue = interpolate(rotate.value, [0, 1], [0, 180]);
       return {
         transform: [
           {
@@ -89,11 +84,8 @@ export default function AnimalScreen() {
       };
     });
     const backAnimatedStyles = useAnimatedStyle(() => {
-      const rotateValue = interpolate(
-        withSpring(flipAnimation.value),
-        [0, 1],
-        [180, 360]
-      );
+     
+      const rotateValue = interpolate(rotate.value, [0, 1], [180, 360]);
       return {
         transform: [
           {
@@ -109,7 +101,9 @@ export default function AnimalScreen() {
     }, []);
 
     return (
-      <Pressable onPress={handleClick}>
+      <Pressable
+        onPress={() =>
+          flipRotation ? backAnimatedStyles : frontAnimatedStyles}>
         <Animated.View
           style={[flipped ? frontAnimatedStyles : backAnimatedStyles]}>
           {!flipped ? ( //jesli karta jest odkryta
@@ -121,7 +115,7 @@ export default function AnimalScreen() {
             <TouchableOpacity onPress={handleClick} style={styles.funfact}>
               <Text>Czy wiesz że...</Text>
               {randomFactIndex !== null ? (
-                <View>{animalData.ciekawostki[randomFactIndex]}</View>
+                <Text>{animalData.ciekawostki[randomFactIndex]}</Text>
               ) : (
                 <Text>Kliknij, aby poznać ciekawostkę</Text>
               )}
@@ -198,7 +192,7 @@ export default function AnimalScreen() {
       <View style={styles.infoContainer}>
         <TouchableOpacity onPress={speakAnimalName}>
           <Text>{animalData.name}</Text>
-          <Icon name="mdiVolumeHigh" size={30} color="black" />
+          <Icon name="mdiVolumeHigh" size={30} color="black"/>
         </TouchableOpacity>
         <SingleCard />
       </View>
