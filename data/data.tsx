@@ -1379,3 +1379,20 @@ export let Vegetables: VegetablesType = {
     ],
   },
 };
+
+export let Letters = {
+  A: {
+    uppercase: "A",
+    lowercase: "a",
+    //photo: require(" "),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+};

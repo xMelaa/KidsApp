@@ -75,7 +75,7 @@ export default function NewWordsScreen({ navigation }: HomeScreenProps) {
             onPress={() => navigation.push(word.routeName)}
             style={styles.buttonContainer}>
               
-            <Image source={word.src} style={[styles.backgroundImage,{ borderRadius: 50, opacity: 0.8} ]} blurRadius={0.7} />
+            <Image source={word.src} style={[styles.backgroundImage,{ borderRadius: 30, opacity: 0.8} ]} blurRadius={0.7} />
             <Text style={styles.buttonText}>{word.title}</Text>
           </TouchableOpacity>
         ))}
@@ -83,7 +83,6 @@ export default function NewWordsScreen({ navigation }: HomeScreenProps) {
     </View>
   );
 }
-
 
 const { width, height } = Dimensions.get("window");
 const fontSize = getFontSize(width * 0.02)
