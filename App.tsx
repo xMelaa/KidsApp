@@ -24,11 +24,12 @@ const screens: {
   options?: object;
 }[] = [
   { name: "Home", component: HomeScreen, options: { headerShown: false } },
+  { name: "words", component: NewWordsScreen },
   { name: "painting", component: PaintingScreen },
   { name: "animals", component: (props: any) => <AnimalsScreen {...props} /> },
   { name: "animal", component: (props: any) => <AnimalScreen {...props} /> },
   { name: "choose", component: ChooseScreen },
-  { name: "words", component: NewWordsScreen },
+
   { name: "games", component: GamesScreen },
   { name: "letters", component: LettersScreen },
   { name: "vehicles", component: VehiclesScreen },
@@ -49,7 +50,7 @@ export default function App() {
             name={screen.name}
             component={screen.component}
             // options={{ title: screen.title || undefined }}
-            options={screen.options} 
+            options={screen.options}
           />
         ))}
       </Stack.Navigator>
