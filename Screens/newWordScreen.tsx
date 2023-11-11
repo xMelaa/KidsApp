@@ -5,9 +5,12 @@ import {
   Button,
   TouchableOpacity,
   Image,
+  Dimensions,
+  PixelRatio,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { fonts } from "react-native-elements/dist/config";
 
 type WordType = {
   title: string;
@@ -52,6 +55,9 @@ type RootStackParamList = {
 type HomeScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Second">;
 };
+const fontScale = PixelRatio.getFontScale();
+const getFontSize = (size: number) => size / fontScale;
+
 
 export default function NewWordsScreen({ navigation }: HomeScreenProps) {
   return (
@@ -78,6 +84,10 @@ export default function NewWordsScreen({ navigation }: HomeScreenProps) {
   );
 }
 
+
+const { width, height } = Dimensions.get("window");
+const fontSize = getFontSize(width * 0.02)
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -99,7 +109,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     gap: 15,
-    paddingVertical: 50
+    paddingVertical: 10
   },
   buttonContainer: {
     height: "30%",
@@ -115,13 +125,13 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   buttonText: {
-    fontSize: 24,
+    fontSize: fontSize,
     color: "white",
     fontWeight: "700",
-    backgroundColor: "rgba(0,	191, 255, 0.9)",
+    backgroundColor: "rgba(0,	191, 255, 0.85)",
     textTransform: "uppercase",
-    paddingVertical: 20,
-    paddingHorizontal: 60,
+    paddingVertical: fontSize * 0.6,
+    paddingHorizontal: fontSize * 3,
     alignItems: "center",
     borderRadius: 50,
     letterSpacing: 1,
@@ -131,7 +141,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 16,
     },
-    shadowOpacity: 0.6,
+    shadowOpacity: 0.8,
     shadowRadius: 18.0,
     elevation: 26,
   },

@@ -5,6 +5,8 @@ import {
   Button,
   TouchableOpacity,
   Image,
+  Dimensions,
+  PixelRatio
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
@@ -18,8 +20,11 @@ type RootStackParamList = {
 type HomeScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Second">;
 };
+const fontScale = PixelRatio.getFontScale();
+const getFontSize = (size: number) => size / fontScale;
 
 export default function ChooseScreen({ navigation }: HomeScreenProps) {
+  
   return (
     <View style={styles.container}>
       <View style={styles.buttonsContainer}>
@@ -31,7 +36,7 @@ export default function ChooseScreen({ navigation }: HomeScreenProps) {
             style={styles.backgroundImage} blurRadius={1.5}
           />
           <View style={styles.overlay}></View>
-          <Text style={styles.buttonText}>Poznaj nowe słówka</Text>
+          <Text style={[styles.buttonText,]}>Poznaj nowe słówka</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.push("games")}
@@ -48,6 +53,9 @@ export default function ChooseScreen({ navigation }: HomeScreenProps) {
     </View>
   );
 }
+
+const { width, height } = Dimensions.get("window");
+const fontSize = getFontSize(width * 0.022)
 
 const styles = StyleSheet.create({
   container: {
@@ -81,13 +89,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonText: {
-    fontSize: 24,
+    fontSize: fontSize,
     color: "white",
     fontWeight: "700",
     backgroundColor: "rgba(0,	191, 255, 0.9)",
     textTransform: "uppercase",
-    paddingVertical: 20,
-    paddingHorizontal: 60,
+    paddingVertical: fontSize * 0.8,
+    paddingHorizontal: fontSize * 3,
     alignItems: "center",
     borderRadius: 50,
     letterSpacing: 1,
