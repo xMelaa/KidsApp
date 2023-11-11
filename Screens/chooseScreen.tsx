@@ -28,8 +28,9 @@ export default function ChooseScreen({ navigation }: HomeScreenProps) {
           style={styles.buttonContainer}>
           <Image
             source={require("../img/books.png")}
-            style={styles.backgroundImage}
+            style={styles.backgroundImage} blurRadius={1.5}
           />
+          <View style={styles.overlay}></View>
           <Text style={styles.buttonText}>Poznaj nowe słówka</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -38,7 +39,9 @@ export default function ChooseScreen({ navigation }: HomeScreenProps) {
           <Image
             source={require("../img/toys.png")}
             style={styles.backgroundImage}
+            blurRadius={1.5}
           />
+          <View style={styles.overlay}></View>
           <Text style={styles.buttonText}>Gry i zabawy</Text>
         </TouchableOpacity>
       </View>
@@ -52,6 +55,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  overlay:{
+    backgroundColor: "rgba(0, 0, 0, 0.1)",
+    position: "absolute",
+    width: "100%",
+    height: "100%",
   },
   buttonsContainer: {
     flexDirection: "row",
@@ -72,14 +81,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: 24,
     color: "white",
-    fontWeight: "600",
-    backgroundColor: "deepskyblue",
-    paddingVertical: 15,
-    paddingHorizontal: 50,
+    fontWeight: "700",
+    backgroundColor: "rgba(0,	191, 255, 0.9)",
+    textTransform: "uppercase",
+    paddingVertical: 20,
+    paddingHorizontal: 60,
     alignItems: "center",
     borderRadius: 50,
+    letterSpacing: 1,
     flexDirection: "row",
     shadowColor: "#000",
     shadowOffset: {
