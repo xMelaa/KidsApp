@@ -25,11 +25,11 @@ type RootStackParamList = {
 type HomeScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Second">;
 };
-
+const { width, height } = Dimensions.get("window");
 export default function AnimalsScreen({ navigation }: HomeScreenProps) {
   const animalNames = Object.keys(Animals);
   const itemsPerRow = 5;
-  const rowsPerPage = 3;
+  const rowsPerPage = height > 500 ? 3 : height < 350 ? 1 : 2;
   const initialPage = 1;
 
   const [currentPage, setCurrentPage] = useState(initialPage);
@@ -48,7 +48,6 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
   const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
   return (
     <View style={styles.container}>
-      <Text>Zwierzęta</Text>
       <View style={styles.contentContainer}>
         <View style={styles.iconButton}>
           {currentPage > 1 && (
@@ -57,86 +56,6 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
             </TouchableOpacity>
           )}
         </View>
-        {/* <View style={[styles.buttonsContainer]}>
-          
-        <TouchableOpacity
-              onPress={() =>
-                navigation.push("animal", { animalName: "Dog" })
-              }
-              style={styles.itemContainer}>
-              <Image
-                source={Animals["Pies"].photo}
-                style={styles.image}
-             
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.push("animal", { animalName: "Dog" })
-              }
-              style={styles.itemContainer}>
-              <Image
-                source={Animals["Pies"].photo}
-                style={styles.image}
-             
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.push("animal", { animalName: "Dog" })
-              }
-              style={styles.itemContainer}>
-              <Image
-                source={Animals["Pies"].photo}
-                style={styles.image}
-             
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.push("animal", { animalName: "Dog" })
-              }
-              style={styles.itemContainer}>
-              <Image
-                source={Animals["Pies"].photo}
-                style={styles.image}
-             
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.push("animal", { animalName: "Dog" })
-              }
-              style={styles.itemContainer}>
-              <Image
-                source={Animals["Pies"].photo}
-                style={styles.image}
-             
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.push("animal", { animalName: "Dog" })
-              }
-              style={styles.itemContainer}>
-              <Image
-                source={Animals["Pies"].photo}
-                style={styles.image}
-             
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.push("animal", { animalName: "Dog" })
-              }
-              style={styles.itemContainer}>
-              <Image
-                source={Animals["Pies"].photo}
-                style={styles.image}
-             
-              />
-            </TouchableOpacity>
-        </View> */}
         <SafeAreaView style={styles.buttonsContainer}>
           <FlatList
             data={renderPage(currentPage)}
@@ -158,17 +77,17 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
               // </View>
             )}
             showsHorizontalScrollIndicator={false}
-            // pagingEnabled
+            pagingEnabled
             bounces={false}
-            // onScroll={Animated.event(
-            //   [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-            //   {
-            //     useNativeDriver: false,
-            //   }
-            // )}
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+              {
+                useNativeDriver: false,
+              }
+            )}
             // onViewableItemsChanged={viewableItemsChanged}
             viewabilityConfig={viewConfig}
-            // scrollEventThrottle={16}
+            scrollEventThrottle={16}
           />
         </SafeAreaView>
 
@@ -184,86 +103,36 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
     </View>
   );
 }
-const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
-  // container: {
-  //   flex: 1,
-  //   backgroundColor: "#fff",
-  //   alignItems: "center",
-  //   //justifyContent: "center",
-  // },
-  // contentContainer: {
-  //   flexDirection: "row",
-  //   //flexWrap: "wrap",
-  //   //flex: 1,
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  //   width: "100%",
-  //   //height: "100%",
-  // },
-  // buttonsContainer: {
-  //   flexDirection: "row",
-  //   //flexWrap: "wrap",
-  //   flex: 1,
-  //   // alignItems: "center",
-  //   //justifyContent: "center",
-  //   width: "100%",
-  //    height: "100%",
-  // },
-  // itemContainer: {
-  //   //margin: "2%",
-  //   //marginHorizontal: "4%",
-  //   //flex: 1,
-  //   alignItems: "center",
-
-  //   // width: "12%",
-  //   width: "20%",
-  //  height: "100%",
-  // },
-
-  // iconButton: {
-  //   backgroundColor: "transparent",
-  //   padding: 10,
-  //   width: 100,
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  // },
-  // image: {
-  //   //width: "20%",
-  //   // aspectRatio: 1
-
-  //   width: "100%",
-  //   height: "60%",
-  //   aspectRatio: 1,
-  // },
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    
   },
   contentContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",
+    width: "100%",    
   },
   buttonsContainer: {
-    width: "85%",
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "center",
-    justifyContent: "center",
+    width: "80%",
+   // display: "flex",
+   // flexDirection: "row",
+
+   // alignItems: "center",
+    //justifyContent: "space-evenly",
     
-    height: "100%",
+   // height: "100%",
     marginVertical: 20,
   },
   itemContainer: {
-    margin: "2%",
+    margin: "1%",
     marginHorizontal: "2%",
-    width: "12%",
+    width: "16%",
     aspectRatio: 1
   },
 
@@ -275,11 +144,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   image: {
-      //width: "20%",
-      // aspectRatio: 1
-  
       width: "100%",
-      height: "100%",
-      //aspectRatio: 1,
+      height: "100%"
     },
 });
