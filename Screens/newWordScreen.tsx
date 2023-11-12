@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { fonts } from "react-native-elements/dist/config";
 
 type WordType = {
   title: string;
@@ -64,7 +63,7 @@ export default function NewWordsScreen({ navigation }: HomeScreenProps) {
     <View style={styles.container}>
       <Image
         source={require("../img/books2.png")}
-        style={[styles.backgroundImage, { overlayColor: "rgba(0, 0, 0, 0.9)"}]}
+        style={[styles.backgroundImage]}
         blurRadius={6}
       />
        <View style={styles.overlay}></View>
@@ -85,7 +84,7 @@ export default function NewWordsScreen({ navigation }: HomeScreenProps) {
 }
 
 const { width, height } = Dimensions.get("window");
-const fontSize = getFontSize(width * 0.02)
+const fontSize = getFontSize(width * 0.018)
 
 const styles = StyleSheet.create({
   container: {

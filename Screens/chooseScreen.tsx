@@ -55,7 +55,7 @@ export default function ChooseScreen({ navigation }: HomeScreenProps) {
 }
 
 const { width, height } = Dimensions.get("window");
-const fontSize = getFontSize(width * 0.022)
+const fontSize = getFontSize(width * 0.02)
 
 const styles = StyleSheet.create({
   container: {

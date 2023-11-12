@@ -22,16 +22,16 @@ const screens: {
   name: string;
   component: any;
   options?: object;
-}[] = [{ name: "animals", component: (props: any) => <AnimalsScreen {...props} /> },
+}[] = [{ name: "letters", component: LettersScreen },
   { name: "Home", component: HomeScreen, options: { headerShown: false } },
   { name: "words", component: NewWordsScreen },
   { name: "painting", component: PaintingScreen },
-  
+  { name: "animals", component: (props: any) => <AnimalsScreen {...props} /> },
   { name: "animal", component: (props: any) => <AnimalScreen {...props} /> },
   { name: "choose", component: ChooseScreen },
 
   { name: "games", component: GamesScreen },
-  { name: "letters", component: LettersScreen },
+  
   { name: "vehicles", component: VehiclesScreen },
   { name: "fruits", component: FruitsScreen },
   { name: "memory", component: MemoryGame },
