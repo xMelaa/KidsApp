@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -22,7 +21,6 @@ export default function LettersScreen({ navigation }: HomeScreenProps) {
     <View style={styles.container}>
       <Text>Literki</Text>
       
-      <StatusBar style="auto" />
     </View>
   );
 }
