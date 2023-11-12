@@ -3,7 +3,6 @@ import {
   Text,
   View,
   Image,
-  TouchableOpacity,
   Pressable,
  // Animated
 } from "react-native";
@@ -107,19 +106,19 @@ export default function AnimalScreen() {
         <Animated.View
           style={[flipped ? frontAnimatedStyles : backAnimatedStyles]}>
           {!flipped ? ( //jesli karta jest odkryta
-            <TouchableOpacity onPress={handleClick} style={styles.funfact}>
+            <Pressable onPress={handleClick} style={styles.funfact}>
               <Text>Ciekawostka</Text>
-            </TouchableOpacity>
+            </Pressable>
           ) : (
             //jesli jest zakryta
-            <TouchableOpacity onPress={handleClick} style={styles.funfact}>
+            <Pressable onPress={handleClick} style={styles.funfact}>
               <Text>Czy wiesz że...</Text>
               {randomFactIndex !== null ? (
                 <Text>{animalData.ciekawostki[randomFactIndex]}</Text>
               ) : (
                 <Text>Kliknij, aby poznać ciekawostkę</Text>
               )}
-            </TouchableOpacity>
+            </Pressable>
           )}
         </Animated.View>
       </Pressable>
@@ -185,15 +184,15 @@ export default function AnimalScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <TouchableOpacity onPress={playSound} style={styles.image}>
+        <Pressable onPress={playSound} style={styles.image}>
           <Image source={animalData.photo} style={styles.image} />
-        </TouchableOpacity>
+        </Pressable>
       </View>
       <View style={styles.infoContainer}>
-        <TouchableOpacity onPress={speakAnimalName}>
+        <Pressable onPress={speakAnimalName}>
           <Text>{animalData.name}</Text>
           <Icon name="mdiVolumeHigh" size={30} color="black"/>
-        </TouchableOpacity>
+        </Pressable>
         <SingleCard />
       </View>
     </View>

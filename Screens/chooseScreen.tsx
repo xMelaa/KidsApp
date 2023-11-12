@@ -3,7 +3,7 @@ import {
   Text,
   View,
   Button,
-  TouchableOpacity,
+  Pressable,
   Image,
   Dimensions,
   PixelRatio
@@ -28,27 +28,29 @@ export default function ChooseScreen({ navigation }: HomeScreenProps) {
   return (
     <View style={styles.container}>
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity
+        <Pressable
           onPress={() => navigation.push("words")}
           style={styles.buttonContainer}>
           <Image
+          resizeMode= "cover"
             source={require("../img/books.png")}
             style={styles.backgroundImage} blurRadius={1.5}
           />
           <View style={styles.overlay}></View>
           <Text style={[styles.buttonText,]}>Poznaj nowe słówka</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </Pressable>
+        <Pressable
           onPress={() => navigation.push("games")}
           style={styles.buttonContainer}>
           <Image
+          resizeMode= "cover"
             source={require("../img/toys.png")}
             style={styles.backgroundImage}
             blurRadius={1.5}
           />
           <View style={styles.overlay}></View>
           <Text style={styles.buttonText}>Gry i zabawy</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );
@@ -77,7 +79,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   backgroundImage: {
-    resizeMode: "cover",
+
     position: "absolute",
     width: "100%",
     height: "100%",

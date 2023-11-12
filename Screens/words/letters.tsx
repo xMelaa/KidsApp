@@ -2,7 +2,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
+  Pressable,
   Image,
   FlatList,
   Animated,
@@ -52,6 +52,7 @@ export default function LettersScreen({ navigation }: HomeScreenProps) {
   return (
     <View style={styles.container}>
     <Image
+    resizeMode= "cover"
      source={require("../../img/letters.png")}
      style={[styles.backgroundImage]}
      blurRadius={6}
@@ -60,9 +61,9 @@ export default function LettersScreen({ navigation }: HomeScreenProps) {
    <View style={styles.contentContainer}>
      <View style={styles.iconButton}>
        {currentPage > 1 && (
-         <TouchableOpacity onPress={() => setCurrentPage(currentPage - 1)} style={styles.iconContainer}>
+         <Pressable onPress={() => setCurrentPage(currentPage - 1)} style={styles.iconContainer}>
            <Icon name="chevron-left" size={fontSize * 3} color="lightgray" />
-         </TouchableOpacity>
+         </Pressable>
        )}
      </View>
      <SafeAreaView style={styles.buttonsContainer}>
@@ -72,7 +73,7 @@ export default function LettersScreen({ navigation }: HomeScreenProps) {
          numColumns={itemsPerRow}
          horizontal={false}
          renderItem={({ item: letterName }) => (
-           <TouchableOpacity
+           <Pressable
              onPress={() =>
                navigation.push("letter", { letterName: letterName })
              }
@@ -81,7 +82,7 @@ export default function LettersScreen({ navigation }: HomeScreenProps) {
                source={Letters[letterName].photo}
                style={styles.image}
              />
-           </TouchableOpacity>
+           </Pressable>
          )}
          showsHorizontalScrollIndicator={false}
          pagingEnabled
@@ -100,9 +101,9 @@ export default function LettersScreen({ navigation }: HomeScreenProps) {
      <View style={styles.iconButton}>
        {currentPage <
          Math.ceil(letterNames.length / (itemsPerRow * rowsPerPage)) && (
-         <TouchableOpacity onPress={() => setCurrentPage(currentPage + 1)} style={styles.iconContainer}>
+         <Pressable onPress={() => setCurrentPage(currentPage + 1)} style={styles.iconContainer}>
            <Icon name="chevron-right" size={fontSize * 3} color="lightgray" />
-         </TouchableOpacity>
+         </Pressable>
        )}
      </View>
    </View>
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
       
     },
     backgroundImage: {
-      resizeMode: "cover",
+
       position: "absolute",
       width: "100%",
       height: "100%",

@@ -1448,9 +1448,7 @@ export let Letters: LettersType = {
         name: "Apple",
        // src: require(" "),
       },
-      {
-
-      },
+      
     ],
   },
   Ć: {

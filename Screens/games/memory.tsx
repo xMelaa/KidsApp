@@ -5,7 +5,6 @@ import {
   View,
   Button,
   Image,
-  TouchableOpacity,
   Animated,
   Pressable,
 } from "react-native";
@@ -93,17 +92,17 @@ function SingleCard({
           flipped ? frontAnimatedStyles : backAnimatedStyles,
         ]}>
         {flipped ? ( //jesli karta jest odkryta
-          <TouchableOpacity onPress={handleClick} style={styles.front}>
+          <Pressable onPress={handleClick} style={styles.front}>
             <Image style={styles.front} source={card.symbol} />
-          </TouchableOpacity>
+          </Pressable>
         ) : (
           //jesli jest zakryta
-          <TouchableOpacity onPress={handleClick} style={styles.back}>
+          <Pressable onPress={handleClick} style={styles.back}>
             <Image
               style={styles.back}
               source={require("../../img/cover.png")}
             />
-          </TouchableOpacity>
+          </Pressable>
         )}
       </Animated.View>
     </Pressable>
@@ -233,6 +232,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 2,
     borderStyle: "solid",
-   // transformStyle: "preserve-3d", //perspektywa??
+    // transformStyle: "preserve-3d", //perspektywa??
   },
 });

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity, Pressable } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
@@ -18,13 +18,14 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
       <Image
         source={require("../img/firstPage.png")}
         style={styles.backgroundImage}
+        resizeMode= "cover"
       />
-      <TouchableOpacity
+      <Pressable
         onPress={() => navigation.navigate("choose")}
         style={styles.button}>
         <Text style={styles.buttonText}>ZAGRAJ</Text>
         <Icon name="play-arrow" size={44} color="white" />
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }
@@ -37,7 +38,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   backgroundImage: {
-    resizeMode: "cover",
     position: "absolute",
     width: "100%",
     height: "100%",

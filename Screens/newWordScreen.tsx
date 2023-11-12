@@ -3,7 +3,7 @@ import {
   Text,
   View,
   Button,
-  TouchableOpacity,
+  Pressable,
   Image,
   Dimensions,
   PixelRatio,
@@ -62,6 +62,7 @@ export default function NewWordsScreen({ navigation }: HomeScreenProps) {
   return (
     <View style={styles.container}>
       <Image
+      resizeMode= "cover"
         source={require("../img/books2.png")}
         style={[styles.backgroundImage]}
         blurRadius={6}
@@ -69,14 +70,14 @@ export default function NewWordsScreen({ navigation }: HomeScreenProps) {
        <View style={styles.overlay}></View>
       <View style={styles.buttonsContainer}>
         {words.map((word, index) => (
-          <TouchableOpacity
+          <Pressable
             key={index}
             onPress={() => navigation.push(word.routeName)}
             style={styles.buttonContainer}>
               
-            <Image source={word.src} style={[styles.backgroundImage,{ borderRadius: 30, opacity: 0.8} ]} blurRadius={0.7} />
+            <Image  resizeMode= "cover" source={word.src} style={[styles.backgroundImage,{ borderRadius: 30, opacity: 0.8} ]} blurRadius={0.7} />
             <Text style={styles.buttonText}>{word.title}</Text>
-          </TouchableOpacity>
+          </Pressable>
         ))}
       </View>
     </View>
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
    
   },
   backgroundImage: {
-    resizeMode: "cover",
+
     position: "absolute",
     width: "100%",
     height: "100%",
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 16,
     },
-    shadowOpacity: 0.8,
+    shadowOpacity: 0.6,
     shadowRadius: 18.0,
     elevation: 26,
   },

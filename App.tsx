@@ -24,25 +24,23 @@ const screens: {
   component: any;
   options?: object;
 }[] = [
-  {
-    name: "vegetables",
-    component: (props: any) => <VegetablesScreen {...props} />,
-  },
   { name: "Home", component: HomeScreen, options: { headerShown: false } },
   { name: "words", component: NewWordsScreen },
   { name: "painting", component: PaintingScreen },
-  { name: "animals", component: (props: any) => <AnimalsScreen {...props} /> },
-  { name: "animal", component: (props: any) => <AnimalScreen {...props} /> },
-  { name: "letters", component: (props: any) => <LettersScreen {...props} /> },
+  { name: "animals", component: AnimalsScreen },
+  { name: "animal", component: AnimalScreen },
+  { name: "letters", component: LettersScreen },
   // { name: "letter", component: (props: any) => <LetterScreen {...props} /> },
   { name: "choose", component: ChooseScreen },
   {
     name: "vehicles",
-    component: (props: any) => <VehiclesScreen {...props} />,
+    component: VehiclesScreen,
   },
-
-  { name: "fruits", component: (props: any) => <FruitsScreen {...props} /> },
-
+  { name: "fruits", component: FruitsScreen },
+  {
+    name: "vegetables",
+    component: VegetablesScreen,
+  },
   { name: "games", component: GamesScreen },
   { name: "memory", component: MemoryGame },
   { name: "quiz", component: QuizGame },
@@ -58,10 +56,11 @@ export default function App() {
           <Stack.Screen
             key={index}
             name={screen.name}
-            component={screen.component}
+            //component={screen.component}
             // options={{ title: screen.title || undefined }}
-            options={screen.options}
-          />
+            options={screen.options}>
+            {(props) => <screen.component {...props} />}
+          </Stack.Screen>
         ))}
       </Stack.Navigator>
     </NavigationContainer>

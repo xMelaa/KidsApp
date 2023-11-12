@@ -2,7 +2,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
+  Pressable,
   Image,
   FlatList,
   Animated,
@@ -51,6 +51,7 @@ export default function VegetablesScreen({ navigation }: HomeScreenProps) {
   return (
     <View style={styles.container}>
       <Image
+      resizeMode= "cover"
         source={require("../../img/vegetables.png")}
         style={[styles.backgroundImage]}
         blurRadius={6}
@@ -59,11 +60,11 @@ export default function VegetablesScreen({ navigation }: HomeScreenProps) {
       <View style={styles.contentContainer}>
         <View style={styles.iconButton}>
           {currentPage > 1 && (
-            <TouchableOpacity
+            <Pressable
               onPress={() => setCurrentPage(currentPage - 1)}
               style={styles.iconContainer}>
               <Icon name="chevron-left" size={fontSize * 3} color="lightgray" />
-            </TouchableOpacity>
+            </Pressable>
           )}
         </View>
         <SafeAreaView style={styles.buttonsContainer}>
@@ -73,16 +74,17 @@ export default function VegetablesScreen({ navigation }: HomeScreenProps) {
             numColumns={itemsPerRow}
             horizontal={false}
             renderItem={({ item: vegetableName }) => (
-              <TouchableOpacity
+              <Pressable
                 onPress={() =>
                   navigation.push("vegetable", { vegetableName: vegetableName })
                 }
                 style={styles.itemContainer}>
                 <Image
+        
                   source={Vegetables[vegetableName].photo}
                   style={styles.image}
                 />
-              </TouchableOpacity>
+              </Pressable>
             )}
             showsHorizontalScrollIndicator={false}
             pagingEnabled
@@ -101,7 +103,7 @@ export default function VegetablesScreen({ navigation }: HomeScreenProps) {
         <View style={styles.iconButton}>
           {currentPage <
             Math.ceil(vegetableNames.length / (itemsPerRow * rowsPerPage)) && (
-            <TouchableOpacity
+            <Pressable
               onPress={() => setCurrentPage(currentPage + 1)}
               style={styles.iconContainer}>
               <Icon
@@ -109,7 +111,7 @@ export default function VegetablesScreen({ navigation }: HomeScreenProps) {
                 size={fontSize * 3}
                 color="lightgray"
               />
-            </TouchableOpacity>
+            </Pressable>
           )}
         </View>
       </View>
@@ -160,7 +162,6 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   backgroundImage: {
-    resizeMode: "cover",
     position: "absolute",
     width: "100%",
     height: "100%",

@@ -5,7 +5,7 @@ import {
   Button,
   Dimensions,
   useWindowDimensions,
-  TouchableOpacity,
+  Pressable,
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useRef, useState } from "react";
@@ -153,13 +153,10 @@ export default function PaintingScreen() {
       <View style={styles.canvasContainer}>
         <View style={styles.colorPicker}>
           {brushColors.map((color) => (
-            <TouchableOpacity
+            <Pressable
               key={color}
               onPress={() => changeBrushColor(color)}
-              style={[
-                styles.color,
-                { backgroundColor: color },
-              ]}></TouchableOpacity>
+              style={[styles.color, { backgroundColor: color }]}></Pressable>
           ))}
         </View>
         <canvas
@@ -170,17 +167,19 @@ export default function PaintingScreen() {
         />
         <View style={styles.brushSizePicker}>
           {brushSizes.map((size) => (
-            <TouchableOpacity
+            <Pressable
               key={size}
               onPress={() => changeBrushSize(size)}
               style={styles.sizes}>
               <Text style={styles.sizeText}>{size.toString()}</Text>
-            </TouchableOpacity>
+            </Pressable>
           ))}
         </View>
       </View>
-     
-      <TouchableOpacity onPress={clearCanvas} style={styles.buttonClear}><Text style={styles.buttonClearText}>Wyczyść</Text></TouchableOpacity>
+
+      <Pressable onPress={clearCanvas} style={styles.buttonClear}>
+        <Text style={styles.buttonClearText}>Wyczyść</Text>
+      </Pressable>
     </>
   );
 }
@@ -192,9 +191,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: 50,
   },
-  titleText:{
+  titleText: {
     fontSize: 22,
-    fontWeight: "600"
+    fontWeight: "600",
   },
   canvasContainer: {
     flexDirection: "row",
@@ -212,7 +211,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 50,
-    marginVertical: 2
+    marginVertical: 2,
   },
   sizes: {
     width: 50,
@@ -221,7 +220,7 @@ const styles = StyleSheet.create({
     backgroundColor: "gray",
     alignItems: "center",
     justifyContent: "center",
-    marginVertical:2
+    marginVertical: 2,
   },
   sizeText: {
     fontSize: 16,
@@ -229,10 +228,10 @@ const styles = StyleSheet.create({
   },
   brushSizePicker: {
     width: 50,
-   
-    marginRight: 10
+
+    marginRight: 10,
   },
-  buttonClear:{
+  buttonClear: {
     width: "30%",
     height: 35,
     backgroundColor: "lightblue",
@@ -240,11 +239,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 30,
     marginHorizontal: "auto",
-    marginVertical: "auto"
+    marginVertical: "auto",
   },
-  buttonClearText:{
+  buttonClearText: {
     fontSize: 16,
     color: "white",
-    fontWeight: "600"
-  }
+    fontWeight: "600",
+  },
 });
