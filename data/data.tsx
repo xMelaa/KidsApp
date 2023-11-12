@@ -1453,6 +1453,20 @@ export let Letters: LettersType = {
       },
     ],
   },
+  Ć: {
+    uppercase: "Ć",
+    lowercase: "ć",
+    photo: require("../img/Litery/_Ć.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
   D: {
     uppercase: "D",
     lowercase: "d",

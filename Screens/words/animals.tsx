@@ -29,7 +29,7 @@ type HomeScreenProps = {
 const { width, height } = Dimensions.get("window");
 const fontScale = PixelRatio.getFontScale();
 const getFontSize = (size: number) => size / fontScale;
-const fontSize = getFontSize(width * 0.022)
+const fontSize = getFontSize(width * 0.022);
 
 export default function AnimalsScreen({ navigation }: HomeScreenProps) {
   const animalNames = Object.keys(Animals);
@@ -50,16 +50,18 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
   const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
   return (
     <View style={styles.container}>
-       <Image
+      <Image
         source={require("../../img/animals.png")}
-        style={[styles.backgroundImage,]}
+        style={[styles.backgroundImage]}
         blurRadius={6}
       />
-       <View style={styles.overlay}></View>
+      <View style={styles.overlay}></View>
       <View style={styles.contentContainer}>
         <View style={styles.iconButton}>
           {currentPage > 1 && (
-            <TouchableOpacity onPress={() => setCurrentPage(currentPage - 1)} style={styles.iconContainer}>
+            <TouchableOpacity
+              onPress={() => setCurrentPage(currentPage - 1)}
+              style={styles.iconContainer}>
               <Icon name="chevron-left" size={fontSize * 3} color="lightgray" />
             </TouchableOpacity>
           )}
@@ -99,8 +101,14 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
         <View style={styles.iconButton}>
           {currentPage <
             Math.ceil(animalNames.length / (itemsPerRow * rowsPerPage)) && (
-            <TouchableOpacity onPress={() => setCurrentPage(currentPage + 1)} style={styles.iconContainer}>
-              <Icon name="chevron-right" size={fontSize * 3} color="lightgray" />
+            <TouchableOpacity
+              onPress={() => setCurrentPage(currentPage + 1)}
+              style={styles.iconContainer}>
+              <Icon
+                name="chevron-right"
+                size={fontSize * 3}
+                color="lightgray"
+              />
             </TouchableOpacity>
           )}
         </View>
@@ -115,13 +123,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    
   },
   contentContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",    
+    width: "100%",
   },
   buttonsContainer: {
     width: "80%",
@@ -132,9 +139,9 @@ const styles = StyleSheet.create({
     marginHorizontal: "2%",
     width: "16%",
     aspectRatio: 1,
-     border: "solid",
-      borderColor: "black",
-      borderWidth: 3
+    border: "solid",
+    borderColor: "black",
+    borderWidth: 3,
   },
 
   iconButton: {
@@ -144,25 +151,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  iconContainer:{
+  iconContainer: {
     height: "100%",
-     justifyContent: "center"
+    justifyContent: "center",
   },
   image: {
-      width: "100%",
-      height: "100%",
-      
-    },
-    backgroundImage: {
-      resizeMode: "cover",
-      position: "absolute",
-      width: "100%",
-      height: "100%",
-    },
-    overlay:{
-      backgroundColor: "rgba(0, 0, 0, 0.3)",
-      position: "absolute",
-      width: "100%",
-      height: "100%",
-    },
+    width: "100%",
+    height: "100%",
+  },
+  backgroundImage: {
+    resizeMode: "cover",
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+  },
+  overlay: {
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+  },
 });

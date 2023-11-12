@@ -5,6 +5,7 @@ import GamesScreen from "./Screens/gamesScreen";
 import AnimalsScreen from "./Screens/words/animals";
 import VehiclesScreen from "./Screens/words/vehicles";
 import FruitsScreen from "./Screens/words/fruits";
+import VegetablesScreen from "./Screens/words/vegetables";
 import LettersScreen from "./Screens/words/letters";
 import AnimalScreen from "./Screens/words/animals/animal";
 import MemoryGame from "./Screens/games/memory";
@@ -22,18 +23,27 @@ const screens: {
   name: string;
   component: any;
   options?: object;
-}[] = [{ name: "letters", component: LettersScreen },
+}[] = [
+  {
+    name: "vegetables",
+    component: (props: any) => <VegetablesScreen {...props} />,
+  },
   { name: "Home", component: HomeScreen, options: { headerShown: false } },
   { name: "words", component: NewWordsScreen },
   { name: "painting", component: PaintingScreen },
   { name: "animals", component: (props: any) => <AnimalsScreen {...props} /> },
   { name: "animal", component: (props: any) => <AnimalScreen {...props} /> },
+  { name: "letters", component: (props: any) => <LettersScreen {...props} /> },
+  // { name: "letter", component: (props: any) => <LetterScreen {...props} /> },
   { name: "choose", component: ChooseScreen },
+  {
+    name: "vehicles",
+    component: (props: any) => <VehiclesScreen {...props} />,
+  },
+
+  { name: "fruits", component: (props: any) => <FruitsScreen {...props} /> },
 
   { name: "games", component: GamesScreen },
-  
-  { name: "vehicles", component: VehiclesScreen },
-  { name: "fruits", component: FruitsScreen },
   { name: "memory", component: MemoryGame },
   { name: "quiz", component: QuizGame },
   { name: "shufflequiz", component: QuizShuffleGame },
