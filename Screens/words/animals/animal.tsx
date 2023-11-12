@@ -23,16 +23,6 @@ import {
 } from "react-native-reanimated";
 import Animated from "react-native-reanimated";
 
-type RootStackParamList = {
-  animal: { animalName: string };
-};
-
-type AnimalScreenRouteProp = RouteProp<RootStackParamList, "animal">;
-
-type AnimalScreenProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, "animal">;
-  //route: AnimalScreenRouteProp  & { params: RouteParams };
-};
 interface RouteParams {
   animalName: string;
 }
@@ -56,7 +46,6 @@ export default function AnimalScreen() {
   }
 
   function SingleCard() {
-    //const flipAnimation = useRef(new Animated.Value(0)).current;
     const flipAnimation = useSharedValue(0);
     const [flipped, setFlipped] = useState(false);
     const [randomFactIndex, setRandomFactIndex] = useState<number | null>(null); //do losowej ciekwostki
