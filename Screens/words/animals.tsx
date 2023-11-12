@@ -8,6 +8,7 @@ import {
   Animated,
   Dimensions,
   SafeAreaView,
+  PixelRatio,
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Animals } from "../../data/data";
@@ -26,6 +27,10 @@ type HomeScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Second">;
 };
 const { width, height } = Dimensions.get("window");
+const fontScale = PixelRatio.getFontScale();
+const getFontSize = (size: number) => size / fontScale;
+const fontSize = getFontSize(width * 0.022)
+
 export default function AnimalsScreen({ navigation }: HomeScreenProps) {
   const animalNames = Object.keys(Animals);
   const itemsPerRow = 5;
@@ -34,6 +39,7 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
 
   const [currentPage, setCurrentPage] = useState(initialPage);
   const scrollX = useRef(new Animated.Value(0)).current;
+
   // Funkcja do renderowania elementów na danej stronie
   const renderPage = (page: number) => {
     const startIndex = (page - 1) * rowsPerPage * itemsPerRow;
@@ -41,18 +47,20 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
     return animalNames.slice(startIndex, endIndex);
   };
 
-  // const viewableItemsChanged = useRef(({viewableItems}) => {
-  //   setCurrentPage(viewableItems[0].index)
-  // }).current
-
   const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
   return (
     <View style={styles.container}>
+       <Image
+        source={require("../../img/animals.png")}
+        style={[styles.backgroundImage,]}
+        blurRadius={6}
+      />
+       <View style={styles.overlay}></View>
       <View style={styles.contentContainer}>
         <View style={styles.iconButton}>
           {currentPage > 1 && (
-            <TouchableOpacity onPress={() => setCurrentPage(currentPage - 1)}>
-              <Icon name="chevron-left" size={48} color="gray" />
+            <TouchableOpacity onPress={() => setCurrentPage(currentPage - 1)} style={styles.iconContainer}>
+              <Icon name="chevron-left" size={fontSize * 3} color="lightgray" />
             </TouchableOpacity>
           )}
         </View>
@@ -63,7 +71,6 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
             numColumns={itemsPerRow}
             horizontal={false}
             renderItem={({ item: animalName }) => (
-              // <View style={styles.itemContainer}>
               <TouchableOpacity
                 onPress={() =>
                   navigation.push("animal", { animalName: animalName })
@@ -74,7 +81,6 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
                   style={styles.image}
                 />
               </TouchableOpacity>
-              // </View>
             )}
             showsHorizontalScrollIndicator={false}
             pagingEnabled
@@ -85,7 +91,6 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
                 useNativeDriver: false,
               }
             )}
-            // onViewableItemsChanged={viewableItemsChanged}
             viewabilityConfig={viewConfig}
             scrollEventThrottle={16}
           />
@@ -94,8 +99,8 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
         <View style={styles.iconButton}>
           {currentPage <
             Math.ceil(animalNames.length / (itemsPerRow * rowsPerPage)) && (
-            <TouchableOpacity onPress={() => setCurrentPage(currentPage + 1)}>
-              <Icon name="chevron-right" size={48} color="gray" />
+            <TouchableOpacity onPress={() => setCurrentPage(currentPage + 1)} style={styles.iconContainer}>
+              <Icon name="chevron-right" size={fontSize * 3} color="lightgray" />
             </TouchableOpacity>
           )}
         </View>
@@ -120,20 +125,16 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     width: "80%",
-   // display: "flex",
-   // flexDirection: "row",
-
-   // alignItems: "center",
-    //justifyContent: "space-evenly",
-    
-   // height: "100%",
     marginVertical: 20,
   },
   itemContainer: {
     margin: "1%",
     marginHorizontal: "2%",
     width: "16%",
-    aspectRatio: 1
+    aspectRatio: 1,
+     border: "solid",
+      borderColor: "black",
+      borderWidth: 3
   },
 
   iconButton: {
@@ -143,8 +144,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  iconContainer:{
+    height: "100%",
+     justifyContent: "center"
+  },
   image: {
       width: "100%",
-      height: "100%"
+      height: "100%",
+      
+    },
+    backgroundImage: {
+      resizeMode: "cover",
+      position: "absolute",
+      width: "100%",
+      height: "100%",
+    },
+    overlay:{
+      backgroundColor: "rgba(0, 0, 0, 0.3)",
+      position: "absolute",
+      width: "100%",
+      height: "100%",
     },
 });
