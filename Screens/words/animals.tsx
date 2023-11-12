@@ -140,9 +140,9 @@ const styles = StyleSheet.create({
     marginHorizontal: "2%",
     width: "16%",
     aspectRatio: 1,
-    border: "solid",
-    borderColor: "black",
-    borderWidth: 3,
+    borderStyle: "solid",
+    borderColor: "white",
+    borderWidth: 4,
   },
 
   iconButton: {

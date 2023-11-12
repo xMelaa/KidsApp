@@ -17,6 +17,10 @@ import PaintingScreen from "./Screens/games/painting";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import * as Font from 'expo-font';
+import AppLoading from 'expo-app-loading';
+import { useEffect, useState } from "react";
+
 
 const Stack = createNativeStackNavigator();
 const screens: {
@@ -24,11 +28,12 @@ const screens: {
   component: any;
   options?: object;
 }[] = [
+   { name: "animals", component: AnimalsScreen },
   { name: "Home", component: HomeScreen, options: { headerShown: false } },
   { name: "words", component: NewWordsScreen },
   { name: "painting", component: PaintingScreen },
-  { name: "animals", component: AnimalsScreen },
-  { name: "animal", component: AnimalScreen },
+ 
+{ name: "animal", component: AnimalScreen },
   { name: "letters", component: LettersScreen },
   // { name: "letter", component: (props: any) => <LetterScreen {...props} /> },
   { name: "choose", component: ChooseScreen },
@@ -49,6 +54,27 @@ const screens: {
   { name: "dragging", component: Drag },
 ];
 export default function App() {
+  const [fontLoaded, setFontLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+      //  // Montserrat: require('./assets/fonts/Montserrat-Regular.ttf'),
+      //   'PlaypenSans-Regular': require('./assets/fonts/PlaypenSans-Regular.ttf'),
+      //   'PlaypenSans-Bold': require('./assets/fonts/PlaypenSans-Bold.ttf'),
+      //   'PlaypenSans-Italic': require('./assets/fonts/PlaypenSans-Italic.ttf'),
+      });
+
+      setFontLoaded(true);
+    };
+
+    loadFonts();
+  }, []);
+
+  if (!fontLoaded) {
+    return <AppLoading />;
+  }
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -56,7 +82,6 @@ export default function App() {
           <Stack.Screen
             key={index}
             name={screen.name}
-            //component={screen.component}
             // options={{ title: screen.title || undefined }}
             options={screen.options}>
             {(props) => <screen.component {...props} />}
