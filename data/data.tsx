@@ -1380,11 +1380,27 @@ export let Vegetables: VegetablesType = {
   },
 };
 
-export let Letters = {
+type LetterType = {
+  uppercase: string;
+  lowercase: string;
+  photo: any;
+  examples: ExampleType[];
+};
+
+type LettersType = {
+  [key: string]: LetterType;
+};
+type ExampleType = {
+  name?: string;
+  src?: string; // Ustawiamy typ na string, ale z dodatkowym ? oznacza, że jest to opcjonalne
+};
+
+
+export let Letters: LettersType = {
   A: {
     uppercase: "A",
     lowercase: "a",
-    //photo: require(" "),
+    photo: require("../img/Litery/A.png"),
     examples: [
       {
         name: "Apple",
@@ -1395,4 +1411,426 @@ export let Letters = {
       },
     ],
   },
+  Ą: {
+    uppercase: "Ą",
+    lowercase: "ą",
+    photo: require("../img/Litery/_Ą.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  B: {
+    uppercase: "B",
+    lowercase: "b",
+    photo: require("../img/Litery/B.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  C: {
+    uppercase: "C",
+    lowercase: "c",
+    photo: require("../img/Litery/C.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  D: {
+    uppercase: "D",
+    lowercase: "d",
+    photo: require("../img/Litery/D.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  E: {
+    uppercase: "E",
+    lowercase: "e",
+    photo: require("../img/Litery/E.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  Ę: {
+    uppercase: "Ę",
+    lowercase: "ę",
+    photo: require("../img/Litery/_Ę.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  F: {
+    uppercase: "F",
+    lowercase: "f",
+    photo: require("../img/Litery/F.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  G: {
+    uppercase: "G",
+    lowercase: "g",
+    photo: require("../img/Litery/G.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  H: {
+    uppercase: "H",
+    lowercase: "h",
+    photo: require("../img/Litery/H.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  I: {
+    uppercase: "I",
+    lowercase: "i",
+    photo: require("../img/Litery/_I.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  J: {
+    uppercase: "J",
+    lowercase: "j",
+    photo: require("../img/Litery/_J.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  K: {
+    uppercase: "K",
+    lowercase: "k",
+    photo: require("../img/Litery/K.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  L: {
+    uppercase: "L",
+    lowercase: "l",
+    photo: require("../img/Litery/L.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  Ł: {
+    uppercase: "Ł",
+    lowercase: "ł",
+    photo: require("../img/Litery/_Ł.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  M: {
+    uppercase: "M",
+    lowercase: "m",
+    photo: require("../img/Litery/M.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  N: {
+    uppercase: "N",
+    lowercase: "n",
+    photo: require("../img/Litery/N.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  Ń: {
+    uppercase: "Ń",
+    lowercase: "ń",
+    photo: require("../img/Litery/_Ń.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  O: {
+    uppercase: "O",
+    lowercase: "o",
+    photo: require("../img/Litery/O.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  Ó: {
+    uppercase: "Ó",
+    lowercase: "ó",
+    photo: require("../img/Litery/_Ó.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  P: {
+    uppercase: "P",
+    lowercase: "p",
+    photo: require("../img/Litery/P.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  R: {
+    uppercase: "R",
+    lowercase: "r",
+    photo: require("../img/Litery/R.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  S: {
+    uppercase: "S",
+    lowercase: "s",
+    photo: require("../img/Litery/S.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  Ś: {
+    uppercase: "Ś",
+    lowercase: "ś",
+    photo: require("../img/Litery/_Ś.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  T: {
+    uppercase: "T",
+    lowercase: "t",
+    photo: require("../img/Litery/T.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  U: {
+    uppercase: "U",
+    lowercase: "u",
+    photo: require("../img/Litery/U.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  W: {
+    uppercase: "W",
+    lowercase: "w",
+    photo: require("../img/Litery/W.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  Y: {
+    uppercase: "Y",
+    lowercase: "y",
+    photo: require("../img/Litery/Y.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  Z: {
+    uppercase: "Z",
+    lowercase: "z",
+    photo: require("../img/Litery/Z.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  Ż: {
+    uppercase: "Ż",
+    lowercase: "ż",
+    photo: require("../img/Litery/_Ż.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+  Ź: {
+    uppercase: "Ź",
+    lowercase: "ź",
+    photo: require("../img/Litery/_Ź.png"),
+    examples: [
+      {
+        name: "Apple",
+       // src: require(" "),
+      },
+      {
+
+      },
+    ],
+  },
+
+
 };
