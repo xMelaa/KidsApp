@@ -2,17 +2,18 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
-  TouchableOpacity,
+  Pressable,
   Image,
   FlatList,
   Animated,
+  Dimensions,
+  SafeAreaView,
+  PixelRatio,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Animals } from "../../data/data";
 import { useRef, useState } from "react";
-import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 type RootStackParamList = {
   Second: undefined;
@@ -23,17 +24,22 @@ type RootStackParamList = {
 };
 
 type HomeScreenProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, "Second">; // Upewnij się, że to jest zgodne z Twoją konfiguracją nawigatora
+  navigation: NativeStackNavigationProp<RootStackParamList, "Second">;
 };
+const { width, height } = Dimensions.get("window");
+const fontScale = PixelRatio.getFontScale();
+const getFontSize = (size: number) => size / fontScale;
+const fontSize = getFontSize(width * 0.022);
 
 export default function AnimalsScreen({ navigation }: HomeScreenProps) {
   const animalNames = Object.keys(Animals);
   const itemsPerRow = 5;
-  const rowsPerPage = 3;
+  const rowsPerPage = height > 500 ? 3 : height < 350 ? 1 : 2;
   const initialPage = 1;
 
   const [currentPage, setCurrentPage] = useState(initialPage);
   const scrollX = useRef(new Animated.Value(0)).current;
+
   // Funkcja do renderowania elementów na danej stronie
   const renderPage = (page: number) => {
     const startIndex = (page - 1) * rowsPerPage * itemsPerRow;
@@ -41,64 +47,72 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
     return animalNames.slice(startIndex, endIndex);
   };
 
-  // const viewableItemsChanged = useRef(({viewableItems}) => {
-  //   setCurrentPage(viewableItems[0].index)
-  // }).current
-
   const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
   return (
     <View style={styles.container}>
-      <Text>Zwierzęta</Text>
+      <Image
+        resizeMode="cover"
+        source={require("../../img/animals.png")}
+        style={[styles.backgroundImage]}
+        blurRadius={6}
+      />
+      <View style={styles.overlay}></View>
       <View style={styles.contentContainer}>
         <View style={styles.iconButton}>
           {currentPage > 1 && (
-            <TouchableOpacity              
-              onPress={() => setCurrentPage(currentPage - 1)}>
-              <ChevronLeft style={styles.icon} />
-            </TouchableOpacity>
+            <Pressable
+              onPress={() => setCurrentPage(currentPage - 1)}
+              style={styles.iconContainer}>
+              <Icon name="chevron-left" size={fontSize * 3} color="lightgray" />
+            </Pressable>
           )}
         </View>
-        <FlatList
-          data={renderPage(currentPage)}
-          keyExtractor={(animalName) => animalName}
-          numColumns={itemsPerRow}
-            
-          renderItem={({ item: animalName }) => (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.push("animal", { animalName: animalName })
+        <SafeAreaView style={styles.buttonsContainer}>
+          <FlatList
+            data={renderPage(currentPage)}
+            keyExtractor={(animalName) => animalName}
+            numColumns={itemsPerRow}
+            horizontal={false}
+            renderItem={({ item: animalName }) => (
+              <Pressable
+                onPress={() =>
+                  navigation.push("animal", { animalName: animalName })
+                }
+                style={styles.itemContainer}>
+                <Image
+                  source={Animals[animalName].photo}
+                  style={styles.image}
+                />
+              </Pressable>
+            )}
+            showsHorizontalScrollIndicator={false}
+            pagingEnabled
+            bounces={false}
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+              {
+                useNativeDriver: false,
               }
-              style={styles.itemContainer}>
-              <Image
-                source={Animals[animalName].photo}
-                style={{ width: 200, height: 200 }}
-              />
-            </TouchableOpacity>
-          )}
-          showsHorizontalScrollIndicator
-          pagingEnabled
-          bounces={false}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-            {
-              useNativeDriver: false,
-            }
-          )}
-          // onViewableItemsChanged={viewableItemsChanged}
-          viewabilityConfig={viewConfig}
-          scrollEventThrottle={32}
-        />
+            )}
+            viewabilityConfig={viewConfig}
+            scrollEventThrottle={16}
+          />
+        </SafeAreaView>
+
         <View style={styles.iconButton}>
           {currentPage <
-          Math.ceil(animalNames.length / (itemsPerRow * rowsPerPage)) && (
-          <TouchableOpacity
-            
-            onPress={() => setCurrentPage(currentPage + 1)}>
-            <ChevronRight style={styles.icon} />
-          </TouchableOpacity>
-        )}
+            Math.ceil(animalNames.length / (itemsPerRow * rowsPerPage)) && (
+            <Pressable
+              onPress={() => setCurrentPage(currentPage + 1)}
+              style={styles.iconContainer}>
+              <Icon
+                name="chevron-right"
+                size={fontSize * 3}
+                color="lightgray"
+              />
+            </Pressable>
+          )}
         </View>
-        
       </View>
     </View>
   );
@@ -115,32 +129,46 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    width: "100%",
   },
   buttonsContainer: {
-    width: "85%",
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 50,
-    height: "100%",
+    width: "80%",
     marginVertical: 20,
   },
   itemContainer: {
-    margin: 20,
-    marginHorizontal: 50,
+    margin: "1%",
+    marginHorizontal: "2%",
+    width: "16%",
+    aspectRatio: 1,
+    borderStyle: "solid",
+    borderColor: "white",
+    borderWidth: 4,
   },
- 
+
   iconButton: {
     backgroundColor: "transparent",
     padding: 10,
     width: 100,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
-  icon: {
-    fontSize: 52,
-    color: "gray"
+  iconContainer: {
+    height: "100%",
+    justifyContent: "center",
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+  },
+  backgroundImage: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+  },
+  overlay: {
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    position: "absolute",
+    width: "100%",
+    height: "100%",
   },
 });

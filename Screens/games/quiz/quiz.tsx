@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Button, Image, Pressable } from "react-native";
 import { Overlay } from "react-native-elements";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useState, useEffect } from "react";
@@ -64,9 +64,9 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
         <View>
           <Text>Quiz Result</Text>
           <Text>{score}</Text>
-          <TouchableOpacity>
+          <Pressable>
             <Button title="Powrót" onPress={() => navigation.push("games")} />
-          </TouchableOpacity>
+          </Pressable>
         </View>
       ) : (
         <>
@@ -75,12 +75,12 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
           </View>
           <View style={styles.answers}>
             {quizData[currentQuestion]?.options.map((item) => (
-              <TouchableOpacity
+              <Pressable
                 onPress={() => handleAnswer(item)}
                 style={styles.answer}>
                 <Text>{item.name}</Text>
                 <Image style={styles.answerImage} source={item.src} />
-              </TouchableOpacity>
+              </Pressable>
             ))}
           </View>
         </>
@@ -90,9 +90,9 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
         onBackdropPress={() => setCorrectAnswerOverlayVisible(false)}
         overlayStyle={styles.overlay}>
         <Text>Prawidłowa odpowiedź!</Text>
-        <TouchableOpacity onPress={handleNextQuestion}>
+        <Pressable onPress={handleNextQuestion}>
           <Text>Dalej</Text>
-        </TouchableOpacity>
+        </Pressable>
       </Overlay>
 
       <Overlay
@@ -100,16 +100,16 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
         onBackdropPress={() => setIncorrectAnswerOverlayVisible(false)}
         overlayStyle={styles.overlay}>
         <Text>Zła odpowiedź. Spróbuj ponownie.</Text>
-        <TouchableOpacity
+        <Pressable
           onPress={() => setIncorrectAnswerOverlayVisible(false)}>
           <Text>Zamknij</Text>
-        </TouchableOpacity>
+        </Pressable>
       </Overlay>
 
       <View style={styles.buttons}>
-        <TouchableOpacity onPress={() => navigation.push("quizresult")}>
+        <Pressable onPress={() => navigation.push("quizresult")}>
           <Text>END</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );

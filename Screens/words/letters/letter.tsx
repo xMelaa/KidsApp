@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Animals } from "../../../data/data";
+import { Letters } from "../../../data/data";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Audio } from "expo-av";
 import { speak } from "expo-speech";
@@ -24,7 +24,7 @@ import {
 import Animated from "react-native-reanimated";
 
 interface RouteParams {
-  animalName: string;
+  letterName: string;
 }
 
 const fontScale = PixelRatio.getFontScale();
@@ -32,15 +32,15 @@ const getFontSize = (size: number) => size / fontScale;
 const { width, height } = Dimensions.get("window");
 const fontSize = getFontSize(width * 0.015);
 
-export default function AnimalScreen() {
+export default function LetterScreen() {
   const route = useRoute();
-  const { animalName } = route.params as RouteParams;
-  const animalData = Animals[animalName];
+  const { letterName } = route.params as RouteParams;
+  const letterData = Letters[letterName];
 
-  if (!animalData) {
+  if (!letterData) {
     return (
       <View>
-        <Text>Animal data not found for {animalName}</Text>
+        <Text>letter data not found for {letterName}</Text>
       </View>
     );
   }
@@ -56,10 +56,11 @@ export default function AnimalScreen() {
       setFlipped(!flipped);
       rotate.value = 1;
       if (!flipped) {
-        const randomIndex = Math.floor(
-          Math.random() * animalData.ciekawostki.length
-        );
-        setRandomFactIndex(randomIndex);
+        // const randomIndex = Math.floor(
+        //   Math.random() * letterData.ciekawostki.length
+        // );
+        // setRandomFactIndex(randomIndex);
+        console.log("random rzecz na dana litere")
       } else {
         setRandomFactIndex(null);
       }
@@ -128,7 +129,7 @@ export default function AnimalScreen() {
             <Pressable onPress={handleClick} style={[styles.funfact, {backgroundColor: "mediumpurple"}]}>
               <Text style={styles.knowtext}>Czy wiesz że...</Text>
               {randomFactIndex !== null ? (
-                <Text style={styles.facttext}>{animalData.ciekawostki[randomFactIndex]}</Text>
+                <Text style={styles.facttext}>cos na te litere</Text>
               ) : (
                 <Text style={styles.facttext}>Kliknij, aby poznać ciekawostkę</Text>
               )}
@@ -139,22 +140,10 @@ export default function AnimalScreen() {
     );
   }
 
-  const playSound = async () => {
-    const soundObject = new Audio.Sound();
-    try {
-      if (animalData.sound) {
-        await soundObject.loadAsync(animalData.sound);
-        await soundObject.playAsync();
-      } else {
-        console.error("No sound data available for this animal.");
-      }
-    } catch (error) {
-      console.error("Błąd odtwarzania dźwięku", error);
-    }
-  };
+  
 
-  const speakAnimalName = () => {
-    speak(animalData.name, { language: "pl", _voiceIndex: 1 }); // Speak the animal's name in Polish
+  const speakLetterName = () => {
+    speak(letterData.uppercase, { language: "pl", _voiceIndex: 1 }); // Speak the letter's name in Polish
   };
 
   const styles = StyleSheet.create({
@@ -242,9 +231,9 @@ export default function AnimalScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Pressable onPress={playSound} style={styles.image}>
+        <Pressable onPress={speakLetterName} style={styles.image}>
           <Image
-            source={animalData.photo}
+            source={letterData.photo}
             style={styles.image}
             resizeMode="cover"
           />
@@ -256,8 +245,8 @@ export default function AnimalScreen() {
           source={require("../../../img/waves/wavesPurple.png")}
           style={styles.backgroundImage}
         />
-        <Pressable onPress={speakAnimalName} style={styles.nameContainer}>
-          <Text style={styles.name}>{animalData.name}</Text>
+        <Pressable onPress={speakLetterName} style={styles.nameContainer}>
+          <Text style={styles.name}>{letterData.uppercase} {letterData.lowercase}</Text>
           <Icon name="volume-up" size={fontSize * 2.7} color="#222" />
         </Pressable>
         <SingleCard />

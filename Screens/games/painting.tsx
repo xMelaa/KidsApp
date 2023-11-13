@@ -5,11 +5,16 @@ import {
   Button,
   Dimensions,
   useWindowDimensions,
+  Pressable,
   TouchableOpacity,
+  GestureResponderEvent,
+  PanResponder,
+  ScrollView,
+  Image,
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useRef, useState } from "react";
-import React from "react";
+import Svg, { Path } from "react-native-svg";
 
 const brushColors = [
   "black",
@@ -49,11 +54,16 @@ type HomeScreenProps = {
 
 export default function PaintingScreen() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const contextRef = useRef<CanvasRenderingContext2D | null>(null);
+  const contextRef = useRef<Svg | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [brushColor, setBrushColor] = useState("black");
   const [brushSize, setBrushSize] = useState(5);
-
+  const [paths, setPaths] = useState<
+    Array<{ color: string; brush: number; path: string }>
+  >([]);
+  const [randomImage, setRandomImage] = useState<string | null>(
+    require("../../img/ColoringPages/a.png")
+  );
   const changeBrushColor = (color: React.SetStateAction<string>) => {
     setBrushColor(color);
   };
@@ -61,88 +71,76 @@ export default function PaintingScreen() {
     setBrushSize(size);
   };
   const windowDimensions = useWindowDimensions();
+  const windowWidth = Dimensions.get("window").width;
+  const canHeight =
+    Dimensions.get("window").height - 65 - 65 - styles.container.height; //65 - wysokosc headera, 35 + 20 wysokos buttona do czyszcenia canvas - do zmiany na
+  const canWidth = (windowWidth * canHeight) / window.innerHeight;
+
   useEffect(() => {
-    const windowWidth = Dimensions.get("window").width;
-    const canHeight =
-      Dimensions.get("window").height - 65 - 65 - styles.container.height; //65 - wysokosc headera, 35 + 20 wysokos buttona do czyszcenia canvas - do zmiany na
-    const canWidth = (windowWidth * canHeight) / window.innerHeight;
-    const canvas = canvasRef.current!;
-    canvas.width =
-      canWidth * 2 -
-      (styles.brushSizePicker.width + styles.colorPicker.width) * 2;
-    canvas.height = canHeight * 2;
-    canvas.style.width = `${
-      canWidth - (styles.brushSizePicker.width + styles.colorPicker.width)
-    }px`;
-    canvas.style.height = `${canHeight}px`;
-    canvas.style.backgroundColor = "rgba(255,255,255,0.7)";
-
-    const context = canvas.getContext("2d")!;
-    context.scale(2, 2);
-    context.lineCap = "round";
-    context.strokeStyle = "black";
-
-    context.lineWidth = 5;
-    contextRef.current = context;
-
     const randomIndex = Math.floor(Math.random() * coloringPages.length);
     const randomImage = coloringPages[randomIndex];
+    setRandomImage(randomImage);
+  }, []);
 
-    const bgImg = new Image();
-    bgImg.src = randomImage;
-    bgImg.onload = function () {
-      const imgAspectRatio = bgImg.width / bgImg.height;
-      const bgHeight = canHeight;
-      const bgWidth = bgHeight * imgAspectRatio;
-      const xOffset = (canWidth - bgWidth) / 2;
-      console.log(bgImg.width);
-      context.drawImage(bgImg, xOffset, 0, bgWidth, bgHeight);
-    };
-  }, [windowDimensions]);
+  //const imgAspectRatio = randomImage.width / randomImage.height;
 
-  const startDrawing = ({
-    nativeEvent,
-  }: React.MouseEvent<HTMLCanvasElement>) => {
-    const { offsetX, offsetY } = nativeEvent;
-    contextRef.current?.beginPath();
-    contextRef.current?.moveTo(offsetX, offsetY);
+  const handlePanResponderMove = (
+    e: any,
+    gestureState: { moveX: any; moveY: any }
+  ) => {
+    const { moveX, moveY } = gestureState;
+    const newPath = `${paths[paths.length - 1]} L${moveX} ${moveY}`;
+    setPaths((prevPaths) => [
+      ...prevPaths.slice(0, -1),
+      {
+        color: brushColor,
+        brush: brushSize,
+        path: `${prevPaths[prevPaths.length - 1].path} L${moveX} ${moveY}`,
+      },
+    ]);
+  };
+
+  const startDrawing = ({ nativeEvent }: GestureResponderEvent) => {
+    const { locationX, locationY } = nativeEvent;
+    setPaths((prevPaths) => [
+      ...prevPaths,
+      {
+        color: brushColor,
+        brush: brushSize,
+        path: `M${locationX} ${locationY}`,
+      },
+    ]);
     setIsDrawing(true);
   };
 
   const finishDrawing = () => {
-    contextRef.current?.closePath();
     setIsDrawing(false);
   };
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponder: () => true,
+    onPanResponderMove: handlePanResponderMove,
+    onPanResponderRelease: finishDrawing,
+  });
+  const draw = ({ nativeEvent }: GestureResponderEvent) => {
+    if (!isDrawing) return;
 
-  const draw = ({ nativeEvent }: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!isDrawing || contextRef.current === null) {
-      return;
-    }
-    const { offsetX, offsetY } = nativeEvent;
-    contextRef.current.strokeStyle = brushColor;
-    contextRef.current.lineWidth = brushSize;
-    contextRef.current.lineTo(offsetX, offsetY);
-    contextRef.current.stroke();
+    const { locationX, locationY } = nativeEvent;
+    setPaths((prevPaths) => [
+      ...prevPaths.slice(0, -1),
+      {
+        brush: brushSize,
+        color: brushColor,
+        path: `${
+          prevPaths[prevPaths.length - 1].path
+        } L${locationX} ${locationY}`,
+      },
+    ]);
+    
   };
 
   const clearCanvas = () => {
-    const canvas = canvasRef.current!;
-    const context = canvas.getContext("2d")!;
-    const windowWidth = Dimensions.get("window").width;
-    const windowHeight = Dimensions.get("window").height;
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    const randomIndex = Math.floor(Math.random() * coloringPages.length);
-    const randomImage = coloringPages[randomIndex];
-    const bgImg = new Image();
-    bgImg.src = randomImage;
-    bgImg.onload = function () {
-      const imgAspectRatio = bgImg.width / bgImg.height;
-      const bgHeight = windowHeight - 65 - 35 - styles.container.height;
-      const bgWidth = bgHeight * imgAspectRatio;
-      const xOffset =
-        ((windowWidth * bgHeight) / window.innerHeight - bgWidth) / 2;
-      context.drawImage(bgImg, xOffset, 0, bgWidth, bgHeight);
-    };
+    setPaths([]);
   };
 
   return (
@@ -151,7 +149,10 @@ export default function PaintingScreen() {
         <Text style={styles.titleText}>Pokoloruj obrazek</Text>
       </View>
       <View style={styles.canvasContainer}>
-        <View style={styles.colorPicker}>
+        <ScrollView
+          style={styles.colorPicker}
+          horizontal={false}
+          contentContainerStyle={{ alignItems: "center" }}>
           {brushColors.map((color) => (
             <TouchableOpacity
               key={color}
@@ -161,14 +162,40 @@ export default function PaintingScreen() {
                 { backgroundColor: color },
               ]}></TouchableOpacity>
           ))}
-        </View>
-        <canvas
-          onMouseDown={startDrawing}
-          onMouseUp={finishDrawing}
-          onMouseMove={draw}
-          ref={canvasRef}
-        />
-        <View style={styles.brushSizePicker}>
+        </ScrollView>
+        <Svg
+          width={windowWidth - 120}
+          height={"100%"}
+          onTouchStart={startDrawing}
+          onTouchMove={draw}
+          onTouchEnd={finishDrawing}>
+          {paths.map(({ color, brush, path }, index) => (
+            <Path
+              key={index}
+              d={path}
+              stroke={color}
+              strokeWidth={brush}
+              fill="transparent"
+            />
+          ))}
+          {randomImage && (
+            <Image
+              source={
+                typeof randomImage === "string"
+                  ? { uri: randomImage }
+                  : randomImage
+              }
+              resizeMode="center"
+              style={[
+                styles.bgImg,
+                { width: windowWidth - 120, height: canHeight },
+              ]}
+            />
+          )}
+        </Svg>
+        <ScrollView
+          style={styles.brushSizePicker}
+          contentContainerStyle={{ alignItems: "center" }}>
           {brushSizes.map((size) => (
             <TouchableOpacity
               key={size}
@@ -177,10 +204,12 @@ export default function PaintingScreen() {
               <Text style={styles.sizeText}>{size.toString()}</Text>
             </TouchableOpacity>
           ))}
-        </View>
+        </ScrollView>
       </View>
-     
-      <TouchableOpacity onPress={clearCanvas} style={styles.buttonClear}><Text style={styles.buttonClearText}>Wyczyść</Text></TouchableOpacity>
+
+      <TouchableOpacity onPress={clearCanvas} style={styles.buttonClear}>
+        <Text style={styles.buttonClearText}>Wyczyść</Text>
+      </TouchableOpacity>
     </>
   );
 }
@@ -192,59 +221,67 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: 50,
   },
-  titleText:{
-    fontSize: 22,
-    fontWeight: "600"
+  titleText: {
+    fontSize: 16,
+    fontWeight: "600",
   },
   canvasContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    height: "70%",
   },
   toolContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
   },
   colorPicker: {
-    width: 50,
+    width: 40,
     marginLeft: 10,
+    marginTop: 5,
   },
   color: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     borderRadius: 50,
-    marginVertical: 2
+    marginVertical: 2,
   },
   sizes: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     borderRadius: 50,
     backgroundColor: "gray",
     alignItems: "center",
     justifyContent: "center",
-    marginVertical:2
+    marginVertical: 2,
   },
   sizeText: {
     fontSize: 16,
     color: "white",
   },
   brushSizePicker: {
-    width: 50,
-   
-    marginRight: 10
+    width: 40,
+    marginRight: 10,
+    marginTop: 5,
   },
-  buttonClear:{
-    width: "30%",
+  buttonClear: {
+    width: "25%",
     height: 35,
     backgroundColor: "lightblue",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 30,
-    marginHorizontal: "auto",
-    marginVertical: "auto"
+    alignSelf: "center",
+    marginTop: "0.3%",
   },
-  buttonClearText:{
+  buttonClearText: {
     fontSize: 16,
     color: "white",
-    fontWeight: "600"
-  }
+    fontWeight: "600",
+  },
+  bgImg: {
+    position: "absolute",
+    //width: '100%',
+    zIndex: -20,
+    //aspectRatio: 1,
+  },
 });

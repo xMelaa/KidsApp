@@ -1,7 +1,45 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Button } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  Pressable,
+  Image,
+  Dimensions,
+  PixelRatio,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
+type WordType = {
+  title: string;
+  routeName: keyof RootStackParamList;
+  src: any;
+};
+
+const words: WordType[] = [
+  {
+    title: "Zwierzęta",
+    routeName: "animals",
+    src: require("../img/animals.png"),
+  },
+  {
+    title: "Literki",
+    routeName: "letters",
+    src: require("../img/letters.png"),
+  },
+  {
+    title: "Pojazdy",
+    routeName: "vehicles",
+    src: require("../img/vehicles.png"),
+  },
+  { title: "Owoce", routeName: "fruits", src: require("../img/fruits.png") },
+  {
+    title: "Warzywa",
+    routeName: "vegetables",
+    src: require("../img/vegetables.png"),
+  },
+];
 
 type RootStackParamList = {
   Second: undefined;
@@ -10,33 +48,100 @@ type RootStackParamList = {
   letters: undefined;
   vehicles: undefined;
   fruits: undefined;
+  vegetables: undefined;
 };
 
 type HomeScreenProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, "Second">; // Upewnij się, że to jest zgodne z Twoją konfiguracją nawigatora
+  navigation: NativeStackNavigationProp<RootStackParamList, "Second">;
 };
+const fontScale = PixelRatio.getFontScale();
+const getFontSize = (size: number) => size / fontScale;
+
 
 export default function NewWordsScreen({ navigation }: HomeScreenProps) {
   return (
     <View style={styles.container}>
-      <Text>Poznaj słówka</Text>
-      <View style={styles.types}>
-        <Button title="Zwierzęta" onPress={() => navigation.push("animals")} />
-        <Button title="Literki" onPress={() => navigation.push("letters")} />
-        <Button title="Pojazdy" onPress={() => navigation.push("vehicles")} />
-        <Button title="Owoce" onPress={() => navigation.push("fruits")} />
+      <Image
+      resizeMode= "cover"
+        source={require("../img/books2.png")}
+        style={[styles.backgroundImage]}
+        blurRadius={6}
+      />
+       <View style={styles.overlay}></View>
+      <View style={styles.buttonsContainer}>
+        {words.map((word, index) => (
+          <Pressable
+            key={index}
+            onPress={() => navigation.push(word.routeName)}
+            style={styles.buttonContainer}>
+              
+            <Image  resizeMode= "cover" source={word.src} style={[styles.backgroundImage,{ borderRadius: 30, opacity: 0.8} ]} blurRadius={0.7} />
+            <Text style={styles.buttonText}>{word.title}</Text>
+          </Pressable>
+        ))}
       </View>
-      <StatusBar style="auto" />
     </View>
   );
 }
+
+const { width, height } = Dimensions.get("window");
+const fontSize = getFontSize(width * 0.018)
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    
+    justifyContent: "center",
   },
-  types: {gap: 20},
+  overlay:{
+    backgroundColor: "rgba(0, 0, 0, 0.35)",
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+  },
+  buttonsContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "100%",
+    gap: 15,
+    paddingVertical: 10
+  },
+  buttonContainer: {
+    height: "30%",
+    width: "45%",
+    alignItems: "center",
+    justifyContent: "center",  
+   
+  },
+  backgroundImage: {
+
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+  },
+  buttonText: {
+    fontSize: fontSize,
+    color: "white",
+    fontWeight: "700",
+    backgroundColor: "rgba(0,	191, 255, 0.85)",
+    textTransform: "uppercase",
+    paddingVertical: fontSize * 0.6,
+    paddingHorizontal: fontSize * 3,
+    alignItems: "center",
+    borderRadius: 50,
+    letterSpacing: 1,
+    flexDirection: "row",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 16,
+    },
+    shadowOpacity: 0.6,
+    shadowRadius: 18.0,
+    elevation: 26,
+  },
 });

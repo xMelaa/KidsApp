@@ -1,36 +1,63 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Button } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  Pressable,
+  Image,
+  Dimensions,
+  PixelRatio
+} from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-
-
 type RootStackParamList = {
-   Second: undefined;
-    choose: undefined;
-    words: undefined;
-    games: undefined;
-  };
+  Second: undefined;
+  choose: undefined;
+  words: undefined;
+  games: undefined;
+};
 
 type HomeScreenProps = {
-    navigation: NativeStackNavigationProp<RootStackParamList, "Second">; // Upewnij się, że to jest zgodne z Twoją konfiguracją nawigatora
-  };
+  navigation: NativeStackNavigationProp<RootStackParamList, "Second">;
+};
+const fontScale = PixelRatio.getFontScale();
+const getFontSize = (size: number) => size / fontScale;
 
 export default function ChooseScreen({ navigation }: HomeScreenProps) {
-    
+  
   return (
     <View style={styles.container}>
       <View style={styles.buttonsContainer}>
-        <Button title="Poznaj nowe słówka"
-      onPress={()=> navigation.push("words")}/>
-      <Button title="Gry i zabawy"
-      onPress={()=> navigation.push("games")}/>
+        <Pressable
+          onPress={() => navigation.push("words")}
+          style={styles.buttonContainer}>
+          <Image
+          resizeMode= "cover"
+            source={require("../img/books.png")}
+            style={styles.backgroundImage} blurRadius={1.5}
+          />
+          <View style={styles.overlay}></View>
+          <Text style={[styles.buttonText,]}>Poznaj nowe słówka</Text>
+        </Pressable>
+        <Pressable
+          onPress={() => navigation.push("games")}
+          style={styles.buttonContainer}>
+          <Image
+          resizeMode= "cover"
+            source={require("../img/toys.png")}
+            style={styles.backgroundImage}
+            blurRadius={1.5}
+          />
+          <View style={styles.overlay}></View>
+          <Text style={styles.buttonText}>Gry i zabawy</Text>
+        </Pressable>
       </View>
-      
-      <StatusBar style="auto" />
     </View>
   );
 }
+
+const { width, height } = Dimensions.get("window");
+const fontSize = getFontSize(width * 0.02)
 
 const styles = StyleSheet.create({
   container: {
@@ -38,11 +65,50 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
- 
   },
-  buttonsContainer:{
+  overlay:{
+    backgroundColor: "rgba(0, 0, 0, 0.1)",
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+  },
+  buttonsContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 50
-  }
+    width: "100%",
+    height: "100%",
+  },
+  backgroundImage: {
+
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+  },
+  buttonContainer: {
+    height: "100%",
+    width: "50%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonText: {
+    fontSize: fontSize,
+    color: "white",
+    fontWeight: "700",
+    backgroundColor: "rgba(0,	191, 255, 0.9)",
+    textTransform: "uppercase",
+    paddingVertical: fontSize * 0.8,
+    paddingHorizontal: fontSize * 3,
+    alignItems: "center",
+    borderRadius: 50,
+    letterSpacing: 1,
+    flexDirection: "row",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 16,
+    },
+    shadowOpacity: 0.6,
+    shadowRadius: 18.0,
+    elevation: 26,
+  },
 });

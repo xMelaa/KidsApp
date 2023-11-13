@@ -11,7 +11,7 @@ import {
   PixelRatio,
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Vehicles } from "../../data/data";
+import { Vegetables } from "../../data/data";
 import { useRef, useState } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
@@ -20,8 +20,9 @@ type RootStackParamList = {
   choose: undefined;
   words: undefined;
   games: undefined;
-  vehicle: { vehicleName: string };
+  vegetable: { vegetableName: string };
 };
+
 type HomeScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Second">; // Upewnij się, że to jest zgodne z Twoją konfiguracją nawigatora
 };
@@ -30,8 +31,8 @@ const fontScale = PixelRatio.getFontScale();
 const getFontSize = (size: number) => size / fontScale;
 const fontSize = getFontSize(width * 0.022);
 
-export default function VehiclesScreen({ navigation }: HomeScreenProps) {
-  const vehicleNames = Object.keys(Vehicles);
+export default function VegetablesScreen({ navigation }: HomeScreenProps) {
+  const vegetableNames = Object.keys(Vegetables);
   const itemsPerRow = 5;
   const rowsPerPage = height > 500 ? 3 : height < 350 ? 1 : 2;
   const initialPage = 1;
@@ -43,7 +44,7 @@ export default function VehiclesScreen({ navigation }: HomeScreenProps) {
   const renderPage = (page: number) => {
     const startIndex = (page - 1) * rowsPerPage * itemsPerRow;
     const endIndex = startIndex + rowsPerPage * itemsPerRow;
-    return vehicleNames.slice(startIndex, endIndex);
+    return vegetableNames.slice(startIndex, endIndex);
   };
 
   const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
@@ -51,7 +52,7 @@ export default function VehiclesScreen({ navigation }: HomeScreenProps) {
     <View style={styles.container}>
       <Image
       resizeMode= "cover"
-        source={require("../../img/vehicles.png")}
+        source={require("../../img/vegetables.png")}
         style={[styles.backgroundImage]}
         blurRadius={6}
       />
@@ -69,18 +70,18 @@ export default function VehiclesScreen({ navigation }: HomeScreenProps) {
         <SafeAreaView style={styles.buttonsContainer}>
           <FlatList
             data={renderPage(currentPage)}
-            keyExtractor={(vehicleName) => vehicleName}
+            keyExtractor={(vegetableName) => vegetableName}
             numColumns={itemsPerRow}
             horizontal={false}
-            renderItem={({ item: vehicleName }) => (
+            renderItem={({ item: vegetableName }) => (
               <Pressable
                 onPress={() =>
-                  navigation.push("vehicle", { vehicleName: vehicleName })
+                  navigation.push("vegetable", { vegetableName: vegetableName })
                 }
                 style={styles.itemContainer}>
                 <Image
-           
-                  source={Vehicles[vehicleName].photo}
+        
+                  source={Vegetables[vegetableName].photo}
                   style={styles.image}
                 />
               </Pressable>
@@ -101,7 +102,7 @@ export default function VehiclesScreen({ navigation }: HomeScreenProps) {
 
         <View style={styles.iconButton}>
           {currentPage <
-            Math.ceil(vehicleNames.length / (itemsPerRow * rowsPerPage)) && (
+            Math.ceil(vegetableNames.length / (itemsPerRow * rowsPerPage)) && (
             <Pressable
               onPress={() => setCurrentPage(currentPage + 1)}
               style={styles.iconContainer}>
