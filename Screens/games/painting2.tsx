@@ -6,13 +6,10 @@ import {
   Dimensions,
   useWindowDimensions,
   Pressable,
-  TouchableOpacity,
-  GestureResponderEvent,
-  PanResponder
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useRef, useState } from "react";
-import Svg, { Path } from "react-native-svg";
+import React from "react";
 
 const brushColors = [
   "black",
@@ -56,7 +53,6 @@ export default function PaintingScreen() {
   const [isDrawing, setIsDrawing] = useState(false);
   const [brushColor, setBrushColor] = useState("black");
   const [brushSize, setBrushSize] = useState(5);
-  const [paths, setPaths] = useState<Array<string>>([]);
 
   const changeBrushColor = (color: React.SetStateAction<string>) => {
     setBrushColor(color);
@@ -65,90 +61,125 @@ export default function PaintingScreen() {
     setBrushSize(size);
   };
   const windowDimensions = useWindowDimensions();
+  useEffect(() => {
+    const windowWidth = Dimensions.get("window").width;
+    const canHeight =
+      Dimensions.get("window").height - 65 - 65 - styles.container.height; //65 - wysokosc headera, 35 + 20 wysokos buttona do czyszcenia canvas - do zmiany na
+    const canWidth = (windowWidth * canHeight) / window.innerHeight;
+    const canvas = canvasRef.current!;
+    canvas.width =
+      canWidth * 2 -
+      (styles.brushSizePicker.width + styles.colorPicker.width) * 2;
+    canvas.height = canHeight * 2;
+    canvas.style.width = `${
+      canWidth - (styles.brushSizePicker.width + styles.colorPicker.width)
+    }px`;
+    canvas.style.height = `${canHeight}px`;
+    canvas.style.backgroundColor = "rgba(255,255,255,0.7)";
 
-  const handlePanResponderMove = (e: any, gestureState: { moveX: any; moveY: any; }) => {
-    const { moveX, moveY } = gestureState;
-    const newPath = `${paths[paths.length - 1]} L${moveX} ${moveY}`;
-    setPaths((prevPaths) => [...prevPaths.slice(0, -1), newPath]);
-  };
-  
+    const context = canvas.getContext("2d")!;
+    context.scale(2, 2);
+    context.lineCap = "round";
+    context.strokeStyle = "black";
+
+    context.lineWidth = 5;
+    contextRef.current = context;
+
+    const randomIndex = Math.floor(Math.random() * coloringPages.length);
+    const randomImage = coloringPages[randomIndex];
+
+    const bgImg = new Image();
+    bgImg.src = randomImage;
+    bgImg.onload = function () {
+      const imgAspectRatio = bgImg.width / bgImg.height;
+      const bgHeight = canHeight;
+      const bgWidth = bgHeight * imgAspectRatio;
+      const xOffset = (canWidth - bgWidth) / 2;
+      console.log(bgImg.width);
+      context.drawImage(bgImg, xOffset, 0, bgWidth, bgHeight);
+    };
+  }, [windowDimensions]);
+
   const startDrawing = ({
-       nativeEvent,
-     }: GestureResponderEvent) => {
-    const { locationX, locationY } = nativeEvent;
-    setPaths((prevPaths) => [...prevPaths, `M${locationX} ${locationY}`]);
+    nativeEvent,
+  }: React.MouseEvent<HTMLCanvasElement>) => {
+    const { offsetX, offsetY } = nativeEvent;
+    contextRef.current?.beginPath();
+    contextRef.current?.moveTo(offsetX, offsetY);
     setIsDrawing(true);
   };
 
   const finishDrawing = () => {
+    contextRef.current?.closePath();
     setIsDrawing(false);
   };
- const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onMoveShouldSetPanResponder: () => true,
-    onPanResponderMove: handlePanResponderMove,
-    onPanResponderRelease: finishDrawing,
-  });
-  const draw = ({ nativeEvent }:  GestureResponderEvent) => {
-    if (!isDrawing) return;
 
-    const { locationX, locationY } = nativeEvent;
-    setPaths((prevPaths) => [
-      ...prevPaths.slice(0, -1),
-      `${prevPaths[prevPaths.length - 1]} L${locationX} ${locationY}`,
-    ]);
+  const draw = ({ nativeEvent }: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isDrawing || contextRef.current === null) {
+      return;
+    }
+    const { offsetX, offsetY } = nativeEvent;
+    contextRef.current.strokeStyle = brushColor;
+    contextRef.current.lineWidth = brushSize;
+    contextRef.current.lineTo(offsetX, offsetY);
+    contextRef.current.stroke();
   };
 
   const clearCanvas = () => {
-    setPaths([]);
+    const canvas = canvasRef.current!;
+    const context = canvas.getContext("2d")!;
+    const windowWidth = Dimensions.get("window").width;
+    const windowHeight = Dimensions.get("window").height;
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    const randomIndex = Math.floor(Math.random() * coloringPages.length);
+    const randomImage = coloringPages[randomIndex];
+    const bgImg = new Image();
+    bgImg.src = randomImage;
+    bgImg.onload = function () {
+      const imgAspectRatio = bgImg.width / bgImg.height;
+      const bgHeight = windowHeight - 65 - 35 - styles.container.height;
+      const bgWidth = bgHeight * imgAspectRatio;
+      const xOffset =
+        ((windowWidth * bgHeight) / window.innerHeight - bgWidth) / 2;
+      context.drawImage(bgImg, xOffset, 0, bgWidth, bgHeight);
+    };
   };
-  
+
   return (
     <>
       <View style={styles.container}>
         <Text style={styles.titleText}>Pokoloruj obrazek</Text>
       </View>
       <View style={styles.canvasContainer}>
-        {/* <View style={styles.colorPicker}>
+        <View style={styles.colorPicker}>
           {brushColors.map((color) => (
-            <TouchableOpacity
+            <Pressable
               key={color}
               onPress={() => changeBrushColor(color)}
-              style={[styles.color, { backgroundColor: color }]}></TouchableOpacity>
+              style={[styles.color, { backgroundColor: color }]}></Pressable>
           ))}
-        </View> */}
-        <Svg
-      width="100%"
-      height="100%"
-      onTouchStart={startDrawing}
-  onTouchMove={draw}
-  onTouchEnd={finishDrawing}
-    >
-       {paths.map((path, index) => (
-        <Path
-          key={index}
-          d={path}
-          stroke={brushColor}
-          strokeWidth={brushSize}
-          fill="transparent"
+        </View>
+        <canvas
+          onMouseDown={startDrawing}
+          onMouseUp={finishDrawing}
+          onMouseMove={draw}
+          ref={canvasRef}
         />
-      ))}
-    </Svg>
         <View style={styles.brushSizePicker}>
           {brushSizes.map((size) => (
-            <TouchableOpacity
+            <Pressable
               key={size}
               onPress={() => changeBrushSize(size)}
               style={styles.sizes}>
               <Text style={styles.sizeText}>{size.toString()}</Text>
-            </TouchableOpacity>
+            </Pressable>
           ))}
         </View>
       </View>
 
-      <TouchableOpacity onPress={clearCanvas} style={styles.buttonClear}>
+      <Pressable onPress={clearCanvas} style={styles.buttonClear}>
         <Text style={styles.buttonClearText}>Wyczyść</Text>
-      </TouchableOpacity>
+      </Pressable>
     </>
   );
 }
