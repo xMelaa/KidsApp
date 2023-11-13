@@ -57,7 +57,7 @@ export default function PaintingScreen() {
   const [isDrawing, setIsDrawing] = useState(false);
   const [brushColor, setBrushColor] = useState("black");
   const [brushSize, setBrushSize] = useState(5);
-  const [paths, setPaths] = useState<Array<{ color: string; path: string }>>(
+  const [paths, setPaths] = useState<Array<{ color: string; brush: number; path: string; }>>(
     []
   );
 
@@ -84,6 +84,7 @@ export default function PaintingScreen() {
       ...prevPaths.slice(0, -1),
       {
         color: brushColor,
+        brush: brushSize,
         path: `${prevPaths[prevPaths.length - 1].path} L${moveX} ${moveY}`,
       },
     ]);
@@ -93,7 +94,7 @@ export default function PaintingScreen() {
     const { locationX, locationY } = nativeEvent;
     setPaths((prevPaths) => [
       ...prevPaths,
-      { color: brushColor, path: `M${locationX} ${locationY}` },
+      { color: brushColor, brush: brushSize, path: `M${locationX} ${locationY}` },
     ]);
     setIsDrawing(true);
   };
@@ -114,6 +115,7 @@ export default function PaintingScreen() {
     setPaths((prevPaths) => [
       ...prevPaths.slice(0, -1),
       {
+        brush: brushSize,
         color: brushColor,
         path: `${
           prevPaths[prevPaths.length - 1].path
@@ -147,16 +149,16 @@ export default function PaintingScreen() {
         <Svg
       //  viewBox={`0 0 ${canvasWidth} ${canvasWidth / aspectRatio}`}
           width= {windowWidth - 120}
-          height={canHeight}
+          height={"100%"}
           onTouchStart={startDrawing}
           onTouchMove={draw}
           onTouchEnd={finishDrawing}>
-          {paths.map(({ color, path }, index) => (
+          {paths.map(({ color, brush, path }, index) => (
             <Path
               key={index}
               d={path}
               stroke={color}
-              strokeWidth={brushSize}
+              strokeWidth={brush}
               fill="transparent"
             />
           ))}
@@ -194,17 +196,17 @@ const styles = StyleSheet.create({
   canvasContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    height: "70%",
   },
   toolContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
   },
   colorPicker: {
-    flex: 1,
     width: 40,
-    height: "69%",
     marginLeft: 10,
     marginTop: 5
+   
   },
   color: {
     width: 40,
@@ -226,20 +228,19 @@ const styles = StyleSheet.create({
     color: "white",
   },
   brushSizePicker: {
-    width: 0,
+    width: 40,
     marginRight: 10,
-    marginTop: 5,
-    height: "69%",
+    marginTop: 5,   
   },
   buttonClear: {
-    width: "30%",
+    width: "25%",
     height: 35,
     backgroundColor: "lightblue",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 30,
-    marginHorizontal: "auto",
-    marginVertical: "auto",
+    alignSelf: 'center',
+   marginTop: "0.3%"
   },
   buttonClearText: {
     fontSize: 16,
