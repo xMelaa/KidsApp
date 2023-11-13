@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   GestureResponderEvent,
   PanResponder,
-  ScrollView
+  ScrollView,
+  Image,
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useRef, useState } from "react";
@@ -53,14 +54,16 @@ type HomeScreenProps = {
 
 export default function PaintingScreen() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const contextRef = useRef<CanvasRenderingContext2D | null>(null);
+  const contextRef = useRef<Svg | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [brushColor, setBrushColor] = useState("black");
   const [brushSize, setBrushSize] = useState(5);
-  const [paths, setPaths] = useState<Array<{ color: string; brush: number; path: string; }>>(
-    []
+  const [paths, setPaths] = useState<
+    Array<{ color: string; brush: number; path: string }>
+  >([]);
+  const [randomImage, setRandomImage] = useState<string | null>(
+    require("../../img/ColoringPages/a.png")
   );
-
   const changeBrushColor = (color: React.SetStateAction<string>) => {
     setBrushColor(color);
   };
@@ -68,11 +71,18 @@ export default function PaintingScreen() {
     setBrushSize(size);
   };
   const windowDimensions = useWindowDimensions();
-    const windowWidth = Dimensions.get("window").width;
-    const canHeight =
-      Dimensions.get("window").height - 65 - 65 - styles.container.height; //65 - wysokosc headera, 35 + 20 wysokos buttona do czyszcenia canvas - do zmiany na
-    const canWidth = (windowWidth * canHeight) / window.innerHeight;
+  const windowWidth = Dimensions.get("window").width;
+  const canHeight =
+    Dimensions.get("window").height - 65 - 65 - styles.container.height; //65 - wysokosc headera, 35 + 20 wysokos buttona do czyszcenia canvas - do zmiany na
+  const canWidth = (windowWidth * canHeight) / window.innerHeight;
 
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * coloringPages.length);
+    const randomImage = coloringPages[randomIndex];
+    setRandomImage(randomImage);
+  }, []);
+
+  //const imgAspectRatio = randomImage.width / randomImage.height;
 
   const handlePanResponderMove = (
     e: any,
@@ -94,7 +104,11 @@ export default function PaintingScreen() {
     const { locationX, locationY } = nativeEvent;
     setPaths((prevPaths) => [
       ...prevPaths,
-      { color: brushColor, brush: brushSize, path: `M${locationX} ${locationY}` },
+      {
+        color: brushColor,
+        brush: brushSize,
+        path: `M${locationX} ${locationY}`,
+      },
     ]);
     setIsDrawing(true);
   };
@@ -122,20 +136,23 @@ export default function PaintingScreen() {
         } L${locationX} ${locationY}`,
       },
     ]);
+    
   };
 
   const clearCanvas = () => {
     setPaths([]);
   };
-  
+
   return (
     <>
       <View style={styles.container}>
         <Text style={styles.titleText}>Pokoloruj obrazek</Text>
       </View>
       <View style={styles.canvasContainer}>
-        <ScrollView style={styles.colorPicker} horizontal={false}
-        contentContainerStyle={{ alignItems: 'center' }} >
+        <ScrollView
+          style={styles.colorPicker}
+          horizontal={false}
+          contentContainerStyle={{ alignItems: "center" }}>
           {brushColors.map((color) => (
             <TouchableOpacity
               key={color}
@@ -147,8 +164,7 @@ export default function PaintingScreen() {
           ))}
         </ScrollView>
         <Svg
-      //  viewBox={`0 0 ${canvasWidth} ${canvasWidth / aspectRatio}`}
-          width= {windowWidth - 120}
+          width={windowWidth - 120}
           height={"100%"}
           onTouchStart={startDrawing}
           onTouchMove={draw}
@@ -162,8 +178,24 @@ export default function PaintingScreen() {
               fill="transparent"
             />
           ))}
+          {randomImage && (
+            <Image
+              source={
+                typeof randomImage === "string"
+                  ? { uri: randomImage }
+                  : randomImage
+              }
+              resizeMode="center"
+              style={[
+                styles.bgImg,
+                { width: windowWidth - 120, height: canHeight },
+              ]}
+            />
+          )}
         </Svg>
-        <ScrollView style={styles.brushSizePicker}  contentContainerStyle={{ alignItems: 'center' }}>
+        <ScrollView
+          style={styles.brushSizePicker}
+          contentContainerStyle={{ alignItems: "center" }}>
           {brushSizes.map((size) => (
             <TouchableOpacity
               key={size}
@@ -205,8 +237,7 @@ const styles = StyleSheet.create({
   colorPicker: {
     width: 40,
     marginLeft: 10,
-    marginTop: 5
-   
+    marginTop: 5,
   },
   color: {
     width: 40,
@@ -230,7 +261,7 @@ const styles = StyleSheet.create({
   brushSizePicker: {
     width: 40,
     marginRight: 10,
-    marginTop: 5,   
+    marginTop: 5,
   },
   buttonClear: {
     width: "25%",
@@ -239,12 +270,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 30,
-    alignSelf: 'center',
-   marginTop: "0.3%"
+    alignSelf: "center",
+    marginTop: "0.3%",
   },
   buttonClearText: {
     fontSize: 16,
     color: "white",
     fontWeight: "600",
+  },
+  bgImg: {
+    position: "absolute",
+    //width: '100%',
+    zIndex: -20,
+    //aspectRatio: 1,
   },
 });
