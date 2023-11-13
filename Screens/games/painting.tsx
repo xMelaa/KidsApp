@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   GestureResponderEvent,
   PanResponder,
+  ScrollView
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useRef, useState } from "react";
@@ -56,7 +57,9 @@ export default function PaintingScreen() {
   const [isDrawing, setIsDrawing] = useState(false);
   const [brushColor, setBrushColor] = useState("black");
   const [brushSize, setBrushSize] = useState(5);
-  const [paths, setPaths] = useState<Array<{ color: string; path: string }>>([]);
+  const [paths, setPaths] = useState<Array<{ color: string; path: string }>>(
+    []
+  );
 
   const changeBrushColor = (color: React.SetStateAction<string>) => {
     setBrushColor(color);
@@ -65,6 +68,11 @@ export default function PaintingScreen() {
     setBrushSize(size);
   };
   const windowDimensions = useWindowDimensions();
+    const windowWidth = Dimensions.get("window").width;
+    const canHeight =
+      Dimensions.get("window").height - 65 - 65 - styles.container.height; //65 - wysokosc headera, 35 + 20 wysokos buttona do czyszcenia canvas - do zmiany na
+    const canWidth = (windowWidth * canHeight) / window.innerHeight;
+
 
   const handlePanResponderMove = (
     e: any,
@@ -107,7 +115,9 @@ export default function PaintingScreen() {
       ...prevPaths.slice(0, -1),
       {
         color: brushColor,
-        path: `${prevPaths[prevPaths.length - 1].path} L${locationX} ${locationY}`,
+        path: `${
+          prevPaths[prevPaths.length - 1].path
+        } L${locationX} ${locationY}`,
       },
     ]);
   };
@@ -115,14 +125,15 @@ export default function PaintingScreen() {
   const clearCanvas = () => {
     setPaths([]);
   };
-
+  
   return (
     <>
       <View style={styles.container}>
         <Text style={styles.titleText}>Pokoloruj obrazek</Text>
       </View>
       <View style={styles.canvasContainer}>
-        <View style={styles.colorPicker}>
+        <ScrollView style={styles.colorPicker} horizontal={false}
+        contentContainerStyle={{ alignItems: 'center' }} >
           {brushColors.map((color) => (
             <TouchableOpacity
               key={color}
@@ -132,10 +143,11 @@ export default function PaintingScreen() {
                 { backgroundColor: color },
               ]}></TouchableOpacity>
           ))}
-        </View>
+        </ScrollView>
         <Svg
-          width="100%"
-          height="100%"
+      //  viewBox={`0 0 ${canvasWidth} ${canvasWidth / aspectRatio}`}
+          width= {windowWidth - 120}
+          height={canHeight}
           onTouchStart={startDrawing}
           onTouchMove={draw}
           onTouchEnd={finishDrawing}>
@@ -149,7 +161,7 @@ export default function PaintingScreen() {
             />
           ))}
         </Svg>
-        <View style={styles.brushSizePicker}>
+        <ScrollView style={styles.brushSizePicker}  contentContainerStyle={{ alignItems: 'center' }}>
           {brushSizes.map((size) => (
             <TouchableOpacity
               key={size}
@@ -158,7 +170,7 @@ export default function PaintingScreen() {
               <Text style={styles.sizeText}>{size.toString()}</Text>
             </TouchableOpacity>
           ))}
-        </View>
+        </ScrollView>
       </View>
 
       <TouchableOpacity onPress={clearCanvas} style={styles.buttonClear}>
@@ -188,18 +200,21 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   colorPicker: {
-    width: 50,
+    flex: 1,
+    width: 40,
+    height: "69%",
     marginLeft: 10,
+    marginTop: 5
   },
   color: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     borderRadius: 50,
     marginVertical: 2,
   },
   sizes: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     borderRadius: 50,
     backgroundColor: "gray",
     alignItems: "center",
@@ -211,9 +226,10 @@ const styles = StyleSheet.create({
     color: "white",
   },
   brushSizePicker: {
-    width: 50,
-
+    width: 0,
     marginRight: 10,
+    marginTop: 5,
+    height: "69%",
   },
   buttonClear: {
     width: "30%",
