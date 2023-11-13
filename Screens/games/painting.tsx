@@ -8,7 +8,7 @@ import {
   Pressable,
   TouchableOpacity,
   GestureResponderEvent,
-  PanResponder
+  PanResponder,
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useRef, useState } from "react";
@@ -56,7 +56,7 @@ export default function PaintingScreen() {
   const [isDrawing, setIsDrawing] = useState(false);
   const [brushColor, setBrushColor] = useState("black");
   const [brushSize, setBrushSize] = useState(5);
-  const [paths, setPaths] = useState<Array<string>>([]);
+  const [paths, setPaths] = useState<Array<{ color: string; path: string }>>([]);
 
   const changeBrushColor = (color: React.SetStateAction<string>) => {
     setBrushColor(color);
@@ -66,74 +66,89 @@ export default function PaintingScreen() {
   };
   const windowDimensions = useWindowDimensions();
 
-  const handlePanResponderMove = (e: any, gestureState: { moveX: any; moveY: any; }) => {
+  const handlePanResponderMove = (
+    e: any,
+    gestureState: { moveX: any; moveY: any }
+  ) => {
     const { moveX, moveY } = gestureState;
     const newPath = `${paths[paths.length - 1]} L${moveX} ${moveY}`;
-    setPaths((prevPaths) => [...prevPaths.slice(0, -1), newPath]);
+    setPaths((prevPaths) => [
+      ...prevPaths.slice(0, -1),
+      {
+        color: brushColor,
+        path: `${prevPaths[prevPaths.length - 1].path} L${moveX} ${moveY}`,
+      },
+    ]);
   };
-  
-  const startDrawing = ({
-       nativeEvent,
-     }: GestureResponderEvent) => {
+
+  const startDrawing = ({ nativeEvent }: GestureResponderEvent) => {
     const { locationX, locationY } = nativeEvent;
-    setPaths((prevPaths) => [...prevPaths, `M${locationX} ${locationY}`]);
+    setPaths((prevPaths) => [
+      ...prevPaths,
+      { color: brushColor, path: `M${locationX} ${locationY}` },
+    ]);
     setIsDrawing(true);
   };
 
   const finishDrawing = () => {
     setIsDrawing(false);
   };
- const panResponder = PanResponder.create({
+  const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onMoveShouldSetPanResponder: () => true,
     onPanResponderMove: handlePanResponderMove,
     onPanResponderRelease: finishDrawing,
   });
-  const draw = ({ nativeEvent }:  GestureResponderEvent) => {
+  const draw = ({ nativeEvent }: GestureResponderEvent) => {
     if (!isDrawing) return;
 
     const { locationX, locationY } = nativeEvent;
     setPaths((prevPaths) => [
       ...prevPaths.slice(0, -1),
-      `${prevPaths[prevPaths.length - 1]} L${locationX} ${locationY}`,
+      {
+        color: brushColor,
+        path: `${prevPaths[prevPaths.length - 1].path} L${locationX} ${locationY}`,
+      },
     ]);
   };
 
   const clearCanvas = () => {
     setPaths([]);
   };
-  
+
   return (
     <>
       <View style={styles.container}>
         <Text style={styles.titleText}>Pokoloruj obrazek</Text>
       </View>
       <View style={styles.canvasContainer}>
-        {/* <View style={styles.colorPicker}>
+        <View style={styles.colorPicker}>
           {brushColors.map((color) => (
             <TouchableOpacity
               key={color}
               onPress={() => changeBrushColor(color)}
-              style={[styles.color, { backgroundColor: color }]}></TouchableOpacity>
+              style={[
+                styles.color,
+                { backgroundColor: color },
+              ]}></TouchableOpacity>
           ))}
-        </View> */}
+        </View>
         <Svg
-      width="100%"
-      height="100%"
-      onTouchStart={startDrawing}
-  onTouchMove={draw}
-  onTouchEnd={finishDrawing}
-    >
-       {paths.map((path, index) => (
-        <Path
-          key={index}
-          d={path}
-          stroke={brushColor}
-          strokeWidth={brushSize}
-          fill="transparent"
-        />
-      ))}
-    </Svg>
+          width="100%"
+          height="100%"
+          onTouchStart={startDrawing}
+          onTouchMove={draw}
+          onTouchEnd={finishDrawing}>
+          {paths.map(({ color, path }, index) => (
+            <Path
+              key={index}
+              d={path}
+              stroke={color}
+              strokeWidth={brushSize}
+              fill="transparent"
+            />
+          ))}
+        </Svg>
         <View style={styles.brushSizePicker}>
           {brushSizes.map((size) => (
             <TouchableOpacity
@@ -161,7 +176,7 @@ const styles = StyleSheet.create({
     height: 50,
   },
   titleText: {
-    fontSize: 22,
+    fontSize: 16,
     fontWeight: "600",
   },
   canvasContainer: {
