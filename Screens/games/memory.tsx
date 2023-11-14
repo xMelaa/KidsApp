@@ -16,6 +16,8 @@ import {
   withTiming,
 } from "react-native-reanimated";
 import Animated from "react-native-reanimated";
+import { Overlay } from "react-native-elements";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 const cardImages = [
   { symbol: require("../../img/apple.jpg"), matched: false },
@@ -23,6 +25,15 @@ const cardImages = [
   { symbol: require("../../img/pear.jpg"), matched: false },
   { symbol: require("../../img/pomegranade.jpg"), matched: false },
 ];
+
+type RootStackParamList = {
+  quizresult: undefined;
+  games: undefined;
+};
+
+type HomeScreenProps = {
+  navigation: NativeStackNavigationProp<RootStackParamList, "games">;
+};
 
 interface Card {
   symbol: any;
@@ -105,12 +116,13 @@ function SingleCard({
   );
 }
 
-export default function MemoryGame() {
+export default function MemoryGame({ navigation }: HomeScreenProps) {
   const [cards, setCards] = useState<Card[]>([]);
   const [turns, setTurns] = useState(0);
   const [choiceOne, setChoiceOne] = useState<Card | null>(null);
   const [choiceTwo, setChoiceTwo] = useState<Card | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
+  const [allCardsMatched, setAllCardsMatched] = useState(false);
 
   const shuffleCards = () => {
     const shuffleCards = [...cardImages, ...cardImages]
@@ -147,6 +159,14 @@ export default function MemoryGame() {
       }
     }
   }, [choiceOne, choiceTwo]);
+  useEffect(() => {
+    const isAllMatched =
+      cards.length > 0 && cards.every((card) => card.matched);
+
+    if (isAllMatched && gameStarted) {
+      setAllCardsMatched(true);
+    }
+  }, [cards, gameStarted]);
   console.log(cards);
   //reset choices
   const resetTurn = () => {
@@ -192,6 +212,24 @@ export default function MemoryGame() {
           </>
         )}
       </View>
+      {allCardsMatched && (
+        <Overlay
+          isVisible={allCardsMatched}
+          onBackdropPress={() => setAllCardsMatched(false)}
+          overlayStyle={styles.overlay}>
+          <Text style={styles.goodAnswer}>Brawo!</Text>
+          <Image
+            source={require("../../img/OK.png")}
+            style={styles.pictureAnswer}
+            resizeMode="cover"
+          />
+          <TouchableOpacity
+            onPress={() => navigation.push("games")}
+            style={styles.button}>
+            <Text style={styles.buttonText}>Następny poziom</Text>
+          </TouchableOpacity>
+        </Overlay>
+      )}
     </View>
   );
 }
@@ -211,14 +249,30 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
+  pictureAnswer: {
+    height: "60%",
+    aspectRatio: 1,
+  },
+  overlay: {
+    backgroundColor: "linen",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    height: "90%",
+    width: "50%",
+  },
+  goodAnswer: {
+    fontSize: fontSize * 2.5,
+    fontWeight: "700",
+    color: "green",
+    marginBottom: "-4%",
+  },
   button: {
     backgroundColor: "darkorange",
-    paddingHorizontal: "2%",
+    paddingHorizontal: "4%",
     paddingVertical: "1.5%",
     borderRadius: 50,
     borderColor: "chocolate",
     borderWidth: 2,
-    width: "15%",
     alignItems: "center",
     marginLeft: "1.5%",
     marginRight: "0.5%",
