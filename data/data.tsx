@@ -1403,11 +1403,20 @@ export let Letters: LettersType = {
     photo: require("../img/Litery/A.png"),
     examples: [
       {
-        name: "Apple",
-       // src: require(" "),
+        name: "Agrest",
+        src: Fruits.Agrest.photo,
       },
       {
-
+        name: "Ananas",
+        src: Fruits.Ananas.photo,
+      },
+      {
+        name: "Arbuz",
+        src: Fruits.Arbuz.photo
+      },
+      {
+        name: "Awokado",
+        src: Fruits.Awokado.photo,
       },
     ],
   },

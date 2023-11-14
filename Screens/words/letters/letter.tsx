@@ -3,16 +3,14 @@ import {
   Text,
   View,
   Image,
-  Pressable,
   PixelRatio,
   Dimensions,
+  TouchableOpacity,
   // Animated
 } from "react-native";
 import { RouteProp, useRoute } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Letters } from "../../../data/data";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { Audio } from "expo-av";
 import { speak } from "expo-speech";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -56,11 +54,10 @@ export default function LetterScreen() {
       setFlipped(!flipped);
       rotate.value = 1;
       if (!flipped) {
-        // const randomIndex = Math.floor(
-        //   Math.random() * letterData.ciekawostki.length
-        // );
-        // setRandomFactIndex(randomIndex);
-        console.log("random rzecz na dana litere")
+        const randomIndex = Math.floor(
+          Math.random() * letterData.examples.length
+        );
+        setRandomFactIndex(randomIndex);
       } else {
         setRandomFactIndex(null);
       }
@@ -93,7 +90,7 @@ export default function LetterScreen() {
     }, []);
 
     return (
-      <Pressable
+      <TouchableOpacity
         onPress={() =>
           flipRotation ? backAnimatedStyles : frontAnimatedStyles
         }
@@ -108,59 +105,71 @@ export default function LetterScreen() {
               justifyContent: "center",
             },
           ]}>
-          {!flipped ? ( //jesli karta jest odkryta
-            <Pressable onPress={handleClick} style={styles.funfact}>
+          {!flipped ? ( //jesli karta jest zakryta
+            <TouchableOpacity onPress={handleClick} style={styles.funfact}>
               <Image
                 resizeMode="cover"
                 source={require("../../../img/questionMark.jpg")}
                 style={styles.backgroundImage}
               />
-              {/* <Text
-                style={{
-                  fontSize: fontSize * 1.5,
-                  fontWeight: "600",
-                  color: "#555",
-                }}>
-                Ciekawostka
-              </Text> */}
-            </Pressable>
+            </TouchableOpacity>
           ) : (
-            //jesli jest zakryta
-            <Pressable onPress={handleClick} style={[styles.funfact, {backgroundColor: "mediumpurple"}]}>
-              <Text style={styles.knowtext}>Czy wiesz że...</Text>
+            //jesli jest odkryta
+            <TouchableOpacity
+              onPress={handleClick}
+              style={[styles.funfact, { backgroundColor: "mediumpurple" }]}>
+              <TouchableOpacity
+                onPress={speakName}
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}>
+                <Text style={styles.card}>
+                  {letterData.examples[randomFactIndex]?.name}
+                </Text>
+                <Icon name="volume-up" size={fontSize * 2} color="#fff" />
+              </TouchableOpacity>
               {randomFactIndex !== null ? (
-                <Text style={styles.facttext}>cos na te litere</Text>
+                <Image
+                  source={letterData.examples[randomFactIndex]?.src}
+                  style={styles.image2}
+                  resizeMode="cover"
+                />
               ) : (
-                <Text style={styles.facttext}>Kliknij, aby poznać ciekawostkę</Text>
+                <Text style={styles.facttext}>
+                  Tu powinna być ciekawostka, ale jej nie ma :(
+                </Text>
               )}
-            </Pressable>
+            </TouchableOpacity>
           )}
         </Animated.View>
-      </Pressable>
+      </TouchableOpacity>
     );
   }
-
-  
 
   const speakLetterName = () => {
     speak(letterData.uppercase, { language: "pl", _voiceIndex: 1 }); // Speak the letter's name in Polish
   };
+  const speakName = () => {
+    speak("Agrest", { language: "pl", _voiceIndex: 1 }); // Speak the letter's name in Polish
+  };
 
   const styles = StyleSheet.create({
-    knowtext:{
+    card: {
       fontSize: fontSize * 1.6,
       fontWeight: "600",
       color: "white",
-      paddingVertical: "6%",
-      flex: 3
+      paddingVertical: "1%",
+      marginRight: "2%",
     },
-    facttext:{
+    facttext: {
       paddingVertical: "1%",
       paddingHorizontal: "5%",
       fontSize: fontSize * 0.9,
       color: "white",
       textAlign: "center",
-      flex: 5
+      flex: 5,
     },
     container: {
       flex: 1,
@@ -175,6 +184,12 @@ export default function LetterScreen() {
       height: "100%",
       width: "100%",
       aspectRatio: 1,
+    },
+    image2: {
+      aspectRatio: 1,
+      height: "100%",
+      //width: "100%",
+      flex: 2,
     },
     imageContainer: {
       flex: 1,
@@ -200,12 +215,12 @@ export default function LetterScreen() {
       borderWidth: 4,
       alignItems: "center",
       //justifyContent: "center",
-      aspectRatio: 5 / 3,
+      aspectRatio: 4 / 3,
     },
     funfactContainer: {
       marginTop: "2%",
       width: "60%",
-      height: "45%",
+      height: "53%",
       alignItems: "center",
       justifyContent: "center",
     },
@@ -231,13 +246,13 @@ export default function LetterScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Pressable onPress={speakLetterName} style={styles.image}>
+        <TouchableOpacity onPress={speakLetterName} style={styles.image}>
           <Image
             source={letterData.photo}
             style={styles.image}
             resizeMode="cover"
           />
-        </Pressable>
+        </TouchableOpacity>
       </View>
       <View style={styles.infoContainer}>
         <Image
@@ -245,10 +260,14 @@ export default function LetterScreen() {
           source={require("../../../img/waves/wavesPurple.png")}
           style={styles.backgroundImage}
         />
-        <Pressable onPress={speakLetterName} style={styles.nameContainer}>
-          <Text style={styles.name}>{letterData.uppercase} {letterData.lowercase}</Text>
+        <TouchableOpacity
+          onPress={speakLetterName}
+          style={styles.nameContainer}>
+          <Text style={styles.name}>
+            {letterData.uppercase} {letterData.lowercase}
+          </Text>
           <Icon name="volume-up" size={fontSize * 2.7} color="#222" />
-        </Pressable>
+        </TouchableOpacity>
         <SingleCard />
       </View>
     </View>
