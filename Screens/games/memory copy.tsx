@@ -1,12 +1,19 @@
-import { StyleSheet, Text, View, Button, Image, Pressable } from "react-native";
-import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  Image,
+  Animated,
+  Pressable,
+} from "react-native";
+import React, { useEffect, useRef, useState } from "react";
 import {
   interpolate,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import Animated from "react-native-reanimated";
 
 const cardImages = [
   { symbol: require("../../img/apple.jpg"), matched: false },
@@ -30,14 +37,17 @@ function SingleCard({
   handleChoice: (card: Card) => void;
   flipped: any;
 }) {
-  const flipAnimation = useSharedValue(0);
+  const flipAnimation = useRef(new Animated.Value(0)).current;
+
   let flipRotation = 0;
+  flipAnimation.addListener(({ value }) => (flipRotation = value));
 
   const handleClick = () => {
     handleChoice(card);
     rotate.value = 1;
   };
-  const rotate = useSharedValue(1);
+
+  const rotate = useSharedValue(0);
   const frontAnimatedStyles = useAnimatedStyle(() => {
     const rotateValue = interpolate(rotate.value, [0, 1], [0, 180]);
     return {
@@ -58,11 +68,6 @@ function SingleCard({
       ],
     };
   });
-  useEffect(() => {
-    return () => {
-      flipAnimation.value = 0;
-    };
-  }, []);
 
   return (
     <Pressable

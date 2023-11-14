@@ -30,7 +30,7 @@ const screens: {
   name: string;
   component: any;
   options?: object;
-}[] = [
+}[] = [ { name: "games", component: GamesScreen },
   { name: "Home", component: HomeScreen, options: { headerShown: false } },
   { name: "words", component: NewWordsScreen },
   { name: "painting", component: PaintingScreen },
@@ -45,7 +45,7 @@ const screens: {
   { name: "vehicles", component: VehiclesScreen },
   { name: "fruits", component: FruitsScreen },
   { name: "vegetables", component: VegetablesScreen },
-  { name: "games", component: GamesScreen },
+ 
   { name: "memory", component: MemoryGame },
   { name: "quiz", component: QuizGame },
   { name: "shufflequiz", component: QuizShuffleGame },
