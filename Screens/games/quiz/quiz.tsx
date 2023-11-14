@@ -2,16 +2,16 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   Image,
   TouchableOpacity,
   PixelRatio,
   Dimensions,
 } from "react-native";
-import { Overlay } from "react-native-elements";
+import { Icon, Overlay } from "react-native-elements";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useState, useEffect } from "react";
 import quizData from "./quizData";
+import { speak } from "expo-speech";
 
 type RootStackParamList = {
   quizresult: undefined;
@@ -39,7 +39,6 @@ function shuffleArray(array: any) {
 export default function QuizGame({ navigation }: HomeScreenProps) {
   const [questions, setQuestions] = useState(shuffleArray(quizData));
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  // const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
   const [correctAnswerOverlayVisible, setCorrectAnswerOverlayVisible] =
     useState(false);
@@ -58,7 +57,6 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
   const handleAnswer = (selectedAnswerOption: any) => {
     const answer = questions[currentQuestion]?.answer;
     if (answer === selectedAnswerOption.name) {
-      // setScore((prevScore) => prevScore + 1);
       setCorrectAnswerOverlayVisible(true);
     } else {
       setIncorrectAnswerOverlayVisible(true);
@@ -66,9 +64,15 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
     }
   };
 
+  const speakName = () => {
+    speak(questions[currentQuestion].question, {
+      language: "pl",
+      _voiceIndex: 1,
+    }); // Speak name in Polish
+  };
+
   useEffect(() => {
     setQuestions(shuffleArray(quizData));
-    //setCurrentQuestion(0);
   }, [quizData]);
 
   return (
@@ -82,8 +86,6 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
       {showScore ? (
         <View style={styles.endContainer}>
           <Text style={styles.goodJob}>Dobra robota!</Text>
-          {/* <Text>{score}</Text> */}
-
           <Image
             source={require("../../../img/trophee-transparent.png")}
             style={styles.picture}
@@ -98,11 +100,14 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
         </View>
       ) : (
         <View style={styles.questionContainer}>
-          <View>
+          <TouchableOpacity
+            onPress={speakName}
+            style={{ flexDirection: "row" }}>
             <Text style={styles.questionText}>
               {questions[currentQuestion]?.question}
             </Text>
-          </View>
+            <Icon name="volume-up" size={fontSize * 2.7} color="#222" />
+          </TouchableOpacity>
           <View style={styles.answers}>
             {quizData[currentQuestion]?.options.map((item) => (
               <TouchableOpacity
@@ -145,16 +150,11 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
           resizeMode="cover"
         />
         <TouchableOpacity
-          onPress={() => setIncorrectAnswerOverlayVisible(false)} style={styles.button}>
+          onPress={() => setIncorrectAnswerOverlayVisible(false)}
+          style={styles.button}>
           <Text style={styles.buttonText}>Zamknij</Text>
         </TouchableOpacity>
       </Overlay>
-
-      {/* <View style={styles.buttons}>
-        <TouchableOpacity onPress={() => navigation.push("quizresult")}>
-          {/* <Text>END</Text> */}
-      {/* </TouchableOpacity>
-      </View> */}
     </View>
   );
 }
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     height: "90%",
-    marginTop: "-3%"
+    marginTop: "-3%",
   },
   endContainer: {
     flex: 1,
@@ -207,6 +207,7 @@ const styles = StyleSheet.create({
     fontSize: fontSize * 2,
     fontWeight: "600",
     color: "#1e2a3d",
+    marginRight: fontSize * 0.85,
   },
   goodJob: {
     fontSize: fontSize * 3,
