@@ -83,7 +83,12 @@ export default function PaintingScreen() {
   }, []);
 
   //const imgAspectRatio = randomImage.width / randomImage.height;
-
+  const reroll = () => {
+    clearCanvas();
+    const randomIndex = Math.floor(Math.random() * coloringPages.length);
+    const randomImage = coloringPages[randomIndex];
+    setRandomImage(randomImage);
+  };
   const handlePanResponderMove = (
     e: any,
     gestureState: { moveX: any; moveY: any }
@@ -136,7 +141,6 @@ export default function PaintingScreen() {
         } L${locationX} ${locationY}`,
       },
     ]);
-    
   };
 
   const clearCanvas = () => {
@@ -163,6 +167,17 @@ export default function PaintingScreen() {
               ]}></TouchableOpacity>
           ))}
         </ScrollView>
+        {randomImage && (
+          <Image
+            source={
+              typeof randomImage === "string"
+                ? { uri: randomImage }
+                : randomImage
+            }
+            resizeMode="center"
+            style={[styles.bgImg, { width: windowWidth, height: canHeight }]}
+          />
+        )}
         <Svg
           width={windowWidth - 120}
           height={"100%"}
@@ -178,20 +193,6 @@ export default function PaintingScreen() {
               fill="transparent"
             />
           ))}
-          {randomImage && (
-            <Image
-              source={
-                typeof randomImage === "string"
-                  ? { uri: randomImage }
-                  : randomImage
-              }
-              resizeMode="center"
-              style={[
-                styles.bgImg,
-                { width: windowWidth - 120, height: canHeight },
-              ]}
-            />
-          )}
         </Svg>
         <ScrollView
           style={styles.brushSizePicker}
@@ -207,8 +208,13 @@ export default function PaintingScreen() {
         </ScrollView>
       </View>
 
-      <TouchableOpacity onPress={clearCanvas} style={styles.buttonClear}>
-        <Text style={styles.buttonClearText}>Wyczyść</Text>
+      <TouchableOpacity style={styles.buttonContainer}>        
+        <TouchableOpacity onPress={reroll} style={styles.buttonClear}>
+          <Text style={styles.buttonClearText}>Nowy obrazek</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={clearCanvas} style={styles.buttonClear}>
+          <Text style={styles.buttonClearText}>Wyczyść</Text>
+        </TouchableOpacity>
       </TouchableOpacity>
     </>
   );
@@ -220,6 +226,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: 50,
+  },
+  buttonContainer:{
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    
   },
   titleText: {
     fontSize: 16,
@@ -284,4 +296,5 @@ const styles = StyleSheet.create({
     zIndex: -20,
     //aspectRatio: 1,
   },
+  
 });
