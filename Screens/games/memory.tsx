@@ -2,7 +2,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   Image,
   Pressable,
   PixelRatio,
@@ -33,7 +32,7 @@ interface Card {
 
 const fontScale = PixelRatio.getFontScale();
 const getFontSize = (size: number) => size / fontScale;
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 const fontSize = getFontSize(width * 0.015);
 
 function SingleCard({
@@ -166,14 +165,14 @@ export default function MemoryGame() {
       />
       <View style={styles.container2}>
         {!gameStarted ? (
-         <TouchableOpacity style={styles.button} onPress={shuffleCards}>
-            <Text style={styles.buttonText} >START</Text>
+          <TouchableOpacity style={styles.button} onPress={shuffleCards}>
+            <Text style={styles.buttonText}>START</Text>
           </TouchableOpacity>
         ) : (
-          <>           
+          <>
             <TouchableOpacity style={styles.button} onPress={shuffleCards}>
-            <Text style={styles.buttonText} >NOWA GRA</Text>
-          </TouchableOpacity>
+              <Text style={styles.buttonText}>NOWA GRA</Text>
+            </TouchableOpacity>
             <View style={styles.cardGrid}>
               {cards.map((card) => (
                 <SingleCard
@@ -212,7 +211,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
-  button:{
+  button: {
     backgroundColor: "darkorange",
     paddingHorizontal: "2%",
     paddingVertical: "1.5%",
@@ -222,11 +221,11 @@ const styles = StyleSheet.create({
     width: "15%",
     alignItems: "center",
     marginLeft: "1.5%",
-    marginRight: "0.5%"
+    marginRight: "0.5%",
   },
-  buttonText:{
-color: "white",
-fontWeight: "600"
+  buttonText: {
+    color: "white",
+    fontWeight: "600",
   },
   front: {
     flex: 1,
@@ -267,25 +266,25 @@ fontWeight: "600"
   cardContainer: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",   
-    borderRadius: 6, 
+    justifyContent: "center",
+    borderRadius: 6,
     // transformStyle: "preserve-3d", //perspektywa??
   },
   turnsContainer: {
     alignItems: "center",
-    width: "15%"
+    width: "15%",
   },
   turnsText: {
     fontSize: fontSize * 1.5,
     fontWeight: "600",
     marginBottom: "5%",
-    color: "#323f54"
+    color: "#323f54",
   },
   counterText: {
     marginTop: "5%",
     fontSize: fontSize * 3,
     fontWeight: "700",
-    color: "darkorange"
+    color: "darkorange",
   },
   backgroundImage: {
     position: "absolute",
