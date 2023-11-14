@@ -97,8 +97,8 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
           </TouchableOpacity>
         </View>
       ) : (
-        <>
-          <View style={styles.question}>
+        <View style={styles.questionContainer}>
+          <View>
             <Text style={styles.questionText}>
               {questions[currentQuestion]?.question}
             </Text>
@@ -108,7 +108,6 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
               <TouchableOpacity
                 onPress={() => handleAnswer(item)}
                 style={styles.answer}>
-                {/* <Text>{item.name}</Text> */}
                 <Image
                   style={styles.answerImage}
                   source={item.src}
@@ -117,15 +116,20 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
               </TouchableOpacity>
             ))}
           </View>
-        </>
+        </View>
       )}
       <Overlay
         isVisible={correctAnswerOverlayVisible}
         onBackdropPress={() => setCorrectAnswerOverlayVisible(false)}
         overlayStyle={styles.overlay}>
-        <Text>Prawidłowa odpowiedź!</Text>
-        <TouchableOpacity onPress={handleNextQuestion}>
-          <Text>Dalej</Text>
+        <Text style={styles.goodAnswer}>Dobrze!</Text>
+        <Image
+          source={require("../../../img/OK.png")}
+          style={styles.pictureAnswer}
+          resizeMode="cover"
+        />
+        <TouchableOpacity onPress={handleNextQuestion} style={styles.button}>
+          <Text style={styles.buttonText}>Dalej</Text>
         </TouchableOpacity>
       </Overlay>
 
@@ -133,10 +137,16 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
         isVisible={incorrectAnswerOverlayVisible}
         onBackdropPress={() => setIncorrectAnswerOverlayVisible(false)}
         overlayStyle={styles.overlay}>
-        <Text>Zła odpowiedź. Spróbuj ponownie.</Text>
+        <Text style={styles.badAnswer}>Zła odpowiedź. </Text>
+        <Text style={styles.badAnswer2}>Spróbuj ponownie.</Text>
+        <Image
+          source={require("../../../img/BAD.png")}
+          style={styles.pictureAnswer}
+          resizeMode="cover"
+        />
         <TouchableOpacity
-          onPress={() => setIncorrectAnswerOverlayVisible(false)}>
-          <Text>Zamknij</Text>
+          onPress={() => setIncorrectAnswerOverlayVisible(false)} style={styles.button}>
+          <Text style={styles.buttonText}>Zamknij</Text>
         </TouchableOpacity>
       </Overlay>
 
@@ -155,7 +165,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-
+  },
+  questionContainer: {
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    width: "100%",
+    height: "90%",
+    marginTop: "-3%"
   },
   endContainer: {
     flex: 1,
@@ -165,10 +181,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   picture: {
-   // width: "100%",
     height: "70%",
     aspectRatio: 1,
-    //position: "absolute",
+  },
+  pictureAnswer: {
+    height: "60%",
+    aspectRatio: 1,
   },
   button: {
     backgroundColor: "cornflowerblue",
@@ -178,15 +196,12 @@ const styles = StyleSheet.create({
     borderColor: "darkslateblue",
     borderWidth: 3,
     alignItems: "center",
-    marginTop: "-4%"
+    marginTop: "-4%",
   },
   buttonText: {
     color: "white",
     fontWeight: "600",
     fontSize: fontSize * 1.2,
-  },
-  question: {
-    marginVertical: 20,
   },
   questionText: {
     fontSize: fontSize * 2,
@@ -197,7 +212,25 @@ const styles = StyleSheet.create({
     fontSize: fontSize * 3,
     fontWeight: "700",
     color: "#1e2a3d",
-    marginBottom: "-6%"
+    marginBottom: "-6%",
+  },
+  goodAnswer: {
+    fontSize: fontSize * 2.5,
+    fontWeight: "700",
+    color: "green",
+    marginBottom: "-4%",
+  },
+  badAnswer: {
+    fontSize: fontSize * 2.5,
+    fontWeight: "700",
+    color: "tomato",
+    marginBottom: "-2%",
+  },
+  badAnswer2: {
+    fontSize: fontSize * 1.5,
+    color: "#291814",
+    fontWeight: "500",
+    marginBottom: "-4%",
   },
   answers: {
     width: "75%",
@@ -226,11 +259,11 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   overlay: {
-    backgroundColor: "white",
-    justifyContent: "center",
+    backgroundColor: "linen",
+    justifyContent: "space-evenly",
     alignItems: "center",
-    height: "70%",
-    width: "70%",
+    height: "90%",
+    width: "50%",
   },
   backgroundImage: {
     position: "absolute",
