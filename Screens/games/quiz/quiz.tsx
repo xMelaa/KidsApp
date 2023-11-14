@@ -1,4 +1,13 @@
-import { StyleSheet, Text, View, Button, Image, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  Image,
+  TouchableOpacity,
+  PixelRatio,
+  Dimensions,
+} from "react-native";
 import { Overlay } from "react-native-elements";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useState, useEffect } from "react";
@@ -12,6 +21,11 @@ type RootStackParamList = {
 type HomeScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "games">;
 };
+
+const fontScale = PixelRatio.getFontScale();
+const getFontSize = (size: number) => size / fontScale;
+const { width } = Dimensions.get("window");
+const fontSize = getFontSize(width * 0.015);
 
 function shuffleArray(array: any) {
   const shuffledArray = [...array];
@@ -59,7 +73,12 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
 
   return (
     <View style={styles.container}>
-      <Text>Quiz</Text>
+      <Image
+        resizeMode="cover"
+        source={require("../../../img/waves/wavesOrange.png")}
+        style={styles.backgroundImage}
+        blurRadius={3}
+      />
       {showScore ? (
         <View>
           <Text>Quiz Result</Text>
@@ -71,15 +90,21 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
       ) : (
         <>
           <View style={styles.question}>
-          <Text>{questions[currentQuestion]?.question}</Text>
+            <Text style={styles.questionText}>
+              {questions[currentQuestion]?.question}
+            </Text>
           </View>
           <View style={styles.answers}>
             {quizData[currentQuestion]?.options.map((item) => (
               <TouchableOpacity
                 onPress={() => handleAnswer(item)}
                 style={styles.answer}>
-                <Text>{item.name}</Text>
-                <Image style={styles.answerImage} source={item.src} />
+                {/* <Text>{item.name}</Text> */}
+                <Image
+                  style={styles.answerImage}
+                  source={item.src}
+                  resizeMode="cover"
+                />
               </TouchableOpacity>
             ))}
           </View>
@@ -108,7 +133,7 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
 
       <View style={styles.buttons}>
         <TouchableOpacity onPress={() => navigation.push("quizresult")}>
-          <Text>END</Text>
+          {/* <Text>END</Text> */}
         </TouchableOpacity>
       </View>
     </View>
@@ -117,18 +142,21 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    padding: 12,
-    height: "100%",
+    justifyContent: "center",
   },
   question: {
     marginVertical: 20,
   },
+  questionText: {
+    fontSize: fontSize * 2,
+    fontWeight: "600",
+    color: "#1e2a3d"
+  },
   answers: {
-    marginVertical: 20,
     width: "75%",
-    gap: 30,
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
@@ -140,7 +168,11 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
   },
   answerImage: {
-    aspectRatio: 1 / 1,
+    width: "100%",
+    height: "100%",
+    aspectRatio: 1,
+    borderColor: "white",
+    borderWidth: 3
   },
   buttons: {
     marginBottom: 16,
@@ -155,5 +187,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: "70%",
     width: "70%",
+  },
+  backgroundImage: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
   },
 });
