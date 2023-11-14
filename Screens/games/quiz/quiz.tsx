@@ -39,7 +39,7 @@ function shuffleArray(array: any) {
 export default function QuizGame({ navigation }: HomeScreenProps) {
   const [questions, setQuestions] = useState(shuffleArray(quizData));
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [score, setScore] = useState(0);
+  // const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
   const [correctAnswerOverlayVisible, setCorrectAnswerOverlayVisible] =
     useState(false);
@@ -58,7 +58,7 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
   const handleAnswer = (selectedAnswerOption: any) => {
     const answer = questions[currentQuestion]?.answer;
     if (answer === selectedAnswerOption.name) {
-      setScore((prevScore) => prevScore + 1);
+      // setScore((prevScore) => prevScore + 1);
       setCorrectAnswerOverlayVisible(true);
     } else {
       setIncorrectAnswerOverlayVisible(true);
@@ -80,11 +80,20 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
         blurRadius={3}
       />
       {showScore ? (
-        <View>
-          <Text>Quiz Result</Text>
-          <Text>{score}</Text>
-          <TouchableOpacity>
-            <Button title="Powrót" onPress={() => navigation.push("games")} />
+        <View style={styles.endContainer}>
+          <Text style={styles.goodJob}>Dobra robota!</Text>
+          {/* <Text>{score}</Text> */}
+
+          <Image
+            source={require("../../../img/trophee-transparent.png")}
+            style={styles.picture}
+            resizeMode="cover"
+          />
+
+          <TouchableOpacity
+            onPress={() => navigation.push("games")}
+            style={styles.button}>
+            <Text style={styles.buttonText}>Następny poziom</Text>
           </TouchableOpacity>
         </View>
       ) : (
@@ -131,11 +140,11 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
         </TouchableOpacity>
       </Overlay>
 
-      <View style={styles.buttons}>
+      {/* <View style={styles.buttons}>
         <TouchableOpacity onPress={() => navigation.push("quizresult")}>
           {/* <Text>END</Text> */}
-        </TouchableOpacity>
-      </View>
+      {/* </TouchableOpacity>
+      </View> */}
     </View>
   );
 }
@@ -146,6 +155,35 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+
+  },
+  endContainer: {
+    flex: 1,
+    width: "50%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+  picture: {
+   // width: "100%",
+    height: "70%",
+    aspectRatio: 1,
+    //position: "absolute",
+  },
+  button: {
+    backgroundColor: "cornflowerblue",
+    paddingHorizontal: "12%",
+    paddingVertical: "2%",
+    borderRadius: 50,
+    borderColor: "darkslateblue",
+    borderWidth: 3,
+    alignItems: "center",
+    marginTop: "-4%"
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "600",
+    fontSize: fontSize * 1.2,
   },
   question: {
     marginVertical: 20,
@@ -153,7 +191,13 @@ const styles = StyleSheet.create({
   questionText: {
     fontSize: fontSize * 2,
     fontWeight: "600",
-    color: "#1e2a3d"
+    color: "#1e2a3d",
+  },
+  goodJob: {
+    fontSize: fontSize * 3,
+    fontWeight: "700",
+    color: "#1e2a3d",
+    marginBottom: "-6%"
   },
   answers: {
     width: "75%",
@@ -172,7 +216,7 @@ const styles = StyleSheet.create({
     height: "100%",
     aspectRatio: 1,
     borderColor: "white",
-    borderWidth: 3
+    borderWidth: 3,
   },
   buttons: {
     marginBottom: 16,
