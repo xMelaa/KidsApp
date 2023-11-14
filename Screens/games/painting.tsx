@@ -68,20 +68,6 @@ export default function PaintingScreen() {
     const randomImage = coloringPages[randomIndex];
     setRandomImage(randomImage);
   };
-  const handlePanResponderMove = (
-    e: any,
-    gestureState: { moveX: any; moveY: any }
-  ) => {
-    const { moveX, moveY } = gestureState;
-    setPaths((prevPaths) => [
-      ...prevPaths.slice(0, -1),
-      {
-        color: brushColor,
-        brush: brushSize,
-        path: `${prevPaths[prevPaths.length - 1].path} L${moveX} ${moveY}`,
-      },
-    ]);
-  };
 
   const startDrawing = ({ nativeEvent }: GestureResponderEvent) => {
     const { locationX, locationY } = nativeEvent;
@@ -99,7 +85,7 @@ export default function PaintingScreen() {
   const finishDrawing = () => {
     setIsDrawing(false);
   };
- 
+
   const draw = ({ nativeEvent }: GestureResponderEvent) => {
     if (!isDrawing) return;
 
