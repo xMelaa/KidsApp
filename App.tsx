@@ -14,7 +14,6 @@ import QuizShuffleGame from "./Screens/games/quiz/quizShuffle";
 import Drag from "./Screens/games/dragging";
 import SortingGame from "./Screens/games/sorting";
 import PaintingScreen from "./Screens/games/painting";
-
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as Font from "expo-font";
