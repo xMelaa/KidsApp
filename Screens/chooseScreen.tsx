@@ -2,8 +2,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
-  Pressable,
+  TouchableOpacity,
   Image,
   Dimensions,
   PixelRatio
@@ -28,7 +27,7 @@ export default function ChooseScreen({ navigation }: HomeScreenProps) {
   return (
     <View style={styles.container}>
       <View style={styles.buttonsContainer}>
-        <Pressable
+        <TouchableOpacity
           onPress={() => navigation.push("words")}
           style={styles.buttonContainer}>
           <Image
@@ -38,8 +37,8 @@ export default function ChooseScreen({ navigation }: HomeScreenProps) {
           />
           <View style={styles.overlay}></View>
           <Text style={[styles.buttonText,]}>Poznaj nowe słówka</Text>
-        </Pressable>
-        <Pressable
+        </TouchableOpacity>
+        <TouchableOpacity
           onPress={() => navigation.push("games")}
           style={styles.buttonContainer}>
           <Image
@@ -50,13 +49,13 @@ export default function ChooseScreen({ navigation }: HomeScreenProps) {
           />
           <View style={styles.overlay}></View>
           <Text style={styles.buttonText}>Gry i zabawy</Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </View>
   );
 }
 
-const { width, height } = Dimensions.get("window");
+const { width} = Dimensions.get("window");
 const fontSize = getFontSize(width * 0.02)
 
 const styles = StyleSheet.create({
@@ -79,7 +78,6 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   backgroundImage: {
-
     position: "absolute",
     width: "100%",
     height: "100%",

@@ -1395,20 +1395,19 @@ type ExampleType = {
   src?: string; // Ustawiamy typ na string, ale z dodatkowym ? oznacza, że jest to opcjonalne
 };
 
-
 export let Letters: LettersType = {
   A: {
     uppercase: "A",
     lowercase: "a",
     photo: require("../img/Litery/A.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Agrest", src: Fruits.Agrest.photo },
+      { name: "Ananas", src: Fruits.Ananas.photo },
+      { name: "Arbuz", src: Fruits.Arbuz.photo },
+      { name: "Awokado", src: Fruits.Awokado.photo },
+      { name: "Ambulans", src: Vehicles.Ambulans.photo },
+      { name: "Autobus", src: Vehicles.Autobus.photo },
+      { name: "Alpaka", src: Animals.Alpaka.photo },
     ],
   },
   Ą: {
@@ -1416,13 +1415,10 @@ export let Letters: LettersType = {
     lowercase: "ą",
     photo: require("../img/Litery/_Ą.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Gołąb", src: Animals.Gołąb.photo },
+      { name: "Bąk", src: Animals.Bąk.photo },
+      { name: "Pociąg", src: Vehicles.Pociąg.photo },
+      { name: "Pająk", src: Animals.Pająk.photo },
     ],
   },
   B: {
@@ -1430,13 +1426,16 @@ export let Letters: LettersType = {
     lowercase: "b",
     photo: require("../img/Litery/B.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Banan", src: Fruits.Banan.photo },
+      { name: "Brzoskwinia", src: Fruits.Brzoskwinia.photo },
+      { name: "Borówka", src: Fruits.Borówka.photo },
+      { name: "Balon", src: Vehicles.Balon.photo },
+      { name: "Bób", src: Vegetables.Bób.photo },
+      { name: "Bakłażan", src: Vegetables.Bakłażan.photo },
+      { name: "Brokuł", src: Vegetables.Brokuł.photo },
+      { name: "Burak", src: Vegetables.Burak.photo },
+      { name: "Bąk", src: Animals.Bąk.photo },
+      { name: "Bóbr", src: Animals.Bóbr.photo },
     ],
   },
   C: {
@@ -1444,81 +1443,51 @@ export let Letters: LettersType = {
     lowercase: "c",
     photo: require("../img/Litery/C.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      
+      { name: "Chomik", src: Animals.Chomik.photo },
+      { name: "Cebula", src: Vegetables.Cebula.photo },
+      { name: "Ciecierzyca", src: Vegetables.Ciecierzyca.photo },
+      { name: "Cukinia", src: Vegetables.Cukinia.photo },
+      { name: "Czosnek", src: Vegetables.Czosnek.photo },
+      { name: "Ciężarówka", src: Vehicles.Ciężarówka.photo },
+      { name: "Cytryna", src: Fruits.Cytryna.photo },
     ],
   },
   Ć: {
     uppercase: "Ć",
     lowercase: "ć",
     photo: require("../img/Litery/_Ć.png"),
-    examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
-    ],
+    examples: [],
   },
   D: {
     uppercase: "D",
     lowercase: "d",
     photo: require("../img/Litery/D.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Delfin", src: Animals.Delfin.photo },
+      { name: "Dynia", src: Vegetables.Dynia.photo },
+      { name: "Daktyle", src: Fruits.Daktyle.photo },
     ],
   },
   E: {
     uppercase: "E",
     lowercase: "e",
     photo: require("../img/Litery/E.png"),
-    examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
-    ],
+    examples: [{ name: "Emu", src: Animals.Emu.photo }],
   },
   Ę: {
     uppercase: "Ę",
     lowercase: "ę",
     photo: require("../img/Litery/_Ę.png"),
-    examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
-    ],
+    examples: [{ name: "Sęp", src: Animals.Sęp.photo }],
   },
   F: {
     uppercase: "F",
     lowercase: "f",
     photo: require("../img/Litery/F.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Foka", src: Animals.Foka.photo },
+      { name: "Fasola", src: Vegetables.Fasola.photo },
+      { name: "Figa", src: Fruits.Figa.photo },
     ],
   },
   G: {
@@ -1526,13 +1495,11 @@ export let Letters: LettersType = {
     lowercase: "g",
     photo: require("../img/Litery/G.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Grejpfrut", src: Fruits.Grejpfrut.photo },
+      { name: "Gruszka", src: Fruits.Gruszka.photo },
+      { name: "Granat", src: Fruits.Granat.photo },
+      { name: "Groszek", src: Vegetables.Groszek.photo },
+      { name: "Gołąb", src: Animals.Gołąb.photo },
     ],
   },
   H: {
@@ -1540,13 +1507,9 @@ export let Letters: LettersType = {
     lowercase: "h",
     photo: require("../img/Litery/H.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Hipopotam", src: Animals.Hipopotam.photo },
+      { name: "Helikopter", src: Vehicles.Helikopter.photo },
+      { name: "Hulajnoga", src: Vehicles.Hulajnoga.photo },
     ],
   },
   I: {
@@ -1554,13 +1517,8 @@ export let Letters: LettersType = {
     lowercase: "i",
     photo: require("../img/Litery/_I.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Imbir", src: Vegetables.Imbir.photo },
+      { name: "Indyk", src: Animals.Indyk.photo },
     ],
   },
   J: {
@@ -1568,13 +1526,11 @@ export let Letters: LettersType = {
     lowercase: "j",
     photo: require("../img/Litery/_J.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Jeż", src: Animals.Jeż.photo },
+      { name: "Jarmuż", src: Vegetables.Jarmuż.photo },
+      { name: "Jagoda", src: Fruits.Jagody.photo },
+      { name: "Jeżyna", src: Fruits.Jeżyna.photo },
+      { name: "Jabłko", src: Fruits.Jabłko.photo },
     ],
   },
   K: {
@@ -1582,13 +1538,19 @@ export let Letters: LettersType = {
     lowercase: "k",
     photo: require("../img/Litery/K.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Kiwi", src: Fruits.Kiwi.photo },
+      { name: "Kaki", src: Fruits.Kaki.photo },
+      { name: "Koparka", src: Vehicles.Koparka.photo },
+      { name: "Kalafior", src: Vegetables.Kalafior.photo },
+      { name: "Kapusta", src: Vegetables.Kapusta.photo },
+      { name: "Kukurydza", src: Vegetables.Kukurydza.photo },
+      { name: "Kaczka", src: Animals.Kaczka.photo },
+      { name: "Koń", src: Animals.Koń.photo },
+      { name: "Kot", src: Animals.Kot.photo },
+      { name: "Krokodyl", src: Animals.Krokodyl.photo },
+      { name: "Królik", src: Animals.Królik.photo },
+      { name: "Krowa", src: Animals.Krowa.photo },
+      { name: "Kura", src: Animals.Kura.photo },
     ],
   },
   L: {
@@ -1596,13 +1558,10 @@ export let Letters: LettersType = {
     lowercase: "l",
     photo: require("../img/Litery/L.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Lew", src: Animals.Lew.photo },
+      { name: "Lis", src: Animals.Lis.photo },
+      { name: "Liczi", src: Fruits.Liczi.photo },
+      { name: "Limonka", src: Fruits.Limonka.photo },
     ],
   },
   Ł: {
@@ -1610,13 +1569,8 @@ export let Letters: LettersType = {
     lowercase: "ł",
     photo: require("../img/Litery/_Ł.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Łódka", src: Vehicles.Łódka.photo },
+      { name: "Łoś", src: Animals.Łoś.photo },
     ],
   },
   M: {
@@ -1624,13 +1578,15 @@ export let Letters: LettersType = {
     lowercase: "m",
     photo: require("../img/Litery/M.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
+      { name: "Małpa", src: Animals.Małpa.photo},
+      { name: "Mysz", src: Animals.Mysz.photo},
+      { name: "Marchewka", src: Vegetables.Marchewka.photo},
+      { name: "Motocykl", src: Vehicles.Motocykl.photo},
+      { name: "Malina", src: Fruits.Malina.photo},
+      { name: "Mandarynka", src: Fruits.Mandarynka.photo},
+      { name: "Mango", src: Fruits.Mango.photo},
+      { name: "Morela", src: Fruits.Morela.photo},
 
-      },
     ],
   },
   N: {
@@ -1638,13 +1594,9 @@ export let Letters: LettersType = {
     lowercase: "n",
     photo: require("../img/Litery/N.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
+      { name: "Nektarynka", src: Fruits.Nektarynka.photo},
+      { name: "Niedźwiedź", src: Animals.Niedźwiedź.photo},
 
-      },
     ],
   },
   Ń: {
@@ -1652,13 +1604,9 @@ export let Letters: LettersType = {
     lowercase: "ń",
     photo: require("../img/Litery/_Ń.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Koń", src: Animals.Koń.photo},
+      { name: "Słoń", src: Animals.Słoń.photo},
+      { name: "Pomarańcza", src: Fruits.Pomarańcza.photo},
     ],
   },
   O: {
@@ -1666,13 +1614,11 @@ export let Letters: LettersType = {
     lowercase: "o",
     photo: require("../img/Litery/O.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
+      { name: "Ośmiornica", src: Animals.Ośmiornica.photo},
+      { name: "Owca", src: Animals.Owca.photo},
+      { name: "Ogórek", src: Vegetables.Ogórek.photo},
+      { name: "Oliwki", src: Fruits.Oliwki.photo},
 
-      },
     ],
   },
   Ó: {
@@ -1680,13 +1626,14 @@ export let Letters: LettersType = {
     lowercase: "ó",
     photo: require("../img/Litery/_Ó.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Wróbel", src: Animals.Wróbel.photo},
+      { name: "Wiewiórka", src: Animals.Wiewiórka.photo},
+      { name: "Bóbr", src: Animals.Bóbr.photo},
+      { name: "Łódka", src: Vehicles.Łódka.photo},
+      { name: "Ciężarówka", src: Vehicles.Ciężarówka.photo},
+      { name: "Bób", src: Vegetables.Bób.photo},
+      { name: "Ogórek", src: Vegetables.Ogórek.photo},
+      { name: "Borówka", src: Fruits.Borówka.photo},
     ],
   },
   P: {
@@ -1694,13 +1641,20 @@ export let Letters: LettersType = {
     lowercase: "p",
     photo: require("../img/Litery/P.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Pigwa", src: Fruits.Pigwa.photo},
+      { name: "Pomarańcza", src: Fruits.Pomarańcza.photo},
+      { name: "Porzeczka", src: Fruits.Porzeczka.photo},
+      { name: "Poziomka", src: Fruits.Poziomka.photo},
+      { name: "Pociąg", src: Vehicles.Pociąg.photo},
+      { name: "Policja", src: Vehicles.Policja.photo},
+      { name: "Papryka", src: Vegetables.Papryka.photo},
+      { name: "Pietruszka", src: Vegetables.Pietruszka.photo},
+      { name: "Pomidor", src: Vegetables.Pomidor.photo},
+      { name: "Pająk", src: Animals.Pająk.photo},
+      { name: "Papuga", src: Animals.Papuga.photo},
+      { name: "Paź", src: Animals.Paź.photo},
+      { name: "Pies", src: Animals.Pies.photo},
+      { name: "Pszczoła", src: Animals.Pszczoła.photo},
     ],
   },
   R: {
@@ -1708,13 +1662,11 @@ export let Letters: LettersType = {
     lowercase: "r",
     photo: require("../img/Litery/R.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Rak", src: Animals.Rak.photo},
+      { name: "Rekin", src: Animals.Rekin.photo},
+      { name: "Ryba", src: Animals.Ryba.photo},
+      { name: "Rzodkiewka", src: Vegetables.Rzodkiewka.photo},
+      { name: "Rower", src: Vehicles.Rower.photo},
     ],
   },
   S: {
@@ -1722,13 +1674,19 @@ export let Letters: LettersType = {
     lowercase: "s",
     photo: require("../img/Litery/S.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Samochód", src: Vehicles.Car.photo},
+      { name: "Samolot", src: Vehicles.Samolot.photo},
+      { name: "Statek", src: Vehicles.Statek.photo},
+      { name: "Straż", src: Vehicles.Straż.photo},
+      { name: "Sałata", src: Vegetables.Sałata.photo},
+      { name: "Seler", src: Vegetables.Seler.photo},
+      { name: "Szczypiorek", src: Vegetables.Szczypiorek.photo},
+      { name: "Szparagi", src: Vegetables.Szparagi.photo},
+      { name: "Szpinak", src: Vegetables.Szpinak.photo},
+      { name: "Sarna", src: Animals.Sarna.photo},
+      { name: "Sęp", src: Animals.Sęp.photo},
+      { name: "Słoń", src: Animals.Słoń.photo},
+      { name: "Sroka", src: Animals.Sroka.photo},
     ],
   },
   Ś: {
@@ -1736,13 +1694,9 @@ export let Letters: LettersType = {
     lowercase: "ś",
     photo: require("../img/Litery/_Ś.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Ślimak", src: Animals.Ślimak.photo},
+      { name: "Świnia", src: Animals.Świnia.photo},
+      { name: "Śliwka", src: Fruits.Śliwka.photo},
     ],
   },
   T: {
@@ -1750,27 +1704,18 @@ export let Letters: LettersType = {
     lowercase: "t",
     photo: require("../img/Litery/T.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
-    ],
+      { name: "Truskawka", src: Fruits.Truskawka.photo},
+      { name: "Traktor", src: Vehicles.Traktor.photo},
+      { name: "Tramwaj", src: Vehicles.Tramwaj.photo},
+      { name: "Tygrys", src: Animals.Tygrys.photo},
+   ],
   },
   U: {
     uppercase: "U",
     lowercase: "u",
     photo: require("../img/Litery/U.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Uszatka", src: Animals.Uszatka.photo},
     ],
   },
   W: {
@@ -1778,13 +1723,12 @@ export let Letters: LettersType = {
     lowercase: "w",
     photo: require("../img/Litery/W.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Winogrono", src: Fruits.Winogrono.photo},
+      { name: "Wiśnia", src: Fruits.Wiśnia.photo},
+      { name: "Wieloryb", src: Animals.Wieloryb.photo},
+      { name: "Wiewiórka", src: Animals.Wiewiórka.photo},
+      { name: "Wilk", src: Animals.Wilk.photo},
+      { name: "Wróbel", src: Animals.Wróbel.photo},
     ],
   },
   Y: {
@@ -1792,13 +1736,19 @@ export let Letters: LettersType = {
     lowercase: "y",
     photo: require("../img/Litery/Y.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Wieloryb", src: Animals.Wieloryb.photo},
+      { name: "Ryba", src: Animals.Ryba.photo},
+      { name: "Mysz", src: Animals.Mysz.photo},
+      { name: "Krokodyl", src: Animals.Krokodyl.photo},
+      { name: "Indyk", src: Animals.Indyk.photo},
+      { name: "Szczypiorek", src: Vegetables.Szczypiorek.photo},
+      { name: "Dynia", src: Vegetables.Dynia.photo},
+      { name: "Motocykl", src: Vehicles.Motocykl.photo},
+      { name: "Mandarynka", src: Fruits.Mandarynka.photo},
+      { name: "Nektarynka", src: Fruits.Nektarynka.photo},
+      { name: "Jeżyna", src: Fruits.Jeżyna.photo},
+      { name: "Daktyle", src: Fruits.Daktyle.photo},
+      { name: "Cytryna", src: Fruits.Cytryna.photo},
     ],
   },
   Z: {
@@ -1806,13 +1756,8 @@ export let Letters: LettersType = {
     lowercase: "z",
     photo: require("../img/Litery/Z.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Ziemniak", src: Vegetables.Ziemniaki.photo},
+      { name: "Zebra", src: Animals.Zebra.photo},
     ],
   },
   Ż: {
@@ -1820,13 +1765,10 @@ export let Letters: LettersType = {
     lowercase: "ż",
     photo: require("../img/Litery/_Ż.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Żurawina", src: Fruits.Żurawina.photo},
+      { name: "Żaba", src: Animals.Żaba.photo},
+      { name: "Żółw", src: Animals.Żółw.photo},
+      { name: "Żyrafa", src: Animals.Żyrafa.photo},      
     ],
   },
   Ź: {
@@ -1834,15 +1776,7 @@ export let Letters: LettersType = {
     lowercase: "ź",
     photo: require("../img/Litery/_Ź.png"),
     examples: [
-      {
-        name: "Apple",
-       // src: require(" "),
-      },
-      {
-
-      },
+      { name: "Paź", src: Animals.Paź.photo},      
     ],
   },
-
-
 };

@@ -1,8 +1,7 @@
 import {
   StyleSheet,
-  Text,
   View,
-  Pressable,
+  TouchableOpacity,
   Image,
   FlatList,
   Animated,
@@ -60,11 +59,11 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
       <View style={styles.contentContainer}>
         <View style={styles.iconButton}>
           {currentPage > 1 && (
-            <Pressable
+            <TouchableOpacity
               onPress={() => setCurrentPage(currentPage - 1)}
               style={styles.iconContainer}>
               <Icon name="chevron-left" size={fontSize * 3} color="lightgray" />
-            </Pressable>
+            </TouchableOpacity>
           )}
         </View>
         <SafeAreaView style={styles.buttonsContainer}>
@@ -74,7 +73,7 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
             numColumns={itemsPerRow}
             horizontal={false}
             renderItem={({ item: animalName }) => (
-              <Pressable
+              <TouchableOpacity
                 onPress={() =>
                   navigation.push("animal", { animalName: animalName })
                 }
@@ -83,7 +82,7 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
                   source={Animals[animalName].photo}
                   style={styles.image}
                 />
-              </Pressable>
+              </TouchableOpacity>
             )}
             showsHorizontalScrollIndicator={false}
             pagingEnabled
@@ -102,7 +101,7 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
         <View style={styles.iconButton}>
           {currentPage <
             Math.ceil(animalNames.length / (itemsPerRow * rowsPerPage)) && (
-            <Pressable
+            <TouchableOpacity
               onPress={() => setCurrentPage(currentPage + 1)}
               style={styles.iconContainer}>
               <Icon
@@ -110,7 +109,7 @@ export default function AnimalsScreen({ navigation }: HomeScreenProps) {
                 size={fontSize * 3}
                 color="lightgray"
               />
-            </Pressable>
+            </TouchableOpacity>
           )}
         </View>
       </View>

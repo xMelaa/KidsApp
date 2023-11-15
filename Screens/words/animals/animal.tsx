@@ -3,18 +3,16 @@ import {
   Text,
   View,
   Image,
-  Pressable,
+  TouchableOpacity,
   PixelRatio,
   Dimensions,
-  // Animated
 } from "react-native";
-import { RouteProp, useRoute } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useRoute } from "@react-navigation/native";
 import { Animals } from "../../../data/data";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Audio } from "expo-av";
 import { speak } from "expo-speech";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useSharedValue,
   useAnimatedStyle,
@@ -29,7 +27,7 @@ interface RouteParams {
 
 const fontScale = PixelRatio.getFontScale();
 const getFontSize = (size: number) => size / fontScale;
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 const fontSize = getFontSize(width * 0.015);
 
 export default function AnimalScreen() {
@@ -92,7 +90,7 @@ export default function AnimalScreen() {
     }, []);
 
     return (
-      <Pressable
+      <TouchableOpacity
         onPress={() =>
           flipRotation ? backAnimatedStyles : frontAnimatedStyles
         }
@@ -108,34 +106,32 @@ export default function AnimalScreen() {
             },
           ]}>
           {!flipped ? ( //jesli karta jest odkryta
-            <Pressable onPress={handleClick} style={styles.funfact}>
+            <TouchableOpacity onPress={handleClick} style={styles.funfact}>
               <Image
                 resizeMode="cover"
                 source={require("../../../img/questionMark.jpg")}
                 style={styles.backgroundImage}
               />
-              {/* <Text
-                style={{
-                  fontSize: fontSize * 1.5,
-                  fontWeight: "600",
-                  color: "#555",
-                }}>
-                Ciekawostka
-              </Text> */}
-            </Pressable>
+            </TouchableOpacity>
           ) : (
             //jesli jest zakryta
-            <Pressable onPress={handleClick} style={[styles.funfact, {backgroundColor: "mediumpurple"}]}>
+            <TouchableOpacity
+              onPress={handleClick}
+              style={[styles.funfact, { backgroundColor: "mediumpurple" }]}>
               <Text style={styles.knowtext}>Czy wiesz że...</Text>
               {randomFactIndex !== null ? (
-                <Text style={styles.facttext}>{animalData.ciekawostki[randomFactIndex]}</Text>
+                <Text style={styles.facttext}>
+                  {animalData.ciekawostki[randomFactIndex]}
+                </Text>
               ) : (
-                <Text style={styles.facttext}>Kliknij, aby poznać ciekawostkę</Text>
+                <Text style={styles.facttext}>
+                  Kliknij, aby poznać ciekawostkę
+                </Text>
               )}
-            </Pressable>
+            </TouchableOpacity>
           )}
         </Animated.View>
-      </Pressable>
+      </TouchableOpacity>
     );
   }
 
@@ -158,20 +154,20 @@ export default function AnimalScreen() {
   };
 
   const styles = StyleSheet.create({
-    knowtext:{
+    knowtext: {
       fontSize: fontSize * 1.6,
       fontWeight: "600",
       color: "white",
       paddingVertical: "6%",
-      flex: 3
+      flex: 3,
     },
-    facttext:{
+    facttext: {
       paddingVertical: "1%",
       paddingHorizontal: "5%",
       fontSize: fontSize * 0.9,
       color: "white",
       textAlign: "center",
-      flex: 5
+      flex: 5,
     },
     container: {
       flex: 1,
@@ -210,7 +206,6 @@ export default function AnimalScreen() {
       borderColor: "lavender",
       borderWidth: 4,
       alignItems: "center",
-      //justifyContent: "center",
       aspectRatio: 5 / 3,
     },
     funfactContainer: {
@@ -242,13 +237,13 @@ export default function AnimalScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Pressable onPress={playSound} style={styles.image}>
+        <TouchableOpacity onPress={playSound} style={styles.image}>
           <Image
             source={animalData.photo}
             style={styles.image}
             resizeMode="cover"
           />
-        </Pressable>
+        </TouchableOpacity>
       </View>
       <View style={styles.infoContainer}>
         <Image
@@ -256,10 +251,12 @@ export default function AnimalScreen() {
           source={require("../../../img/waves/wavesPurple.png")}
           style={styles.backgroundImage}
         />
-        <Pressable onPress={speakAnimalName} style={styles.nameContainer}>
+        <TouchableOpacity
+          onPress={speakAnimalName}
+          style={styles.nameContainer}>
           <Text style={styles.name}>{animalData.name}</Text>
           <Icon name="volume-up" size={fontSize * 2.7} color="#222" />
-        </Pressable>
+        </TouchableOpacity>
         <SingleCard />
       </View>
     </View>

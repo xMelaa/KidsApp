@@ -2,7 +2,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   PanResponder,
   Animated,
 } from "react-native";
@@ -25,26 +24,28 @@ interface DraggableState {
   opacity: Animated.Value;
 }
 class Draggable extends Component<{}, DraggableState> {
-  constructor(props: {} ) {
+  constructor(props: {}) {
     super(props);
 
     this.state = {
       showDraggable: true,
       dropAreaValues: null,
       pan: new Animated.ValueXY(),
-      opacity: new Animated.Value(1)
+      opacity: new Animated.Value(1),
     };
   }
   _val = { x: 0, y: 0 };
-  
+
   panResponder: PanResponderInstance | null = null;
   //drop area, dropzone powyzej y=200 (y: 0 - 200)
   isDropArea(gesture: { moveY: number }) {
-    return gesture.moveY < 200; 
+    return gesture.moveY < 200;
   }
   componentWillMount() {
     //this._val = { x: 0, y: 0 };
-    this.state.pan.addListener((value: { x: number; y: number; }) => (this._val = value));
+    this.state.pan.addListener(
+      (value: { x: number; y: number }) => (this._val = value)
+    );
 
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (e, gesture) => true,
@@ -52,9 +53,9 @@ class Draggable extends Component<{}, DraggableState> {
       onPanResponderGrant: (e, gesture) => {
         this.state.pan.setOffset({
           x: this._val.x,
-          y:this._val.y
-        })
-        this.state.pan.setValue({ x:0, y:0})
+          y: this._val.y,
+        });
+        this.state.pan.setValue({ x: 0, y: 0 });
       },
       onPanResponderMove: Animated.event([
         null,
@@ -88,22 +89,23 @@ class Draggable extends Component<{}, DraggableState> {
         {this.renderDraggable()}
       </View>
     );
+  }
+  renderDraggable() {
+    const panStyle = {
+      transform: this.state.pan.getTranslateTransform(),
+    };
+    if (this.state.showDraggable) {
+      return (
+        <View style={{ position: "absolute" }}>
+          <Animated.View
+            {...this.panResponder?.panHandlers}
+            style={[panStyle, styles.circle, { opacity: this.state.opacity }]}
+          />
+        </View>
+      );
+    }
+  }
 }
-renderDraggable() {
-  const panStyle = {
-    transform: this.state.pan.getTranslateTransform()
-  }
-  if (this.state.showDraggable) {
-    return (
-      <View style={{ position: "absolute" }}>
-        <Animated.View
-          {...(this.panResponder?.panHandlers)}
-          style={[panStyle, styles.circle, {opacity:this.state.opacity}]}
-        />
-      </View>
-    );
-  }
-}}
 
 class Screen extends Component {
   render() {
@@ -152,7 +154,7 @@ const styles = StyleSheet.create({
 const zoneStyles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    width: "75%"
+    width: "75%",
   },
   ballContainer: {
     height: 200,

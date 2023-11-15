@@ -2,18 +2,13 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   Dimensions,
-  useWindowDimensions,
-  Pressable,
   TouchableOpacity,
   GestureResponderEvent,
-  PanResponder,
   ScrollView,
   Image,
 } from "react-native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Svg, { Path } from "react-native-svg";
 
 const brushColors = [
@@ -41,40 +36,25 @@ const coloringPages = [
   require("../../img/ColoringPages/puppy.png"),
   require("../../img/ColoringPages/vegetables.png"),
 ];
-type RootStackParamList = {
-  Second: undefined;
-  choose: undefined;
-  words: undefined;
-  games: undefined;
-};
-
-type HomeScreenProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, "Second">;
-};
 
 export default function PaintingScreen() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const contextRef = useRef<Svg | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [brushColor, setBrushColor] = useState("black");
   const [brushSize, setBrushSize] = useState(5);
   const [paths, setPaths] = useState<
     Array<{ color: string; brush: number; path: string }>
   >([]);
-  const [randomImage, setRandomImage] = useState<string | null>(
-    require("../../img/ColoringPages/a.png")
-  );
+  const [randomImage, setRandomImage] = useState<string | null>("");
   const changeBrushColor = (color: React.SetStateAction<string>) => {
     setBrushColor(color);
   };
   const changeBrushSize = (size: React.SetStateAction<number>) => {
     setBrushSize(size);
   };
-  const windowDimensions = useWindowDimensions();
+
   const windowWidth = Dimensions.get("window").width;
   const canHeight =
     Dimensions.get("window").height - 65 - 65 - styles.container.height; //65 - wysokosc headera, 35 + 20 wysokos buttona do czyszcenia canvas - do zmiany na
-  const canWidth = (windowWidth * canHeight) / window.innerHeight;
 
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * coloringPages.length);
@@ -82,22 +62,11 @@ export default function PaintingScreen() {
     setRandomImage(randomImage);
   }, []);
 
-  //const imgAspectRatio = randomImage.width / randomImage.height;
-
-  const handlePanResponderMove = (
-    e: any,
-    gestureState: { moveX: any; moveY: any }
-  ) => {
-    const { moveX, moveY } = gestureState;
-    const newPath = `${paths[paths.length - 1]} L${moveX} ${moveY}`;
-    setPaths((prevPaths) => [
-      ...prevPaths.slice(0, -1),
-      {
-        color: brushColor,
-        brush: brushSize,
-        path: `${prevPaths[prevPaths.length - 1].path} L${moveX} ${moveY}`,
-      },
-    ]);
+  const reroll = () => {
+    clearCanvas();
+    const randomIndex = Math.floor(Math.random() * coloringPages.length);
+    const randomImage = coloringPages[randomIndex];
+    setRandomImage(randomImage);
   };
 
   const startDrawing = ({ nativeEvent }: GestureResponderEvent) => {
@@ -116,12 +85,7 @@ export default function PaintingScreen() {
   const finishDrawing = () => {
     setIsDrawing(false);
   };
-  const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onMoveShouldSetPanResponder: () => true,
-    onPanResponderMove: handlePanResponderMove,
-    onPanResponderRelease: finishDrawing,
-  });
+
   const draw = ({ nativeEvent }: GestureResponderEvent) => {
     if (!isDrawing) return;
 
@@ -136,7 +100,6 @@ export default function PaintingScreen() {
         } L${locationX} ${locationY}`,
       },
     ]);
-    
   };
 
   const clearCanvas = () => {
@@ -163,6 +126,17 @@ export default function PaintingScreen() {
               ]}></TouchableOpacity>
           ))}
         </ScrollView>
+        {randomImage && (
+          <Image
+            source={
+              typeof randomImage === "string"
+                ? { uri: randomImage }
+                : randomImage
+            }
+            resizeMode="center"
+            style={[styles.bgImg, { width: windowWidth, height: canHeight }]}
+          />
+        )}
         <Svg
           width={windowWidth - 120}
           height={"100%"}
@@ -178,20 +152,6 @@ export default function PaintingScreen() {
               fill="transparent"
             />
           ))}
-          {randomImage && (
-            <Image
-              source={
-                typeof randomImage === "string"
-                  ? { uri: randomImage }
-                  : randomImage
-              }
-              resizeMode="center"
-              style={[
-                styles.bgImg,
-                { width: windowWidth - 120, height: canHeight },
-              ]}
-            />
-          )}
         </Svg>
         <ScrollView
           style={styles.brushSizePicker}
@@ -207,8 +167,13 @@ export default function PaintingScreen() {
         </ScrollView>
       </View>
 
-      <TouchableOpacity onPress={clearCanvas} style={styles.buttonClear}>
-        <Text style={styles.buttonClearText}>Wyczyść</Text>
+      <TouchableOpacity style={styles.buttonContainer}>
+        <TouchableOpacity onPress={reroll} style={styles.buttonClear}>
+          <Text style={styles.buttonClearText}>Nowy obrazek</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={clearCanvas} style={styles.buttonClear}>
+          <Text style={styles.buttonClearText}>Wyczyść</Text>
+        </TouchableOpacity>
       </TouchableOpacity>
     </>
   );
@@ -220,6 +185,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: 50,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
   },
   titleText: {
     fontSize: 16,
@@ -266,7 +236,7 @@ const styles = StyleSheet.create({
   buttonClear: {
     width: "25%",
     height: 35,
-    backgroundColor: "lightblue",
+    backgroundColor: "cornflowerblue",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 30,
@@ -280,8 +250,6 @@ const styles = StyleSheet.create({
   },
   bgImg: {
     position: "absolute",
-    //width: '100%',
     zIndex: -20,
-    //aspectRatio: 1,
   },
 });
