@@ -106,7 +106,7 @@ function SingleCard({
           <TouchableOpacity onPress={handleClick} style={styles.back}>
             <Image
               style={styles.back}
-              source={require("../../img/cover.png")}
+              source={require("../../img/cover2.jpg")}
             />
           </TouchableOpacity>
         )}
