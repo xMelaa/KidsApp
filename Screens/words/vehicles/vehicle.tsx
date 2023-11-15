@@ -3,18 +3,17 @@ import {
     Text,
     View,
     Image,
-    Pressable,
+    TouchableOpacity,
     PixelRatio,
     Dimensions,
     // Animated
   } from "react-native";
-  import { RouteProp, useRoute } from "@react-navigation/native";
-  import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+  import { useRoute } from "@react-navigation/native";
   import { Vehicles } from "../../../data/data";
   import Icon from "react-native-vector-icons/MaterialIcons";
   import { Audio } from "expo-av";
   import { speak } from "expo-speech";
-  import React, { useEffect, useRef, useState } from "react";
+  import React, { useEffect, useState } from "react";
   import {
     useSharedValue,
     useAnimatedStyle,
@@ -92,7 +91,7 @@ import {
       }, []);
   
       return (
-        <Pressable
+        <TouchableOpacity
           onPress={() =>
             flipRotation ? backAnimatedStyles : frontAnimatedStyles
           }
@@ -108,7 +107,7 @@ import {
               },
             ]}>
             {!flipped ? ( //jesli karta jest odkryta
-              <Pressable onPress={handleClick} style={styles.funfact}>
+              <TouchableOpacity onPress={handleClick} style={styles.funfact}>
                 <Image
                   resizeMode="cover"
                   source={require("../../../img/questionMark.jpg")}
@@ -122,20 +121,20 @@ import {
                   }}>
                   Ciekawostka
                 </Text> */}
-              </Pressable>
+              </TouchableOpacity>
             ) : (
               //jesli jest zakryta
-              <Pressable onPress={handleClick} style={[styles.funfact, {backgroundColor: "mediumpurple"}]}>
+              <TouchableOpacity onPress={handleClick} style={[styles.funfact, {backgroundColor: "mediumpurple"}]}>
                 <Text style={styles.knowtext}>Czy wiesz że...</Text>
                 {randomFactIndex !== null ? (
                   <Text style={styles.facttext}>{vehicleData.ciekawostki[randomFactIndex]}</Text>
                 ) : (
                   <Text style={styles.facttext}>Kliknij, aby poznać ciekawostkę</Text>
                 )}
-              </Pressable>
+              </TouchableOpacity>
             )}
           </Animated.View>
-        </Pressable>
+        </TouchableOpacity>
       );
     }
   
@@ -242,13 +241,13 @@ import {
     return (
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <Pressable onPress={playSound} style={styles.image}>
+          <TouchableOpacity onPress={playSound} style={styles.image}>
             <Image
               source={vehicleData.photo}
               style={styles.image}
               resizeMode="cover"
             />
-          </Pressable>
+          </TouchableOpacity>
         </View>
         <View style={styles.infoContainer}>
           <Image
@@ -256,10 +255,10 @@ import {
             source={require("../../../img/waves/wavesPurple.png")}
             style={styles.backgroundImage}
           />
-          <Pressable onPress={speakVehicleName} style={styles.nameContainer}>
+          <TouchableOpacity onPress={speakVehicleName} style={styles.nameContainer}>
             <Text style={styles.name}>{vehicleData.name}</Text>
             <Icon name="volume-up" size={fontSize * 2.7} color="#222" />
-          </Pressable>
+          </TouchableOpacity>
           <SingleCard />
         </View>
       </View>
