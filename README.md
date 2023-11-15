@@ -114,4 +114,10 @@ yarn
 yarn start
 ```
 
-##Screeny
+## Kilka zrzutów z apki :)
+![Screen 1](AppScreen/HomeTablet.png)
+![Screen 2](AppScreen/ColoringPage.png)
+![Screen 3](AppScreen/Animals.png)
+![Screen 4](AppScreen/QuizTablet.png)
+![Screen 5](AppScreen/GoodAnswerTablet.png)
+![Screen 6](AppScreen/MemoryTablet.png)
