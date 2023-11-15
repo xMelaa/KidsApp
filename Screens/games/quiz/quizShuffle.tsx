@@ -47,7 +47,7 @@ export default function QuizShuffleGame({ navigation }: HomeScreenProps) {
   const [incorrectAnswerOverlayVisible, setIncorrectAnswerOverlayVisible] =
     useState(false);
 
-  const shuffledAnswers = shuffleArray(quizData[currentQuestion]?.options);
+  const shuffledAnswers = shuffleArray(questions[currentQuestion]?.options);
 
   const handleNextQuestion = () => {
     setCorrectAnswerOverlayVisible(false);
@@ -97,7 +97,6 @@ export default function QuizShuffleGame({ navigation }: HomeScreenProps) {
             style={styles.picture}
             resizeMode="cover"
           />
-
           <TouchableOpacity
             onPress={() => navigation.push("games")}
             style={styles.button}>
@@ -115,8 +114,9 @@ export default function QuizShuffleGame({ navigation }: HomeScreenProps) {
             <Icon name="volume-up" size={fontSize * 2.7} color="#222" />
           </TouchableOpacity>
           <View style={styles.answers}>
-            {shuffledAnswers.map((item) => (
+            {shuffledAnswers.map((item, index) => (
               <TouchableOpacity
+                key={index}
                 onPress={() => handleAnswer(item)}
                 style={styles.answer}>
                 <Image
