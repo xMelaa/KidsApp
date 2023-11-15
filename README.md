@@ -114,6 +114,10 @@ Jeśli yarn jest zainstalowany, po sklonowaniu repozytorium uruchom następując
 yarn
 yarn start
 ```
+do uruchomiania aplikacji na iOS:
+```
+pod install 
+```
 
 ## Kilka zrzutów z apki :)
 ![Screen 1](AppScreen/HomeTablet.png)
