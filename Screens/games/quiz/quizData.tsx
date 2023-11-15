@@ -1,47 +1,70 @@
+import { Animals, Vehicles, Fruits, Vegetables, Letters } from "../../../data/data";
 export const quizData = [
   {
-    question: "Apple",
+    question: "Jabłko",
     options: [
       {
-        name: "Apple",
-        src: require("../../../img/apple.jpg"),
+        name: "Jabłko",
+        src: Fruits.Jabłko.photo,
       },
       {
-        name: "Pear",
-        src: require("../../../img/pear.jpg"),
+        name: "Gruszka",
+        src: Fruits.Gruszka.photo,
       },
       {
-        name: "Blueberry",
-        src: require("../../../img/blueberry.jpg"),
+        name: "Borówka",
+        src: Fruits.Borówka.photo,
       },
       {
-        name: "Pomegranade",
-        src: require("../../../img/pomegranade.jpg"),
+        name: "Granat",
+        src: Fruits.Granat.photo,
       },
     ],
-    answer: "Apple",
+    answer: "Jabłko",
   },
   {
-    question: "Blueberry",
+    question: "Borówka",
     options: [
       {
-        name: "Apple",
-        src: require("../../../img/apple.jpg"),
+        name: "Jabłko",
+        src: Fruits.Jabłko.photo,
       },
       {
-        name: "Pear",
-        src: require("../../../img/pear.jpg"),
+        name: "Gruszka",
+        src: Fruits.Gruszka.photo,
       },
       {
-        name: "Blueberry",
-        src: require("../../../img/blueberry.jpg"),
+        name: "Borówka",
+        src: Fruits.Borówka.photo,
       },
       {
-        name: "Pomegranade",
-        src: require("../../../img/pomegranade.jpg"),
+        name: "Granat",
+        src: Fruits.Granat.photo,
       },
     ],
-    answer: "Blueberry",
+    answer: "Borówka",
+  },
+  {
+    question: "Koń",
+    options: [
+      {
+        name: "Słoń",
+        src: Animals.Słoń.photo,
+      },
+      {
+        name: "Żyrafa",
+        src: Animals.Żyrafa.photo,
+      },
+      {
+        name: "Koń",
+        src: Animals.Koń.photo,
+      },
+      {
+        name: "Jeż",
+        src: Animals.Jeż.photo,
+      },
+    ],
+    answer: "Koń",
   },
 ];
 

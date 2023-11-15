@@ -29,27 +29,28 @@ const screens: {
   name: string;
   component: any;
   options?: object;
+  title?: string;
 }[] = [
   { name: "Home", component: HomeScreen, options: { headerShown: false } },
-  { name: "words", component: NewWordsScreen },
-  { name: "painting", component: PaintingScreen },
-  { name: "animals", component: AnimalsScreen },
-  { name: "animal", component: AnimalScreen },
-  { name: "fruit", component: FruitScreen },
-  { name: "vegetable", component: VegetableScreen },
-  { name: "vehicle", component: VehicleScreen },
-  { name: "letters", component: LettersScreen },
-  { name: "letter", component: LetterScreen },
-  { name: "choose", component: ChooseScreen },
-  { name: "vehicles", component: VehiclesScreen },
-  { name: "fruits", component: FruitsScreen },
-  { name: "vegetables", component: VegetablesScreen },
-  { name: "games", component: GamesScreen },
-  { name: "memory", component: MemoryGame },
-  { name: "quiz", component: QuizGame },
-  { name: "shufflequiz", component: QuizShuffleGame },
-  { name: "sorting", component: SortingGame },
-  { name: "dragging", component: Drag },
+  { name: "choose", component: ChooseScreen, title: "Wybierz jak chcesz się uczyć" },
+  { name: "words", component: NewWordsScreen, title: "Poznaj nowe słówka" },
+  { name: "games", component: GamesScreen, title: "Gry i zabawy" },
+  { name: "animals", component: AnimalsScreen, title: "Zwierzęta" },
+  { name: "vehicles", component: VehiclesScreen, title: "Pojazdy" },
+  { name: "fruits", component: FruitsScreen, title: "Owoce" },
+  { name: "vegetables", component: VegetablesScreen, title: "Warzywa" },
+  { name: "letters", component: LettersScreen, title: "Litery" },
+  { name: "animal", component: AnimalScreen, title: "Powrót" },
+  { name: "fruit", component: FruitScreen, title: "Powrót" },
+  { name: "vegetable", component: VegetableScreen, title: "Powrót" },
+  { name: "vehicle", component: VehicleScreen, title: "Powrót" },
+  { name: "letter", component: LetterScreen, title: "Powrót" },
+  { name: "memory", component: MemoryGame, title: "Memory" },
+  { name: "quiz", component: QuizGame, title: "Quiz" },
+  { name: "shufflequiz", component: QuizShuffleGame, title: "Quiz (Trudny)" },
+  { name: "painting", component: PaintingScreen, title: "Kolorowanka" },
+  { name: "sorting", component: SortingGame, title: "Sortowanie" },
+  { name: "dragging", component: Drag, title: "Przeciąganie" },
 ];
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -80,8 +81,10 @@ export default function App() {
           <Stack.Screen
             key={index}
             name={screen.name}
-            // options={{ title: screen.title || undefined }}
-            options={screen.options}>
+            options={{
+              ...(screen.options || {}),
+              title: screen.title || undefined,
+            }}>
             {(props) => <screen.component {...props} />}
           </Stack.Screen>
         ))}

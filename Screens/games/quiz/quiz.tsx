@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   PixelRatio,
   Dimensions,
+  ImageSourcePropType,
 } from "react-native";
 import { Icon, Overlay } from "react-native-elements";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -109,17 +110,23 @@ export default function QuizGame({ navigation }: HomeScreenProps) {
             <Icon name="volume-up" size={fontSize * 2.7} color="#222" />
           </TouchableOpacity>
           <View style={styles.answers}>
-            {quizData[currentQuestion]?.options.map((item) => (
-              <TouchableOpacity
-                onPress={() => handleAnswer(item)}
-                style={styles.answer}>
-                <Image
-                  style={styles.answerImage}
-                  source={item.src}
-                  resizeMode="cover"
-                />
-              </TouchableOpacity>
-            ))}
+            {questions[currentQuestion]?.options.map(
+              (
+                item: { src: ImageSourcePropType },
+                index: React.Key | null | undefined
+              ) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => handleAnswer(item)}
+                  style={styles.answer}>
+                  <Image
+                    style={styles.answerImage}
+                    source={item.src}
+                    resizeMode="cover"
+                  />
+                </TouchableOpacity>
+              )
+            )}
           </View>
         </View>
       )}
