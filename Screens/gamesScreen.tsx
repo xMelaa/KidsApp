@@ -2,7 +2,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   PixelRatio,
   TouchableOpacity,
   Image,
@@ -90,7 +89,7 @@ export default function GamesScreen({ navigation }: HomeScreenProps) {
   );
 }
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 const fontSize = getFontSize(width * 0.018);
 
 const styles = StyleSheet.create({

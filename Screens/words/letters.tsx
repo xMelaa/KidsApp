@@ -1,8 +1,7 @@
 import {
   StyleSheet,
-  Text,
   View,
-  Pressable,
+  TouchableOpacity,
   Image,
   FlatList,
   Animated,
@@ -16,20 +15,20 @@ import { useRef, useState } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 type RootStackParamList = {
-   Second: undefined;
-    choose: undefined;
-    words: undefined;
-    games: undefined;
-    letter: {letterName: string}
-  };
+  Second: undefined;
+  choose: undefined;
+  words: undefined;
+  games: undefined;
+  letter: { letterName: string };
+};
 
 type HomeScreenProps = {
-    navigation: NativeStackNavigationProp<RootStackParamList, "Second">; // Upewnij się, że to jest zgodne z Twoją konfiguracją nawigatora
-  };
-  const { width, height } = Dimensions.get("window");
-  const fontScale = PixelRatio.getFontScale();
-  const getFontSize = (size: number) => size / fontScale;
-  const fontSize = getFontSize(width * 0.022)
+  navigation: NativeStackNavigationProp<RootStackParamList, "Second">;
+};
+const { width, height } = Dimensions.get("window");
+const fontScale = PixelRatio.getFontScale();
+const getFontSize = (size: number) => size / fontScale;
+const fontSize = getFontSize(width * 0.022);
 
 export default function LettersScreen({ navigation }: HomeScreenProps) {
   const letterNames = Object.keys(Letters);
@@ -51,64 +50,72 @@ export default function LettersScreen({ navigation }: HomeScreenProps) {
 
   return (
     <View style={styles.container}>
-    <Image
-    resizeMode= "cover"
-     source={require("../../img/letters.png")}
-     style={[styles.backgroundImage]}
-     blurRadius={6}
-   />
-    <View style={styles.overlay}></View>
-   <View style={styles.contentContainer}>
-     <View style={styles.iconButton}>
-       {currentPage > 1 && (
-         <Pressable onPress={() => setCurrentPage(currentPage - 1)} style={styles.iconContainer}>
-           <Icon name="chevron-left" size={fontSize * 3} color="lightgray" />
-         </Pressable>
-       )}
-     </View>
-     <SafeAreaView style={styles.buttonsContainer}>
-       <FlatList
-         data={renderPage(currentPage)}
-         keyExtractor={(letterName) => letterName}
-         numColumns={itemsPerRow}
-         horizontal={false}
-         renderItem={({ item: letterName }) => (
-           <Pressable
-             onPress={() =>
-               navigation.push("letter", { letterName: letterName })
-             }
-             style={styles.itemContainer}>
-             <Image
-               source={Letters[letterName].photo}
-               style={styles.image}
-             />
-           </Pressable>
-         )}
-         showsHorizontalScrollIndicator={false}
-         pagingEnabled
-         bounces={false}
-         onScroll={Animated.event(
-           [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-           {
-             useNativeDriver: false,
-           }
-         )}
-         viewabilityConfig={viewConfig}
-         scrollEventThrottle={16}
-       />
-     </SafeAreaView>
+      <Image
+        resizeMode="cover"
+        source={require("../../img/letters.png")}
+        style={[styles.backgroundImage]}
+        blurRadius={6}
+      />
+      <View style={styles.overlay}></View>
+      <View style={styles.contentContainer}>
+        <View style={styles.iconButton}>
+          {currentPage > 1 && (
+            <TouchableOpacity
+              onPress={() => setCurrentPage(currentPage - 1)}
+              style={styles.iconContainer}>
+              <Icon name="chevron-left" size={fontSize * 3} color="lightgray" />
+            </TouchableOpacity>
+          )}
+        </View>
+        <SafeAreaView style={styles.buttonsContainer}>
+          <FlatList
+            data={renderPage(currentPage)}
+            keyExtractor={(letterName) => letterName}
+            numColumns={itemsPerRow}
+            horizontal={false}
+            renderItem={({ item: letterName }) => (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.push("letter", { letterName: letterName })
+                }
+                style={styles.itemContainer}>
+                <Image
+                  source={Letters[letterName].photo}
+                  style={styles.image}
+                />
+              </TouchableOpacity>
+            )}
+            showsHorizontalScrollIndicator={false}
+            pagingEnabled
+            bounces={false}
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+              {
+                useNativeDriver: false,
+              }
+            )}
+            viewabilityConfig={viewConfig}
+            scrollEventThrottle={16}
+          />
+        </SafeAreaView>
 
-     <View style={styles.iconButton}>
-       {currentPage <
-         Math.ceil(letterNames.length / (itemsPerRow * rowsPerPage)) && (
-         <Pressable onPress={() => setCurrentPage(currentPage + 1)} style={styles.iconContainer}>
-           <Icon name="chevron-right" size={fontSize * 3} color="lightgray" />
-         </Pressable>
-       )}
-     </View>
-   </View>
- </View>
-);
+        <View style={styles.iconButton}>
+          {currentPage <
+            Math.ceil(letterNames.length / (itemsPerRow * rowsPerPage)) && (
+            <TouchableOpacity
+              onPress={() => setCurrentPage(currentPage + 1)}
+              style={styles.iconContainer}>
+              <Icon
+                name="chevron-right"
+                size={fontSize * 3}
+                color="lightgray"
+              />
+            </TouchableOpacity>
+          )}
+        </View>
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -117,13 +124,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    
   },
   contentContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",    
+    width: "100%",
   },
   buttonsContainer: {
     width: "80%",
@@ -134,9 +140,9 @@ const styles = StyleSheet.create({
     marginHorizontal: "2%",
     width: "16%",
     aspectRatio: 1,
-     border: "solid",
-      borderColor: "black",
-      borderWidth: 3
+    border: "solid",
+    borderColor: "black",
+    borderWidth: 3,
   },
 
   iconButton: {
@@ -146,25 +152,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  iconContainer:{
+  iconContainer: {
     height: "100%",
-     justifyContent: "center"
+    justifyContent: "center",
   },
   image: {
-      width: "100%",
-      height: "100%",
-      
-    },
-    backgroundImage: {
-
-      position: "absolute",
-      width: "100%",
-      height: "100%",
-    },
-    overlay:{
-      backgroundColor: "rgba(0, 0, 0, 0.3)",
-      position: "absolute",
-      width: "100%",
-      height: "100%",
-    },
+    width: "100%",
+    height: "100%",
+  },
+  backgroundImage: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+  },
+  overlay: {
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+  },
 });

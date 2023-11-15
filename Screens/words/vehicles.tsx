@@ -1,8 +1,7 @@
 import {
   StyleSheet,
-  Text,
   View,
-  Pressable,
+  TouchableOpacity,
   Image,
   FlatList,
   Animated,
@@ -23,7 +22,7 @@ type RootStackParamList = {
   vehicle: { vehicleName: string };
 };
 type HomeScreenProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, "Second">; // Upewnij się, że to jest zgodne z Twoją konfiguracją nawigatora
+  navigation: NativeStackNavigationProp<RootStackParamList, "Second">;
 };
 const { width, height } = Dimensions.get("window");
 const fontScale = PixelRatio.getFontScale();
@@ -50,7 +49,7 @@ export default function VehiclesScreen({ navigation }: HomeScreenProps) {
   return (
     <View style={styles.container}>
       <Image
-      resizeMode= "cover"
+        resizeMode="cover"
         source={require("../../img/vehicles.png")}
         style={[styles.backgroundImage]}
         blurRadius={6}
@@ -59,11 +58,11 @@ export default function VehiclesScreen({ navigation }: HomeScreenProps) {
       <View style={styles.contentContainer}>
         <View style={styles.iconButton}>
           {currentPage > 1 && (
-            <Pressable
+            <TouchableOpacity
               onPress={() => setCurrentPage(currentPage - 1)}
               style={styles.iconContainer}>
               <Icon name="chevron-left" size={fontSize * 3} color="lightgray" />
-            </Pressable>
+            </TouchableOpacity>
           )}
         </View>
         <SafeAreaView style={styles.buttonsContainer}>
@@ -73,17 +72,16 @@ export default function VehiclesScreen({ navigation }: HomeScreenProps) {
             numColumns={itemsPerRow}
             horizontal={false}
             renderItem={({ item: vehicleName }) => (
-              <Pressable
+              <TouchableOpacity
                 onPress={() =>
                   navigation.push("vehicle", { vehicleName: vehicleName })
                 }
                 style={styles.itemContainer}>
                 <Image
-           
                   source={Vehicles[vehicleName].photo}
                   style={styles.image}
                 />
-              </Pressable>
+              </TouchableOpacity>
             )}
             showsHorizontalScrollIndicator={false}
             pagingEnabled
@@ -102,7 +100,7 @@ export default function VehiclesScreen({ navigation }: HomeScreenProps) {
         <View style={styles.iconButton}>
           {currentPage <
             Math.ceil(vehicleNames.length / (itemsPerRow * rowsPerPage)) && (
-            <Pressable
+            <TouchableOpacity
               onPress={() => setCurrentPage(currentPage + 1)}
               style={styles.iconContainer}>
               <Icon
@@ -110,7 +108,7 @@ export default function VehiclesScreen({ navigation }: HomeScreenProps) {
                 size={fontSize * 3}
                 color="lightgray"
               />
-            </Pressable>
+            </TouchableOpacity>
           )}
         </View>
       </View>
