@@ -2,6 +2,7 @@
 ## O Projekcie
 Aplikacja jest rozwiązaniem zadania konkursu Hi-Tech Girls 2023 z dziedziny Software Development – Frontend. Jest ona efektem mojej ciężkiej 3-tygodniowej pracy. Posiada wiele niedoskonałości i rozwiązań, które można przedstawić w lepszy sposób, jednak mimo tego jestem dumna z tego co udało mi się osiągnąć w tak krótkim czasie 😊 Jest to moje pierwsze doświadczenie z react-native i ogólnie projektem na urządzenia przenośne. Uważam, że bez względu na wynik nie jest to stracony czas, a większy krok w mojej karierze. 
 
+**Architektura aplikacji przedstawiona w pliku KidsApp_architektura.png w głównym folderze**
 
 ### Cel
 Celem aplikacji jest dostarczenie dzieciom narzędzia do nauki liter, słów, oraz mówienia poprzez gry i zabawy. Aplikacja oferuje sekcje nauki słów oraz zestaw gier i zabaw. Każde słowo jest przedstawione za pomocą zdjęcia, wymowy, ciekawostki, a w przypadku zwierząt, także ich odgłosów (obecnie każde zwierzę szczeka 😉). Gry na tę chwilę obejmują "memory", quizy (łatwy, trudniejszy) oraz kolorowanki. Pracowano również nad grą do sortowania owoców i warzyw, ale nie została ukończona w wyznaczonym terminie.
