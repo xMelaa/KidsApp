@@ -5,7 +5,7 @@ import {
   Button,
   Dimensions,
   useWindowDimensions,
-  Pressable,
+  TouchableOpacity,
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useRef, useState } from "react";
@@ -36,16 +36,6 @@ const coloringPages = [
   require("../../img/ColoringPages/puppy.png"),
   require("../../img/ColoringPages/vegetables.png"),
 ];
-type RootStackParamList = {
-  Second: undefined;
-  choose: undefined;
-  words: undefined;
-  games: undefined;
-};
-
-type HomeScreenProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, "Second">;
-};
 
 export default function PaintingScreen() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -153,10 +143,10 @@ export default function PaintingScreen() {
       <View style={styles.canvasContainer}>
         <View style={styles.colorPicker}>
           {brushColors.map((color) => (
-            <Pressable
+            <TouchableOpacity
               key={color}
               onPress={() => changeBrushColor(color)}
-              style={[styles.color, { backgroundColor: color }]}></Pressable>
+              style={[styles.color, { backgroundColor: color }]}></TouchableOpacity>
           ))}
         </View>
         <canvas
@@ -167,19 +157,19 @@ export default function PaintingScreen() {
         />
         <View style={styles.brushSizePicker}>
           {brushSizes.map((size) => (
-            <Pressable
+            <TouchableOpacity
               key={size}
               onPress={() => changeBrushSize(size)}
               style={styles.sizes}>
               <Text style={styles.sizeText}>{size.toString()}</Text>
-            </Pressable>
+            </TouchableOpacity>
           ))}
         </View>
       </View>
 
-      <Pressable onPress={clearCanvas} style={styles.buttonClear}>
+      <TouchableOpacity onPress={clearCanvas} style={styles.buttonClear}>
         <Text style={styles.buttonClearText}>Wyczyść</Text>
-      </Pressable>
+      </TouchableOpacity>
     </>
   );
 }

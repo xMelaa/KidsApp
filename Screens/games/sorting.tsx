@@ -1,8 +1,6 @@
 import {
   StyleSheet,
-  Text,
   View,
-  Button,
   PanResponder,
   Animated,
 } from "react-native";

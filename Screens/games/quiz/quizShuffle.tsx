@@ -3,7 +3,6 @@ import {
   Text,
   View,
   Image,
-  Pressable,
   Dimensions,
   PixelRatio,
   TouchableOpacity,
@@ -120,7 +119,11 @@ export default function QuizShuffleGame({ navigation }: HomeScreenProps) {
               <TouchableOpacity
                 onPress={() => handleAnswer(item)}
                 style={styles.answer}>
-                <Image style={styles.answerImage} source={item.src} resizeMode="cover"/>
+                <Image
+                  style={styles.answerImage}
+                  source={item.src}
+                  resizeMode="cover"
+                />
               </TouchableOpacity>
             ))}
           </View>

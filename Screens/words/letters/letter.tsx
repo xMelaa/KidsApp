@@ -6,13 +6,12 @@ import {
   PixelRatio,
   Dimensions,
   TouchableOpacity,
-  // Animated
 } from "react-native";
-import { RouteProp, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { Letters } from "../../../data/data";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { speak } from "expo-speech";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useSharedValue,
   useAnimatedStyle,
@@ -27,7 +26,7 @@ interface RouteParams {
 
 const fontScale = PixelRatio.getFontScale();
 const getFontSize = (size: number) => size / fontScale;
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 const fontSize = getFontSize(width * 0.015);
 
 export default function LetterScreen() {
@@ -188,7 +187,6 @@ export default function LetterScreen() {
     image2: {
       aspectRatio: 1,
       height: "100%",
-      //width: "100%",
       flex: 2,
     },
     imageContainer: {
@@ -214,7 +212,6 @@ export default function LetterScreen() {
       borderColor: "lavender",
       borderWidth: 4,
       alignItems: "center",
-      //justifyContent: "center",
       aspectRatio: 4 / 3,
     },
     funfactContainer: {

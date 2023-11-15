@@ -3,7 +3,6 @@ import {
   Text,
   View,
   Image,
-  Pressable,
   PixelRatio,
   Dimensions,
   TouchableOpacity,
@@ -90,7 +89,7 @@ function SingleCard({
   }, []);
 
   return (
-    <Pressable
+    <TouchableOpacity
       style={styles.card}
       onPress={() => (flipRotation ? backAnimatedStyles : frontAnimatedStyles)}>
       <Animated.View
@@ -99,20 +98,20 @@ function SingleCard({
           flipped ? frontAnimatedStyles : backAnimatedStyles,
         ]}>
         {flipped ? ( //jesli karta jest odkryta
-          <Pressable onPress={handleClick} style={styles.front}>
+          <TouchableOpacity onPress={handleClick} style={styles.front}>
             <Image style={styles.front} source={card.symbol} />
-          </Pressable>
+          </TouchableOpacity>
         ) : (
           //jesli jest zakryta
-          <Pressable onPress={handleClick} style={styles.back}>
+          <TouchableOpacity onPress={handleClick} style={styles.back}>
             <Image
               style={styles.back}
               source={require("../../img/cover.png")}
             />
-          </Pressable>
+          </TouchableOpacity>
         )}
       </Animated.View>
-    </Pressable>
+    </TouchableOpacity>
   );
 }
 
