@@ -32,7 +32,7 @@ Wszystkie obrazy były generowane za pomocą sztucznej inteligencji przy użyciu
    - "Full photo of a white duck in its natural environment"
    - "Natural photo of a giraffe in a full posture"
    - "Simple photo of a hedgehog in a natural environment"
-   - "Simple photo of a spider in a web"
+   - "Simple photo of a spider in a cobweb"
 
 2. **Pojazdy:**
    - "contemporary"
