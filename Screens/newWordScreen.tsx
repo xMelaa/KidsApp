@@ -2,8 +2,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
-  Pressable,
+  TouchableOpacity,
   Image,
   Dimensions,
   PixelRatio,
@@ -57,27 +56,33 @@ type HomeScreenProps = {
 const fontScale = PixelRatio.getFontScale();
 const getFontSize = (size: number) => size / fontScale;
 
-
 export default function NewWordsScreen({ navigation }: HomeScreenProps) {
   return (
     <View style={styles.container}>
       <Image
-      resizeMode= "cover"
+        resizeMode="cover"
         source={require("../img/books2.png")}
         style={[styles.backgroundImage]}
         blurRadius={6}
       />
-       <View style={styles.overlay}></View>
+      <View style={styles.overlay}></View>
       <View style={styles.buttonsContainer}>
         {words.map((word, index) => (
-          <Pressable
+          <TouchableOpacity
             key={index}
             onPress={() => navigation.push(word.routeName)}
             style={styles.buttonContainer}>
-              
-            <Image  resizeMode= "cover" source={word.src} style={[styles.backgroundImage,{ borderRadius: 30, opacity: 0.8} ]} blurRadius={0.7} />
+            <Image
+              resizeMode="cover"
+              source={word.src}
+              style={[
+                styles.backgroundImage,
+                { borderRadius: 30, opacity: 0.8 },
+              ]}
+              blurRadius={0.7}
+            />
             <Text style={styles.buttonText}>{word.title}</Text>
-          </Pressable>
+          </TouchableOpacity>
         ))}
       </View>
     </View>
@@ -85,7 +90,7 @@ export default function NewWordsScreen({ navigation }: HomeScreenProps) {
 }
 
 const { width, height } = Dimensions.get("window");
-const fontSize = getFontSize(width * 0.018)
+const fontSize = getFontSize(width * 0.018);
 
 const styles = StyleSheet.create({
   container: {
@@ -94,7 +99,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  overlay:{
+  overlay: {
     backgroundColor: "rgba(0, 0, 0, 0.35)",
     position: "absolute",
     width: "100%",
@@ -108,17 +113,15 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     gap: 15,
-    paddingVertical: 10
+    paddingVertical: 10,
   },
   buttonContainer: {
     height: "30%",
     width: "45%",
     alignItems: "center",
-    justifyContent: "center",  
-   
+    justifyContent: "center",
   },
   backgroundImage: {
-
     position: "absolute",
     width: "100%",
     height: "100%",
